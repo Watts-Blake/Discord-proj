@@ -8,11 +8,13 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import UsersList from "./components/UsersList";
 import User from "./components/User";
 import { authenticate } from "./store/session";
+import LeftNavBar from "./components/LeftNavBar";
+import MainContent from "./components/MainContent";
+import Members from "./components/Members";
 
 function App() {
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
-
   useEffect(() => {
     (async () => {
       await dispatch(authenticate());
@@ -40,8 +42,12 @@ function App() {
         <ProtectedRoute path="/users/:userId" exact={true}>
           <User />
         </ProtectedRoute>
-        <ProtectedRoute path="/" exact={true}>
+        <Route path="/" exact={true}>
           <h1>My Home Page</h1>
+        </Route>
+        <ProtectedRoute path="/home">
+          <LeftNavBar />
+          <MainContent />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>
