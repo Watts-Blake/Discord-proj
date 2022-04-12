@@ -27,7 +27,9 @@ const LoginForm = () => {
   };
 
   if (user) {
-    return <Redirect to="/" />;
+    const userServerArr = Object.values(user.serverMember);
+    console.log(userServerArr[0]);
+    return <Redirect to={`/home/servers/${userServerArr[0].id}`} />;
   }
 
   return (

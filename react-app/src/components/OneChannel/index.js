@@ -1,7 +1,13 @@
 import "./OneChannel.css";
-
+import Messages from "../Messages";
+import ChatInput from "../ChatInput";
 const OneChannel = () => {
-  return <h1>One Channel</h1>;
+  return (
+    <>
+      <Messages />
+      <ChatInput />
+    </>
+  );
 };
 
 export default OneChannel;
