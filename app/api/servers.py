@@ -3,14 +3,13 @@ from crypt import methods
 from flask import Blueprint, render_template, redirect, url_for, request
 # from flask_login import login_required
 # from sqlalchemy.orm import Session
-from app.models import User, Server, ServerMember, Channel, ChannelMessage, Message, DmRoom, DmMember, db
+from app.models import User, Server, ServerMember, Channel, ChannelMessage, db
 from flask_login import current_user, login_user, logout_user, login_required
-from app.forms import WorkspaceForm
 
 import json
 
-bp = Blueprint('servers', __name__, url_prefix='servers')
-@bp.route('/', methods=['GET', 'POST'])
+servers_routes = Blueprint('servers', __name__, url_prefix='servers')
+@servers_routes.route('/', methods=['GET', 'POST'])
 def get_all_or_post_to_servers():
 # --------------------------------------------------------get all servers
     if request.method == 'GET':
@@ -35,7 +34,7 @@ def get_all_or_post_to_servers():
 
         return server.to_dict()
 
-@bp.route('/<int:server_id>', methods=['GET', 'PUT', 'DELETE'])
+@servers_routes.route('/<int:server_id>', methods=['GET', 'PUT', 'DELETE'])
 def get_one__put_delete_server(server_id):
     server = Server.query.get(server_id)
     if request.method == 'GET':
@@ -51,13 +50,19 @@ def get_one__put_delete_server(server_id):
         db.session.commit()
         return {'serverId': server.id}
 
-@bp.route('/<int:server_id>/members', methods=['GET', 'POST'])
-def get_all_or_post_to_servers(server_id):
-    server_general_channel = Channel.query.filter(Channel.server_id == server_id, Channel.name == 'General').get()
-    if request.method == 'GET':
-        server_members= ServerMember.query.get().all()
+@servers_routes.route('/<int:server_id>/members', methods=['GET', 'POST'])
+def get_all_or_post_to_server_members(server_id):
+    print('beforeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+    server_general_channel = Channel.query.filter(Channel.server_id == server_id).filter(Channel.name == 'General').first()
 
-        return {'serverMembers': member.to_dict() for member in server_members}
+    print('after first query',server_general_channel.to_dict())
+
+    if request.method == 'GET':
+        print('before second querrrrrry')
+        server_members= ServerMember.query.filter(ServerMember.server_id == server_id).all()
+        print('after second querrrrrry', server_members)
+
+        return {'serverMembers': {member.id:member.to_dict() for member in server_members}}
     if request.method == 'POST':
         data = request.json
         joining_member = User.query.get(data['userId'])
@@ -71,7 +76,7 @@ def get_all_or_post_to_servers(server_id):
 
         return member.to_dict()
 
-@bp.route('/<int:server_id>/members/<int:memberId>', methods=['DELETE'])
+@servers_routes.route('/<int:server_id>/members/<int:memberId>', methods=['DELETE'])
 def delete_server_member(server_id, member_id):
     server_general_channel = Channel.query.filter(Channel.server_id == server_id, Channel.name == 'General').get()
     member = ServerMember.query.get(member_id)
@@ -81,12 +86,12 @@ def delete_server_member(server_id, member_id):
     db.session.commit()
     return {'memberId': member_id}
 
-@bp.route('/<int:server_id>/channels', methods=['GET', 'POST'])
+@servers_routes.route('/<int:server_id>/channels', methods=['GET', 'POST'])
 def get_all_or_post_to_channel(server_id):
     if request.method == 'GET':
-        channels= Channel.query.filter(Channel.server_id == server_id).get().all()
+        channels= Channel.query.filter(Channel.server_id == server_id).all()
 
-        return {'channels': channel.to_dict() for channel in channels}
+        return {'channels': {channel.id:channel.to_resource_dict() for channel in channels}}
     if request.method == 'POST':
         data = request.json
         channel = Channel(name=data['name'], server_id=data['serverId'])
@@ -98,7 +103,7 @@ def get_all_or_post_to_channel(server_id):
         db.session.commit()
         return channel.to_dict()
 
-@bp.route('/<int:server_id>/channels/<int:channel_id>', methods=['GET', 'PUT', 'DELETE'])
+@servers_routes.route('/<int:server_id>/channels/<int:channel_id>', methods=['GET', 'PUT', 'DELETE'])
 def get_one__put_delete_channel(server_id, channel_id):
     channel = Channel.query.get(channel_id)
     if request.method == 'GET':
@@ -108,7 +113,7 @@ def get_one__put_delete_channel(server_id, channel_id):
 
         channel = request.json
         db.session.commit()
-        return channel.to_resource_dict()
+        return channel.to_dict()
 
     if request.method == 'DELETE':
         db.session.delete(channel)
