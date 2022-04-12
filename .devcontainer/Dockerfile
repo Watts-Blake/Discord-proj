@@ -13,9 +13,10 @@ RUN sudo apt update
 RUN sudo apt install postgresql -y && \
 sudo service postgresql start && \
 sudo -u postgres psql -c "CREATE USER vscode WITH PASSWORD 'password';" && \
+sudo -u postgres psql -c "CREATE USER discord_app_dev WITH PASSWORD 'blake25';" && \
 sudo -u postgres psql -c "ALTER USER vscode WITH SUPERUSER;" && \
 sudo -u postgres psql -c "CREATE DATABASE vscode WITH OWNER vscode" && \
-sudo -u postgres psql -c "CREATE DATABASE python_project WITH OWNER vscode"
+sudo -u postgres psql -c "CREATE DATABASE discord_app WITH OWNER discord_app_dev"
 
 # auto configure flask app to connect to internal postgres
-ENV DATABASE_URL=postgresql://vscode:password@localhost/python_project
+ENV DATABASE_URL=postgresql://discord_app_dev:blake25@localhost/discord_app

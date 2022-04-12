@@ -11,9 +11,6 @@ class Channel(db.Model):
 
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(100), nullable=False)
-    topic = db.Column(String(100), nullable=False)
-    description = db.Column(String(255), nullable=False)
-    owner_id = db.Column(Integer, ForeignKey('users.id'), nullable=False)
     server_id = db.Column(Integer, ForeignKey('servers.id'), nullable=False)
     created_at = db.Column(DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(DateTime(timezone=True), onupdate=func.now())
@@ -24,12 +21,14 @@ class Channel(db.Model):
         return {
             'id': self.id,
             'name': self.name,
-            'topic': self.topic,
-            'description': self.description,
-            'ownerId': self.owner_id,
             'serverId': self.server_id,
-            'members': [member.to_dict() for member in self.members],
-            'messages': [message.to_dict() for message in self.messages],
+            'messages': {message.id:message.to_dict() for message in self.messages},
+        }
+    def to_resource_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'serverId': self.server_id,
         }
 
 

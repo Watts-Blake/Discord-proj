@@ -16,15 +16,10 @@ class VoiceChannel(db.Model):
     created_at = db.Column(DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(DateTime(timezone=True), onupdate=func.now())
 
-    members = relationship('ServerMember', backref='channel',cascade="all, delete-orphan")
-    messages = relationship('ChannelMessage', backref='channel',cascade="all, delete-orphan")
-
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'ownerId': self.owner_id,
             'serverId': self.server_id,
-            'members': [member.to_dict() for member in self.members],
-            'messages': [message.to_dict() for message in self.messages]
         }

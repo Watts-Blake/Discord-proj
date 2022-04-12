@@ -21,8 +21,14 @@ class DmRoom(db.Model):
         return {
             'id': self.id,
             'ownerId': self.owner_id,
-            'members': [member.to_dict() for member in self.members],
-            'messages': [message.to_dict() for message in self.messages]
+            'members': {member.id: member.to_dict() for member in self.members},
+            'messages': {message.id: message.to_dict() for message in self.messages}
+    }
+    def to_resource_dict(self):
+        return {
+            'id': self.id,
+            'ownerId': self.owner_id,
+            'members': {member.id: member.to_dict() for member in self.members},
     }
 
 class DmMember(db.Model):

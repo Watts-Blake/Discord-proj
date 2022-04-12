@@ -25,13 +25,7 @@ class User(db.Model, UserMixin):
 
     server_member = relationship('ServerMember', backref='member')
 
-    channel_meesage_sent = relationship('ChannelMessage', backref='sender',cascade="all, delete")
-
-    server_dm_rooms_owned = relationship('ServerDmRoom', backref='owner', cascade='all, delete')
-
-    server_dm_member = relationship('ServerDmMember', backref='member',cascade="all, delete")
-
-    server_dm_sent = relationship('ServerDm', backref='sender',cascade="all, delete")
+    channel_messages_sent = relationship('ChannelMessage', backref='sender',cascade="all, delete")
 
     dm_rooms_owned = relationship('DmRoom', backref='owner', cascade='all, delete')
 
@@ -50,20 +44,25 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
-
+# {'users': {user.id:user.to_dict() for user in users}}
     def to_dict(self):
         return {
         'id': self.id,
         'username': self.username,
         'email':self.email,
         'profilePicture': self.profile_picture,
-        'serverOwned': [{'id':server.id, 'name': server.name} for server in self.servers_owned],
-        'serverMember': [{'id':server.server_id, 'name': server.server.name, 'membersLength': len(server.server.members)  }for server in self.server_member],
-        'channelMessagesSent': [message.to_dict() for message in self.channel_messages_sent],
-        'serverDmMember': [{'membershipId':member.id, 'roomId': member.dm_id, 'userId':member.user_id}for member in self.server_dm_member],
-        'serverDmSent': [message.to_dict() for message in self.server_dm_sent],
-        'dmMember': [{'membershipId':member.id, 'dmRoomId': member.dm_id, 'userId':member.user_id}for member in self.dm_member],
-        'dmSent': [message.to_dict() for message in self.dm_sent]
+        'serverOwned': {server.id: server.to_resource_dict() for server in self.servers_owned},
+        'serverMember': {member.server_id: member.server.to_resource_dict() for member in self.server_member},
+        # 'channelMessagesSent': {message.id: message.to_dict() for message in self.channel_messages_sent},
+        'dmMember': {member.id: member.room.to_resource_dict() for member in self.dm_member},
+        # 'dmSent': {message.id :message.to_dict() for message in self.dm_sent}
+    }
+    def to_resource_dict(self):
+        return {
+        'id': self.id,
+        'username': self.username,
+        'email':self.email,
+        'profilePicture': self.profile_picture,
     }
 
     def in_server(self, server_id):
