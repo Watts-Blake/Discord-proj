@@ -20,14 +20,21 @@ def undo_channels():
 
 def seed_channel_messages():
     for i in range(1, 9):
-        for x in range(1, 18):
-            if x < 6 and i < 4:
+        channel = Channel.query.get(i)
+        if channel.name == 'General':
+            message = ChannelMessage(channel_id=i, sender_id=1, content=f'Welcome to {channel.server.name}\'s Server')
+            db.session.add(message)
+        else:
+            message = ChannelMessage(channel_id=i, sender_id=1, content=f'Welcome to {channel.server.name}\'s Channel {channel.name}')
+            db.session.add(message)
+        for x in range(2, 19):
+            if x < 7 and i < 4:
                 message = ChannelMessage(channel_id=i, sender_id=x, content='test')
                 db.session.add(message)
-            elif (x >= 6 and x < 11) and i < 7 and i > 3:
+            elif (x >= 7 and x < 12) and i < 7 and i > 3:
                 message = ChannelMessage(channel_id=i, sender_id=x, content='test')
                 db.session.add(message)
-            elif (x >= 11 and x < 18) and i < 9 and i > 6:
+            elif (x >= 12 and x < 19) and i < 9 and i > 6:
                 message = ChannelMessage(channel_id=i, sender_id=x, content='test')
                 db.session.add(message)
 

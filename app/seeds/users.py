@@ -1,10 +1,12 @@
-from curses.ascii import US
-from re import U
+
 from app.models import db, User
 
 
 # Adds a demo user, you can add other users here if you want
 def seed_users():
+    discord = User(username='Diss-cord Bot', email='discord@demo.com', password='diss-cord', profile_picture='https://www.svgrepo.com/show/331368/discord-v2.svg')
+    db.session.add(discord)
+    db.session.commit()
     akatsuki = [{'username': 'Itachi', 'email': 'itachi@demo.com', 'password': 'itachi', 'profile_picture': 'http://pm1.narvii.com/6689/fd31532cd6c492fe3f3d3e3e449336672a15c5ff_00.jpg'},{'username': 'Madara', 'email': 'madara@demo.com', 'password': 'itachi', 'profile_picture': 'https://www.pngitem.com/pimgs/m/122-1222641_beautiful-naruto-png-madara-funny-face-madara-uchiha.png'},{'username': 'Obito', 'email': 'obito@demo.com', 'password': 'itachi', 'profile_picture': 'https://i.pinimg.com/550x/2d/72/4a/2d724ac3c6db73eb619b4c6c957cdb60.jpg'},{'username': 'Nagato', 'email': 'nagato@demo.com', 'password': 'itachi', 'profile_picture': 'https://i.pinimg.com/736x/1a/9f/fb/1a9ffbfd168de648eef4c033061d7393--game-art-naruto.jpg'},{'username': 'Orochimaru', 'email': 'oruchimaru@demo.com', 'password': 'itachi', 'profile_picture': 'https://i.pinimg.com/236x/9b/06/68/9b06680c73cf145d20f9742bb7961779--naruto-pics-anime-naruto.jpg'}]
 
     for user in akatsuki:
@@ -25,7 +27,7 @@ def seed_users():
 
 
     demo = User(
-        username='Demo', email='demo@demo.com', password='password', profile_picture='https://logos-world.net/wp-content/uploads/2020/12/Discord-Logo.png')
+        username='Demo', email='demo@demo.com', password='password', profile_picture='https://www.svgrepo.com/show/331368/discord-v2.svg')
 
     db.session.add(demo)
 
