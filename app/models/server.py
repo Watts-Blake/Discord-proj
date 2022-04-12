@@ -60,6 +60,9 @@ class ServerMember(db.Model):
 
     def to_dict(self):
         return {
-            self.id: self.member.to_resource_dict(),
+            'username': self.member.username,
+            'userId': self.member.id,
+            'profilePicture': self.member.profile_picture,
+            'email': self.member.email,
             'serverId': self.server_id,
         }
