@@ -7,9 +7,9 @@ import OneChannel from "../OneChannel";
 const OneServer = () => {
   return (
     <>
-      <Channels />
-      <OneChannel />
-      <Members />
+      <Channels className="channels" />
+      <OneChannel className="one_channel" />
+      <Members className="members" />
     </>
   );
 };

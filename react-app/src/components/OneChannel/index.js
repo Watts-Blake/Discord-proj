@@ -3,10 +3,10 @@ import Messages from "../Messages";
 import ChatInput from "../ChatInput";
 const OneChannel = () => {
   return (
-    <>
-      <Messages />
-      <ChatInput />
-    </>
+    <div className="one_channel">
+      <Messages className="messages" />
+      <ChatInput className="chat_input" />
+    </div>
   );
 };
 

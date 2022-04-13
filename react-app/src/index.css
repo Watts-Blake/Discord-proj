@@ -1,0 +1,12 @@
+.all {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.left_nav {
+  width: 10vw;
+  display: flex;
+  position: fixed;
+  left: 0;
+}

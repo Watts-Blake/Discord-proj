@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { login } from "../../store/session";
+import { setUserServers } from "../../store/servers";
 
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);
@@ -28,7 +29,6 @@ const LoginForm = () => {
 
   if (user) {
     const userServerArr = Object.values(user.serverMember);
-    console.log(userServerArr[0]);
     return <Redirect to={`/home/servers/${userServerArr[0].id}`} />;
   }
 
