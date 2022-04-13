@@ -1,0 +1,10 @@
+.member {
+  display: flex;
+  flex-direction: row;
+}
+
+.member_photo {
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
+}

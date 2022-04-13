@@ -1,0 +1,12 @@
+.left_side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.left_side_icon {
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+}

@@ -10,16 +10,22 @@ import User from "./components/User";
 import { authenticate } from "./store/session";
 import LeftNavBar from "./components/LeftNavBar";
 import MainContent from "./components/MainContent";
-import Members from "./components/Members";
+
+import { useParams } from "react-router-dom";
+
+import { useSelector } from "react-redux";
 
 function App() {
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.session.user);
+  const servers = useSelector((state) => state.servers);
+  const userServers = Object.values(servers?.userServers);
   useEffect(() => {
     (async () => {
       await dispatch(authenticate());
-      setLoaded(true);
     })();
+    setLoaded(true);
   }, [dispatch]);
 
   if (!loaded) {
@@ -27,30 +33,34 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <NavBar />
-      <Switch>
-        <Route path="/login" exact={true}>
-          <LoginForm />
-        </Route>
-        <Route path="/sign-up" exact={true}>
-          <SignUpForm />
-        </Route>
-        <ProtectedRoute path="/users" exact={true}>
-          <UsersList />
-        </ProtectedRoute>
-        <ProtectedRoute path="/users/:userId" exact={true}>
-          <User />
-        </ProtectedRoute>
-        <Route path="/" exact={true}>
-          <h1>My Home Page</h1>
-        </Route>
-        <ProtectedRoute path="/home">
-          <LeftNavBar />
-          <MainContent />
-        </ProtectedRoute>
-      </Switch>
-    </BrowserRouter>
+    loaded && (
+      <BrowserRouter>
+        <NavBar />
+        <Switch>
+          <Route path="/login" exact={true}>
+            <LoginForm />
+          </Route>
+          <Route path="/sign-up" exact={true}>
+            <SignUpForm />
+          </Route>
+          <ProtectedRoute path="/users" exact={true}>
+            <UsersList />
+          </ProtectedRoute>
+          <ProtectedRoute path="/users/:userId" exact={true}>
+            <User />
+          </ProtectedRoute>
+          <Route path="/" exact={true}>
+            <h1>My Home Page</h1>
+          </Route>
+          <ProtectedRoute path="/channels">
+            <div className="all">
+              <LeftNavBar className="left_nav" userServers={userServers} />
+              <MainContent className="main_content" user={user} />
+            </div>
+          </ProtectedRoute>
+        </Switch>
+      </BrowserRouter>
+    )
   );
 }
 

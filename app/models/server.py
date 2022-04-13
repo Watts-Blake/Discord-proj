@@ -35,7 +35,7 @@ class Server(db.Model):
             'name': self.name,
             'topic': self.topic,
             'description': self.description,
-            'channels':{'id': channel.to_resource_dict() for channel in self.channels},
+            'channels':{channel.id: channel.to_resource_dict() for channel in self.channels},
             'voiceChannels': {channel.id: channel.to_dict() for channel in self.vc_channels},
             'members': {member.id: member.member.to_resource_dict() for member in self.members}
         }

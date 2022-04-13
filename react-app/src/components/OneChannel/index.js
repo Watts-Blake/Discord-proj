@@ -1,12 +1,21 @@
 import "./OneChannel.css";
 import Messages from "../Messages";
 import ChatInput from "../ChatInput";
-const OneChannel = () => {
+const OneChannel = ({ channelsObj }) => {
+  const currentChannel = channelsObj?.currentChannel;
   return (
-    <>
-      <Messages />
-      <ChatInput />
-    </>
+    <div>
+      <h4># {currentChannel?.name}</h4>
+      <div className="one_channel">
+        {currentChannel?.messages && (
+          <Messages
+            messages={Object.values(currentChannel?.messages)}
+            className="messages"
+          />
+        )}
+        <ChatInput className="chat_input" />
+      </div>
+    </div>
   );
 };
 

@@ -1,15 +1,15 @@
 from app.models import db,ServerMember
 
 def seed_server_members():
-    for i in range(2,18):
-        if i < 7:
+    for i in range(2,19):
+        if i < 9:
+            member=ServerMember(server_id=1, user_id=i )
+            db.session.add(member)
+        elif i >= 9 and i < 14:
             member=ServerMember(server_id=2, user_id=i )
             db.session.add(member)
-        elif i >= 7 and i < 12:
+        elif i >= 14 and i < 19:
             member=ServerMember(server_id=3, user_id=i )
-            db.session.add(member)
-        elif i >= 12 and i < 19:
-            member=ServerMember(server_id=1, user_id=i )
             db.session.add(member)
     demo1 = ServerMember(server_id=1, user_id=19)
     demo2 = ServerMember(server_id=2, user_id=19)

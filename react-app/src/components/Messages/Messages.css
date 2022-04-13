@@ -1,0 +1,12 @@
+.message_pfp {
+  height: 45px;
+  width: 45px;
+  border-radius: 100%;
+}
+
+.message {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}

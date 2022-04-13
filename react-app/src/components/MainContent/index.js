@@ -5,19 +5,22 @@ import DmRooms from "../DmRooms";
 import { BrowserRouter } from "react-router-dom";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import { Switch } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setUserServers } from "../../store/servers";
 
-const MainContent = () => {
+const MainContent = ({ user }) => {
   return (
     <>
       <BrowserRouter>
         <Switch>
-          <ProtectedRoute path="/home/dm-rooms">
+          <ProtectedRoute path="/home/@me">
             <DmRooms />
           </ProtectedRoute>
-          <ProtectedRoute path="/home/dm-rooms/:dmRoomId">
+          <ProtectedRoute path="/home/@me/:dmRoomId">
             <OneDmRoom />
           </ProtectedRoute>
-          <ProtectedRoute path="/home/servers/:serverId" exact={true}>
+          <ProtectedRoute path="/channels">
             <OneServer />
           </ProtectedRoute>
         </Switch>
