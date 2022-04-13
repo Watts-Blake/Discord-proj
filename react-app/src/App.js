@@ -11,8 +11,6 @@ import { authenticate } from "./store/session";
 import LeftNavBar from "./components/LeftNavBar";
 import MainContent from "./components/MainContent";
 
-import { useParams } from "react-router-dom";
-
 import { useSelector } from "react-redux";
 
 function App() {

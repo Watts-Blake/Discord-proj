@@ -14,10 +14,8 @@ const OneServer = () => {
   const dispatch = useDispatch();
   const { serverId, channelId } = useParams();
   const serversObj = useSelector((state) => state.servers);
-  console.log("serverObj", serversObj);
+
   const channelsObj = useSelector((state) => state.channels);
-  console.log("channelObj", channelsObj);
-  console.log(serverId, channelId);
 
   useEffect(() => {
     if (
@@ -31,7 +29,13 @@ const OneServer = () => {
     } else {
       setLoaded(true);
     }
-  }, [dispatch, channelsObj, serversObj, serverId, channelId]);
+  }, [
+    dispatch,
+    channelsObj.currentChannel,
+    serversObj.currentServer,
+    serverId,
+    channelId,
+  ]);
 
   return (
     loaded && (

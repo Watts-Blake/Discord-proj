@@ -37,11 +37,11 @@ const CreateServer = () => {
     const formData = new FormData();
     let image = serverImage;
     let ownerId = user.id;
-    console.log("from submit", ownerId);
+
     formData.append("ownerId", ownerId);
     formData.append("image", image);
     formData.append("name", name);
-    console.log("from handle submit", formData);
+
     await dispatch(postUserServer(formData)).then(() => setImageLoading(false));
   };
 

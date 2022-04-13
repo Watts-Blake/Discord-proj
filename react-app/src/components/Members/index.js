@@ -8,7 +8,7 @@ const Members = ({ serversObj }) => {
     if (membersObj.members) setMembers(Object.values(membersObj.members));
 
     setLoaded(true);
-  }, [serversObj]);
+  }, [serversObj.currentServer]);
 
   return (
     loaded && (

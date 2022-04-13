@@ -29,7 +29,7 @@ const LoginForm = () => {
   };
   const grabFirstServerId = (serverMember) => {
     let servers = Object.values(serverMember);
-    console.log(servers[0].id);
+
     // let finalChannels = Object.values(newChannels[0].channels);
     return servers[0].id;
   };
