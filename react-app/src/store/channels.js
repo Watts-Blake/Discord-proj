@@ -29,6 +29,13 @@ export const setCurrentChannel = (channel) => {
   return { type: SET_CURRENT_CHANNEL, channel };
 };
 
+export const getOneChannel = (serverId, channelId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/servers/${serverId}/channels/${channelId}`);
+
+  const channel = await res.json();
+  dispatch(setCurrentChannel(channel));
+};
+
 const ADD_CHANNEL_MESSAGE = "currentChannel/AddMessage";
 export const addChannelMessage = (message) => {
   return { type: ADD_CHANNEL_MESSAGE, message };
@@ -46,34 +53,50 @@ export const removeChanelMessage = (messageId) => {
 const channelsReducer = (
   state = {
     channels: {},
-    currentChannel: { messages: {}, pins: {} },
+    currentChannel: { pins: {} },
   },
   action
 ) => {
   let newState = { ...state };
   switch (action.type) {
     case ADD_CHANNEL_TO_SERVER: {
+      newState.channels[action.channel.id] = action.channel;
+      return newState;
     }
 
     case UPDATE_CHANNEL_ON_SERVER: {
+      newState.channels[action.channel.id] = action.channel;
+      return newState;
     }
 
     case REMOVE_CHANNEL_FROM_SERVER: {
+      delete newState.channels[action.channelId];
+      return newState;
     }
 
     case SET_SERVER_CHANNELS: {
+      newState.channels = action.channels;
+      return newState;
     }
 
     case SET_CURRENT_CHANNEL: {
+      newState.currentChannel = action.channel;
+      return newState;
     }
 
     case ADD_CHANNEL_MESSAGE: {
+      newState.currentChannel.messages[action.message.id] = action.message;
+      return newState;
     }
 
     case UPDATE_CHANNEL_MESSAGE: {
+      newState.currentChannel.messages[action.message.id] = action.message;
+      return newState;
     }
 
     case REMOVE_CHANNEL_MESSAGE: {
+      delete newState.currentChannel.messages[action.messageId];
+      return newState;
     }
     default:
       return state;

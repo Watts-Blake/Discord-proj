@@ -20,7 +20,7 @@ const MainContent = ({ user }) => {
           <ProtectedRoute path="/home/@me/:dmRoomId">
             <OneDmRoom />
           </ProtectedRoute>
-          <ProtectedRoute path="/home/servers/:serverId" exact={true}>
+          <ProtectedRoute path="/channels">
             <OneServer />
           </ProtectedRoute>
         </Switch>

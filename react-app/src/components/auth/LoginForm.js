@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { login } from "../../store/session";
-import { setUserServers } from "../../store/servers";
 
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  let history = useHistory();
   const user = useSelector((state) => state.session.user);
+  const currentChannelId = useSelector(
+    (state) => state.channels.currentChannel.id
+  );
   const dispatch = useDispatch();
 
   const onLogin = async (e) => {
@@ -26,41 +29,52 @@ const LoginForm = () => {
   const updatePassword = (e) => {
     setPassword(e.target.value);
   };
-
+  const grabFirstChannelId = (serverMember) => {
+    let channels = Object.values(serverMember);
+    let newChannels = Object.values(channels);
+    let finalChannels = Object.values(newChannels[0].channels);
+    return finalChannels[0].id;
+  };
   if (user) {
-    const userServerArr = Object.values(user.serverMember);
-    return <Redirect to={`/home/servers/${userServerArr[0].id}`} />;
+    // const userServerArr = Object.values(user.serverMember);
+
+    // history.push(`/channels/${grabFirstChannelId(user.serverMember)}`);
+    return (
+      <Redirect to={`/channels/${grabFirstChannelId(user.serverMember)}`} />
+    );
   }
 
   return (
-    <form onSubmit={onLogin}>
-      <div>
-        {errors.map((error, ind) => (
-          <div key={ind}>{error}</div>
-        ))}
-      </div>
-      <div>
-        <label htmlFor="email">Email</label>
-        <input
-          name="email"
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={updateEmail}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={updatePassword}
-        />
-        <button type="submit">Login</button>
-      </div>
-    </form>
+    !user && (
+      <form onSubmit={onLogin}>
+        <div>
+          {errors.map((error, ind) => (
+            <div key={ind}>{error}</div>
+          ))}
+        </div>
+        <div>
+          <label htmlFor="email">Email</label>
+          <input
+            name="email"
+            type="text"
+            placeholder="Email"
+            value={email}
+            onChange={updateEmail}
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Password</label>
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={updatePassword}
+          />
+          <button type="submit">Login</button>
+        </div>
+      </form>
+    )
   );
 };
 

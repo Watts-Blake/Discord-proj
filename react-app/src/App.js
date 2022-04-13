@@ -11,6 +11,8 @@ import { authenticate } from "./store/session";
 import LeftNavBar from "./components/LeftNavBar";
 import MainContent from "./components/MainContent";
 
+import { useParams } from "react-router-dom";
+
 import { useSelector } from "react-redux";
 
 function App() {
@@ -50,7 +52,7 @@ function App() {
           <Route path="/" exact={true}>
             <h1>My Home Page</h1>
           </Route>
-          <ProtectedRoute path="/home">
+          <ProtectedRoute path="/channels">
             <div className="all">
               <LeftNavBar className="left_nav" userServers={userServers} />
               <MainContent className="main_content" user={user} />

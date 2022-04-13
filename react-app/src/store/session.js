@@ -1,5 +1,6 @@
-import { setUserServers } from "./servers";
+import { setUserServers, getOneServer } from "./servers";
 
+import { getOneChannel } from "./channels";
 // constants
 
 const SET_USER = "session/SET_USER";
@@ -30,6 +31,13 @@ export const authenticate = () => async (dispatch) => {
 
     dispatch(setUser(data));
     dispatch(setUserServers(data.serverMember));
+    dispatch(getOneServer(data.serverMember[1].id));
+    dispatch(
+      getOneChannel(
+        data.serverMember[1].id,
+        data.serverMember[1].channels[1].id
+      )
+    );
   }
 };
 
@@ -47,8 +55,15 @@ export const login = (email, password) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
-    dispatch(setUser(data));
     dispatch(setUserServers(data.serverMember));
+    dispatch(getOneServer(data.serverMember[1].id));
+    dispatch(
+      getOneChannel(
+        data.serverMember[1].id,
+        data.serverMember[1].channels[1].id
+      )
+    );
+    dispatch(setUser(data));
     return null;
   } else if (response.status < 500) {
     const data = await response.json();

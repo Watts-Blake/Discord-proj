@@ -52,7 +52,7 @@ class User(db.Model, UserMixin):
         'email':self.email,
         'profilePicture': self.profile_picture,
         'serverOwned': {server.id: server.to_resource_dict() for server in self.servers_owned},
-        'serverMember': {member.server_id: member.server.to_resource_dict() for member in self.server_member},
+        'serverMember': {member.server_id: member.server.to_dict() for member in self.server_member},
         # 'channelMessagesSent': {message.id: message.to_dict() for message in self.channel_messages_sent},
         'dmMember': {member.id: member.room.to_resource_dict() for member in self.dm_member},
         # 'dmSent': {message.id :message.to_dict() for message in self.dm_sent}

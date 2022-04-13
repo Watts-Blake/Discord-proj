@@ -7,6 +7,11 @@ def seed_users():
     discord = User(username='Diss-cord Bot', email='discord@demo.com', password='diss-cord', profile_picture='https://www.svgrepo.com/show/331368/discord-v2.svg')
     db.session.add(discord)
     db.session.commit()
+    aa = [ {'username': 'Blake', 'email': 'blake@demo.com', 'password': 'blake', 'profile_picture': ''},{'username': 'Yake', 'email': 'yake@demo.com', 'password': 'blake', 'profile_picture': ''},{'username': 'Ali', 'email': 'ali@demo.com', 'password': 'blake', 'profile_picture': ''}, {'username': 'Will', 'email': 'will@demo.com', 'password': 'blake', 'profile_picture': ''},{'username': 'Nick', 'email': 'nick@demo.com', 'password': 'blake', 'profile_picture': ''},{'username': 'ANT', 'email': 'ant@demo.com', 'password': 'blake', 'profile_picture': ''},{'username': 'Braxton', 'email': 'brax@demo.com', 'password': 'blake', 'profile_picture': ''}, ]
+
+    for user in aa:
+        new_user = User(username=user['username'], email=user['email'], password=user['password'], profile_picture=user['profile_picture'])
+        db.session.add(new_user)
     akatsuki = [{'username': 'Itachi', 'email': 'itachi@demo.com', 'password': 'itachi', 'profile_picture': 'http://pm1.narvii.com/6689/fd31532cd6c492fe3f3d3e3e449336672a15c5ff_00.jpg'},{'username': 'Madara', 'email': 'madara@demo.com', 'password': 'itachi', 'profile_picture': 'https://www.pngitem.com/pimgs/m/122-1222641_beautiful-naruto-png-madara-funny-face-madara-uchiha.png'},{'username': 'Obito', 'email': 'obito@demo.com', 'password': 'itachi', 'profile_picture': 'https://i.pinimg.com/550x/2d/72/4a/2d724ac3c6db73eb619b4c6c957cdb60.jpg'},{'username': 'Nagato', 'email': 'nagato@demo.com', 'password': 'itachi', 'profile_picture': 'https://i.pinimg.com/736x/1a/9f/fb/1a9ffbfd168de648eef4c033061d7393--game-art-naruto.jpg'},{'username': 'Orochimaru', 'email': 'oruchimaru@demo.com', 'password': 'itachi', 'profile_picture': 'https://i.pinimg.com/236x/9b/06/68/9b06680c73cf145d20f9742bb7961779--naruto-pics-anime-naruto.jpg'}]
 
     for user in akatsuki:
@@ -19,11 +24,6 @@ def seed_users():
         new_user = User(username=user['username'], email=user['email'], password=user['password'], profile_picture=user['profile_picture'])
         db.session.add(new_user)
 
-    aa = [ {'username': 'Blake', 'email': 'blake@demo.com', 'password': 'blake', 'profile_picture': ''},{'username': 'Yake', 'email': 'yake@demo.com', 'password': 'blake', 'profile_picture': ''},{'username': 'Ali', 'email': 'ali@demo.com', 'password': 'blake', 'profile_picture': ''}, {'username': 'Will', 'email': 'will@demo.com', 'password': 'blake', 'profile_picture': ''},{'username': 'Nick', 'email': 'nick@demo.com', 'password': 'blake', 'profile_picture': ''},{'username': 'ANT', 'email': 'ant@demo.com', 'password': 'blake', 'profile_picture': ''},{'username': 'Braxton', 'email': 'brax@demo.com', 'password': 'blake', 'profile_picture': ''}, ]
-
-    for user in aa:
-        new_user = User(username=user['username'], email=user['email'], password=user['password'], profile_picture=user['profile_picture'])
-        db.session.add(new_user)
 
 
     demo = User(

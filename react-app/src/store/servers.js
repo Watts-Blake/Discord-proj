@@ -1,6 +1,6 @@
 import { csrfFetch } from "./csrf";
 
-import { setServerChannels } from "./channels";
+import { setChannels, setCurrentChannel } from "./channels";
 
 //---------------------------------------actions------------------------------
 
@@ -28,6 +28,17 @@ const SET_CURRENT_SERVER = "currentServer/SetCurrentServer";
 export const setCurrentServer = (server) => {
   return { type: SET_CURRENT_SERVER, server };
 };
+
+export const getOneServer = (serverId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/servers/${serverId}`);
+
+  const server = await res.json();
+
+  dispatch(setCurrentServer(server));
+
+  dispatch(setChannels(server.channels));
+};
+
 const UPDATE_CURRENT_SERVER = "currentServer/UpdateServer";
 export const updateCurrentServer = (server) => {
   return { type: UPDATE_CURRENT_SERVER, server };
@@ -52,7 +63,6 @@ const serversReducer = (
     allServers: { server: null },
     currentServer: {
       server: null,
-      members: {},
     },
   },
   action
