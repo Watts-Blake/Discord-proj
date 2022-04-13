@@ -1,6 +1,6 @@
 import { csrfFetch } from "./csrf";
 
-import { setChannels, setCurrentChannel } from "./channels";
+import { setChannels } from "./channels";
 
 //---------------------------------------actions------------------------------
 

@@ -1,4 +1,4 @@
-import { csrfFetch } from "./csrf";
+// import { csrfFetch } from "./csrf";
 
 //---------------------------------------------------------------------dmRooms
 const SET_USER_DM_ROOMS = "dms/setsUserDmRooms";
@@ -50,35 +50,27 @@ const dmRoomReducer = (
   },
   action
 ) => {
-  let newState = { ...state };
-  switch (action.type) {
-    case SET_USER_DM_ROOMS: {
-    }
-
-    case ADD_DM_TO_DM_ROOMS: {
-    }
-
-    case UPDATE_DM_ROOM_ON_DMROOMS: {
-    }
-
-    case REMOVE_DM_ROOM_FROM_DM_ROOMS: {
-    }
-
-    case SET_CURRENT_DM_ROOM: {
-    }
-
-    case ADD_DM_ROOM_MESSAGE: {
-    }
-
-    case UPDATE_DM_ROOM_MESSAGE: {
-    }
-
-    case REMOVE_DM_ROOM_MESSAGE: {
-    }
-
-    default:
-      return state;
-  }
+  // let newState = { ...state };
+  // switch (action.type) {
+  //   case SET_USER_DM_ROOMS: {
+  //   }
+  //   case ADD_DM_TO_DM_ROOMS: {
+  //   }
+  //   case UPDATE_DM_ROOM_ON_DMROOMS: {
+  //   }
+  //   case REMOVE_DM_ROOM_FROM_DM_ROOMS: {
+  //   }
+  //   case SET_CURRENT_DM_ROOM: {
+  //   }
+  //   case ADD_DM_ROOM_MESSAGE: {
+  //   }
+  //   case UPDATE_DM_ROOM_MESSAGE: {
+  //   }
+  //   case REMOVE_DM_ROOM_MESSAGE: {
+  //   }
+  //   default:
+  //     return state;
+  // }
 };
 
 export default dmRoomReducer;
