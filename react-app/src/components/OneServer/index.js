@@ -5,8 +5,7 @@ import OneChannel from "../OneChannel";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
-import ProtectedRoute from "../auth/ProtectedRoute";
+
 import { getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
 

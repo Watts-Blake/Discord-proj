@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 
 const UploadPicture = () => {
   const [image, setImage] = useState(null);

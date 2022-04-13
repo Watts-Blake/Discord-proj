@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { login } from "../../store/session";
 
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  let history = useHistory();
+
   const user = useSelector((state) => state.session.user);
-  const currentChannelId = useSelector(
-    (state) => state.channels.currentChannel.id
-  );
+
   const dispatch = useDispatch();
 
   const onLogin = async (e) => {

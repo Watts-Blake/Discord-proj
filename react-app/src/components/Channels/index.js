@@ -1,6 +1,6 @@
 import "./Channels.css";
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+
 import { getOneChannel } from "../../store/channels";
 import { useDispatch } from "react-redux";
 

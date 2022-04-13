@@ -2,12 +2,9 @@ import "./MainContent.css";
 import OneDmRoom from "../OneDmRoom";
 import OneServer from "../OneServer";
 import DmRooms from "../DmRooms";
-import { BrowserRouter, useParams, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import { Switch } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setUserServers } from "../../store/servers";
 
 const MainContent = ({ user }) => {
   return (

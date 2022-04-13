@@ -1,8 +1,8 @@
 import "./LeftNavBar.css";
 import Servers from "../Servers";
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import CreateServerModal from "../CreateServer/CreateServerModal";
-import { useEffect, useState } from "react";
+
 const LeftNavBar = ({ userServers, user }) => {
   return (
     user && (

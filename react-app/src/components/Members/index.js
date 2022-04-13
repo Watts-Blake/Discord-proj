@@ -1,5 +1,4 @@
 import "./Members.css";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 const Members = ({ serversObj }) => {
   const [loaded, setLoaded] = useState(false);
