@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, session, request
 from app.models import User, db
 from app.forms import LoginForm
 from flask_login import current_user, login_user, logout_user, login_required
-# from app.aws import upload_file_to_s3, allowed_file, get_unique_filename
+from app.aws import upload_file_to_s3, allowed_file, get_unique_filename
 
 auth_routes = Blueprint('auth', __name__)
 
@@ -76,13 +76,15 @@ def sign_up():
     if len(errors):
         return {'errors': errors}, 401
 
-    url = "https://www.shareicon.net/data/2016/07/05/791214_man_512x512.png"
+    url = "https://www.svgrepo.com/show/331368/discord-v2.svg"
 
-    # if "profile_picture" in request.files:
-    #     image = request.files["profile_picture"]
-    #     image.filename = get_unique_filename(image.filename)
-    #     upload = upload_file_to_s3(image)
-    #     url = upload["url"]
+    if "profile_picture" in request.files:
+        image = request.files["profile_picture"]
+    if not allowed_file(image.filename):
+        return {"errors": "file type not permitted"}, 400
+    image.filename = get_unique_filename(image.filename)
+    upload = upload_file_to_s3(image)
+    url = upload["url"]
 
     user = User(
         username=request.form['username'],

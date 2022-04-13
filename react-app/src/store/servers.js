@@ -9,10 +9,22 @@ const SET_USER_SERVERS = "servers/SetUserServers";
 export const setUserServers = (servers) => {
   return { type: SET_USER_SERVERS, servers };
 };
+
 const ADD_USER_SERVER = "servers/AddServer";
 export const addUserServer = (server) => {
   return { type: ADD_USER_SERVER, server };
 };
+export const postUserServer = (formData) => async (dispatch) => {
+  console.log("from thunkkkkkk", formData["serverPicture"]);
+  const res = await fetch("/api/servers/", {
+    method: "POST",
+    body: formData,
+  });
+  const newServer = await res.json();
+
+  dispatch(addUserServer(newServer));
+};
+
 const UPDATE_USER_SERVERS = "servers/UpdateServers";
 export const updateUserServer = (server) => {
   return { type: UPDATE_USER_SERVERS, server };

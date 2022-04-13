@@ -14,9 +14,9 @@ class Server(db.Model):
     id = db.Column(Integer, primary_key=True)
     owner_id = db.Column(Integer, ForeignKey('users.id'), nullable=False,)
     server_picture = db.Column(String(2000))
-    name = db.Column(String(100), nullable=False)
-    topic = db.Column(String(100), nullable=False)
-    description = db.Column(String(255), nullable=False)
+    name = db.Column(String(100),nullable=False)
+    topic = db.Column(String(100), )
+    description = db.Column(String(255),)
     created_at = db.Column(DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(DateTime(timezone=True), onupdate=func.now())
 
