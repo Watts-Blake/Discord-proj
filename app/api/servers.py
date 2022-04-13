@@ -5,7 +5,7 @@ from flask import Blueprint, render_template, redirect, url_for, request
 # from sqlalchemy.orm import Session
 from app.models import User, Server, ServerMember, Channel, ChannelMessage, db
 from flask_login import current_user, login_user, logout_user, login_required
-
+from app.aws import upload_file_to_s3, allowed_file, get_unique_filename
 import json
 
 servers_routes = Blueprint('servers', __name__, url_prefix='servers')
@@ -18,15 +18,32 @@ def get_all_or_post_to_servers():
         return {'servers': server.to_resource_dict() for server in servers}
 #---------------------------------------------------------create new server
     if request.method == 'POST':
-        data = request.json
-        server = Server(owner_id=data['ownerId'], server_picture=data['serverPicture'], name=data['name'], topic=data['topic'], description=data['description'] )
+        print('right ufcking hereeee', request.files)
+        # print('right here you fucking wombat', request.files['image'])
+        url = "https://www.svgrepo.com/show/331368/discord-v2.svg"
+
+        if "image" in request.files:
+            image = request.files["image"]
+            print('hereeeeeeeeeeeeeeeeeeee', image)
+            image.filename = get_unique_filename(image.filename)
+            if not allowed_file(image.filename):
+                return {"errors": "file type not permitted"}, 400
+            upload = upload_file_to_s3(image)
+            print('uploadddddddddddd', upload)
+            url = upload["url"]
+        print('urlllllllllllllllllllll', url)
+        print('ownerrrrrrrrr', request.form)
+        server = Server(owner_id=current_user.id, server_picture=url, name=request.form['name'], )
+        # topic=request.form['topic'], description=request.form['description'] )
         db.session.add(server)
+        db.session.commit()
 
         server_member = ServerMember(server_id=server.id, user_id=server.owner_id)
         db.session.add(server_member)
 
         channel = Channel(name='General', server_id=server.id)
         db.session.add(channel)
+        db.session.commit()
 
         first_message = ChannelMessage(channel_id=channel.id, sender_id=1, content=f'Welcome to {server.name}\'s Server')
         db.session.add(first_message)

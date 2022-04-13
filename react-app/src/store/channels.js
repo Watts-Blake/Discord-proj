@@ -53,7 +53,7 @@ export const removeChanelMessage = (messageId) => {
 const channelsReducer = (
   state = {
     channels: {},
-    currentChannel: { pins: {} },
+    currentChannel: { channel: null, pins: {} },
   },
   action
 ) => {

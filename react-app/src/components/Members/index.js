@@ -1,5 +1,4 @@
 import "./Members.css";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 const Members = ({ serversObj }) => {
   const [loaded, setLoaded] = useState(false);
@@ -9,7 +8,7 @@ const Members = ({ serversObj }) => {
     if (membersObj.members) setMembers(Object.values(membersObj.members));
 
     setLoaded(true);
-  }, [serversObj]);
+  }, [serversObj.currentServer]);
 
   return (
     loaded && (

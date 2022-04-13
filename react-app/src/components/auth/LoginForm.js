@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { login } from "../../store/session";
 
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  let history = useHistory();
+
   const user = useSelector((state) => state.session.user);
-  const currentChannelId = useSelector(
-    (state) => state.channels.currentChannel.id
-  );
+
   const dispatch = useDispatch();
 
   const onLogin = async (e) => {
@@ -29,6 +27,12 @@ const LoginForm = () => {
   const updatePassword = (e) => {
     setPassword(e.target.value);
   };
+  const grabFirstServerId = (serverMember) => {
+    let servers = Object.values(serverMember);
+
+    // let finalChannels = Object.values(newChannels[0].channels);
+    return servers[0].id;
+  };
   const grabFirstChannelId = (serverMember) => {
     let channels = Object.values(serverMember);
     let newChannels = Object.values(channels);
@@ -36,11 +40,12 @@ const LoginForm = () => {
     return finalChannels[0].id;
   };
   if (user) {
-    // const userServerArr = Object.values(user.serverMember);
-
-    // history.push(`/channels/${grabFirstChannelId(user.serverMember)}`);
     return (
-      <Redirect to={`/channels/${grabFirstChannelId(user.serverMember)}`} />
+      <Redirect
+        to={`/channels/${grabFirstServerId(
+          user.serverMember
+        )}/${grabFirstChannelId(user.serverMember)}`}
+      />
     );
   }
 

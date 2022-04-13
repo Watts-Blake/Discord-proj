@@ -5,9 +5,6 @@ import DmRooms from "../DmRooms";
 import { BrowserRouter } from "react-router-dom";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import { Switch } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setUserServers } from "../../store/servers";
 
 const MainContent = ({ user }) => {
   return (
@@ -20,7 +17,7 @@ const MainContent = ({ user }) => {
           <ProtectedRoute path="/home/@me/:dmRoomId">
             <OneDmRoom />
           </ProtectedRoute>
-          <ProtectedRoute path="/channels">
+          <ProtectedRoute path="/channels/:serverId?/:channelId">
             <OneServer />
           </ProtectedRoute>
         </Switch>

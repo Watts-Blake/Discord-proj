@@ -1,6 +1,6 @@
 import "./Channels.css";
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+
 import { getOneChannel } from "../../store/channels";
 import { useDispatch } from "react-redux";
 
@@ -16,7 +16,7 @@ const Channels = ({ channels }) => {
       {channelsArr?.map((channel) => (
         <NavLink
           key={`${channel.id}`}
-          to={`/channels/${channel.id}`}
+          to={`/channels/${channel.serverId}/${channel.id}`}
           onClick={() => handleChannelChange(channel.serverId, channel.id)}
         >
           <span># {channel.name}</span>

@@ -5,26 +5,22 @@ import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { getOneServer } from "../../store/servers";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+
 import { getOneChannel } from "../../store/channels";
 const Servers = ({ userServers }) => {
   const [loaded, setLoaded] = useState(false);
-  const servers = Object.values(userServers);
 
   const grabFirstChannelId = (channels) => {
     let newChannels = Object.values(channels);
     return newChannels[0].id;
   };
 
-  let history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
     setLoaded(true);
   }, [userServers]);
 
-  const handleServerClick = async (e, channelId, serverId) => {
-    e.preventDefault();
-    history.push(`/channels/${channelId}`);
+  const handleServerClick = async (channelId, serverId) => {
     await dispatch(getOneServer(serverId)).then(() =>
       dispatch(getOneChannel(serverId, channelId))
     );
@@ -35,13 +31,9 @@ const Servers = ({ userServers }) => {
       <div className="server_container">
         {userServers?.map((server) => (
           <NavLink
-            to={`/channels/${grabFirstChannelId(server.channels)}`}
-            onClick={(e) =>
-              handleServerClick(
-                e,
-                grabFirstChannelId(server.channels),
-                server.id
-              )
+            to={`/channels/${server.id}/${grabFirstChannelId(server.channels)}`}
+            onClick={() =>
+              handleServerClick(grabFirstChannelId(server.channels), server.id)
             }
             key={server.id}
           >

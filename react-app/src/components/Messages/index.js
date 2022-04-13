@@ -1,7 +1,6 @@
 import "./Messages.css";
 
 const Messages = ({ messages }) => {
-  console.log(messages);
   return messages?.map((message) => (
     <div className="message" key={message.id}>
       <img
