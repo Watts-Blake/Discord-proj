@@ -11,7 +11,7 @@ const CreateServerModal = () => {
     <>
       <img
         className="left_side_icon"
-        src="../../../public/images/svgexport-14.png"
+        src="/svgs/svgexport-14.svg"
         alt="create server"
         onClick={() => setShowModal(true)}
       ></img>

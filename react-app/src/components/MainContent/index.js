@@ -2,7 +2,7 @@ import "./MainContent.css";
 import OneDmRoom from "../OneDmRoom";
 import OneServer from "../OneServer";
 import DmRooms from "../DmRooms";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useParams, Route } from "react-router-dom";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import { Switch } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -20,7 +20,7 @@ const MainContent = ({ user }) => {
           <ProtectedRoute path="/home/@me/:dmRoomId">
             <OneDmRoom />
           </ProtectedRoute>
-          <ProtectedRoute path="/channels">
+          <ProtectedRoute path="/channels/:serverId?/:channelId">
             <OneServer />
           </ProtectedRoute>
         </Switch>

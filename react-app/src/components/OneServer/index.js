@@ -2,25 +2,48 @@ import "./OneServer.css";
 import Members from "../Members";
 import Channels from "../Channels";
 import OneChannel from "../OneChannel";
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { BrowserRouter, Switch } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import ProtectedRoute from "../auth/ProtectedRoute";
+import { getOneServer } from "../../store/servers";
+import { getOneChannel } from "../../store/channels";
 
 const OneServer = () => {
   const [loaded, setLoaded] = useState(false);
-  const { serverId, channelId } = useParams();
   const dispatch = useDispatch();
+  const { serverId, channelId } = useParams();
   const serversObj = useSelector((state) => state.servers);
+  console.log("serverObj", serversObj);
   const channelsObj = useSelector((state) => state.channels);
+  console.log("channelObj", channelsObj);
+  console.log(serverId, channelId);
+
+  useEffect(() => {
+    if (
+      serversObj.currentServer.server === null ||
+      channelsObj.currentChannel.channel === null
+    ) {
+      console.log("inside ifffffff");
+      dispatch(getOneServer(serverId)).then(() =>
+        dispatch(getOneChannel(serverId, channelId)).then(() => setLoaded(true))
+      );
+    } else {
+      setLoaded(true);
+    }
+  }, [dispatch, channelsObj, serversObj, serverId, channelId]);
+
   return (
-    <>
-      <Channels channels={channelsObj} className="channels" />
-      <OneChannel channelsObj={channelsObj} className="one_channel" />
-      <Members serversObj={serversObj} className="members" />
-    </>
+    loaded && (
+      <>
+        <Channels channels={channelsObj} className="channels" />
+
+        <OneChannel channelsObj={channelsObj} className="one_channel" />
+
+        <Members serversObj={serversObj} className="members" />
+      </>
+    )
   );
 };
 

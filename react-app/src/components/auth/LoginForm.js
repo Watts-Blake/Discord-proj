@@ -29,6 +29,12 @@ const LoginForm = () => {
   const updatePassword = (e) => {
     setPassword(e.target.value);
   };
+  const grabFirstServerId = (serverMember) => {
+    let servers = Object.values(serverMember);
+    console.log(servers[0].id);
+    // let finalChannels = Object.values(newChannels[0].channels);
+    return servers[0].id;
+  };
   const grabFirstChannelId = (serverMember) => {
     let channels = Object.values(serverMember);
     let newChannels = Object.values(channels);
@@ -36,11 +42,12 @@ const LoginForm = () => {
     return finalChannels[0].id;
   };
   if (user) {
-    // const userServerArr = Object.values(user.serverMember);
-
-    // history.push(`/channels/${grabFirstChannelId(user.serverMember)}`);
     return (
-      <Redirect to={`/channels/${grabFirstChannelId(user.serverMember)}`} />
+      <Redirect
+        to={`/channels/${grabFirstServerId(
+          user.serverMember
+        )}/${grabFirstChannelId(user.serverMember)}`}
+      />
     );
   }
 

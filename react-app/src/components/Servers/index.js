@@ -22,9 +22,7 @@ const Servers = ({ userServers }) => {
     setLoaded(true);
   }, [userServers]);
 
-  const handleServerClick = async (e, channelId, serverId) => {
-    e.preventDefault();
-    history.push(`/channels/${channelId}`);
+  const handleServerClick = async (channelId, serverId) => {
     await dispatch(getOneServer(serverId)).then(() =>
       dispatch(getOneChannel(serverId, channelId))
     );
@@ -35,13 +33,9 @@ const Servers = ({ userServers }) => {
       <div className="server_container">
         {userServers?.map((server) => (
           <NavLink
-            to={`/channels/${grabFirstChannelId(server.channels)}`}
-            onClick={(e) =>
-              handleServerClick(
-                e,
-                grabFirstChannelId(server.channels),
-                server.id
-              )
+            to={`/channels/${server.id}/${grabFirstChannelId(server.channels)}`}
+            onClick={() =>
+              handleServerClick(grabFirstChannelId(server.channels), server.id)
             }
             key={server.id}
           >

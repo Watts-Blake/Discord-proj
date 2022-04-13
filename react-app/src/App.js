@@ -23,9 +23,8 @@ function App() {
   const userServers = Object.values(servers?.userServers);
   useEffect(() => {
     (async () => {
-      await dispatch(authenticate());
+      await dispatch(authenticate()).then(() => setLoaded(true));
     })();
-    setLoaded(true);
   }, [dispatch]);
 
   if (!loaded) {
@@ -49,12 +48,16 @@ function App() {
           <ProtectedRoute path="/users/:userId" exact={true}>
             <User />
           </ProtectedRoute>
-          <Route path="/" exact={true}>
+          <ProtectedRoute path="/" exact={true}>
             <h1>My Home Page</h1>
-          </Route>
+          </ProtectedRoute>
           <ProtectedRoute path="/channels">
             <div className="all">
-              <LeftNavBar className="left_nav" userServers={userServers} />
+              <LeftNavBar
+                className="left_nav"
+                userServers={userServers}
+                user={user}
+              />
               <MainContent className="main_content" user={user} />
             </div>
           </ProtectedRoute>
