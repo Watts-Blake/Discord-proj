@@ -1,0 +1,18 @@
+.server_opts {
+  position: absolute;
+  top: 50px;
+  left: 78px;
+  z-index: 5;
+  width: 220px;
+  height: fit-content;
+  background-color: #18191c;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sing_server_opt {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 10px;
+}

@@ -1,12 +1,26 @@
-.all {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+#root {
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
 }
 
-.left_nav {
-  width: 10vw;
+body {
+  height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+  background-color: #36393f;
+  margin: 0 0;
+  overflow-x: hidden;
+  color: #ffffffb8;
+}
+
+.logged_app {
   display: flex;
-  position: fixed;
-  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+a {
+  color: #8e9297;
+  text-decoration: inherit;
 }

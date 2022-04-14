@@ -6,11 +6,11 @@ import CreateServerModal from "../CreateServer/CreateServerModal";
 const LeftNavBar = ({ userServers, user }) => {
   return (
     user && (
-      <div className="left_side">
+      <div className="left_side" id="left_nav">
         <NavLink to={`/home/dm-groups`}>
           <img
             className="left_side_icon"
-            src="/svgs/svgexport-4.svg"
+            src="/svgs/gray-disc-home.svg"
             alt="home"
           ></img>
         </NavLink>

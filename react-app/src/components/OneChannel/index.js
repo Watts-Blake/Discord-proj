@@ -5,13 +5,9 @@ const OneChannel = ({ channelsObj }) => {
   const currentChannel = channelsObj?.currentChannel;
   return (
     <div>
-      <h4># {currentChannel?.name}</h4>
       <div className="one_channel">
         {currentChannel?.messages && (
-          <Messages
-            messages={Object.values(currentChannel?.messages)}
-            className="messages"
-          />
+          <Messages messages={Object.values(currentChannel?.messages)} />
         )}
         <ChatInput className="chat_input" />
       </div>

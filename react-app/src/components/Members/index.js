@@ -12,8 +12,7 @@ const Members = ({ serversObj }) => {
 
   return (
     loaded && (
-      <div>
-        <h1>All Members</h1>
+      <div className="members_list">
         {members?.map((member) => (
           <div className="member" key={member.id}>
             <img

@@ -1,4 +1,33 @@
+.channels_header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 10px;
+}
+
 .channels {
   display: flex;
   flex-direction: column;
+  width: 240px;
+}
+
+.channel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 10px;
+}
+
+.channel_left {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.channel_right {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
 }

@@ -1,6 +1,14 @@
+.members_list {
+  width: 240px;
+}
+
 .member {
   display: flex;
   flex-direction: row;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  margin: 0 10px;
 }
 
 .member_photo {

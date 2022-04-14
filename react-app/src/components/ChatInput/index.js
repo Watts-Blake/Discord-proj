@@ -1,7 +1,7 @@
 import "./ChatInput.css";
 
 const ChatInput = () => {
-  return <h1>Chat Input</h1>;
+  return <div className="chat_input">Chat Input</div>;
 };
 
 export default ChatInput;

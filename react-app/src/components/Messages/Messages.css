@@ -4,9 +4,52 @@
   border-radius: 100%;
 }
 
+.messages {
+  max-height: 80vh;
+  overflow-y: auto;
+}
 .message {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 100%;
+  width: fit-content;
+  margin: 0 10px;
+  gap: 15px;
+}
+.username {
+  color: #7e63e0;
+}
+.message_user {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-start;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.message_content {
+  margin: 0 10px 10px 10px;
+}
+
+.messages::-webkit-scrollbar {
+  width: 8px;
+  background-color: #2e3338;
+  border-radius: 12px;
+}
+
+.messages::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.messages::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background-color: #202225;
+  border: 2px solid #282a2d;
+  border-radius: 10px;
 }
