@@ -11,10 +11,16 @@ body {
   background-color: #36393f;
   margin: 0 0;
   overflow-x: hidden;
+  color: #ffffffb8;
 }
 
 .logged_app {
   display: flex;
   width: 100%;
   height: 100%;
+}
+
+a {
+  color: #8e9297;
+  text-decoration: inherit;
 }

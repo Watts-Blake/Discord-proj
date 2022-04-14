@@ -1,0 +1,6 @@
+.chat_input {
+  position: fixed;
+  bottom: 0;
+  margin: 0 10px;
+  align-self: center;
+}

@@ -5,7 +5,10 @@
 .member {
   display: flex;
   flex-direction: row;
-  width: 90%;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  margin: 0 10px;
 }
 
 .member_photo {
