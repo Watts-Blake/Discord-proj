@@ -1,6 +1,5 @@
-import { setUserServers, getOneServer } from "./servers";
+import { setUserServers } from "./servers";
 
-import { getOneChannel } from "./channels";
 // constants
 
 const SET_USER = "session/SET_USER";
