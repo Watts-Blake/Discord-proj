@@ -1,6 +1,12 @@
 import "./Messages.css";
 
+import { useRef, useEffect } from "react";
+
 const Messages = ({ messages }) => {
+  const messagesEnd = useRef(null);
+  useEffect(() => {
+    messagesEnd.current?.scrollIntoView();
+  }, [messages]);
   return (
     <div className="messages">
       {messages?.map((message) => (
@@ -16,6 +22,7 @@ const Messages = ({ messages }) => {
           </div>
         </div>
       ))}
+      <div ref={messagesEnd}></div>
     </div>
   );
 };
