@@ -2,7 +2,7 @@ import "./Messages.css";
 
 const Messages = ({ messages }) => {
   return (
-    <div className="all_messages">
+    <div className="messages">
       {messages?.map((message) => (
         <div className="message" key={message.id}>
           <img
