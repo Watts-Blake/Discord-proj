@@ -1,0 +1,10 @@
+.edit_server_modal {
+  height: 100vh;
+  width: 100vw;
+}
+
+.server_picture {
+  height: 80px;
+  width: 80px;
+  border-radius: 100%;
+}

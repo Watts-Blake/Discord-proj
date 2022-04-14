@@ -42,6 +42,7 @@ const OneServer = () => {
 
   const handleCloseServerOpts = (e) => {
     if (!e.target.id.includes("server_opts")) {
+      console.log(e.target);
       setShowServerOptions(false);
     }
   };
@@ -85,7 +86,9 @@ const OneServer = () => {
           <div className="channels_container">
             <Channels channels={channelsObj} className="channels" />
             <LoggedInUserTab user={user} />
-            {showServerOptions && <ServerOptions />}
+            {showServerOptions && (
+              <ServerOptions serversObj={serversObj} user={user} />
+            )}
           </div>
 
           <div className="one_channel">

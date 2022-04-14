@@ -71,4 +71,30 @@ def inject_csrf_token(response):
 def react_root(path):
     if path == 'favicon.ico':
         return app.send_static_file('favicon.ico')
+    if path[0:4] == 'svgs':
+        return app.send_static_file(path)
+    # if path == '/svgs/edit-server-img.svg':
+    #     return app.send_static_file('edit-server-img.svg')
+    # if path == '/svgs/pound.svg':
+    #     return app.send_static_file('pound.svg')
+    # if path == '/svgs/addMemb.svg':
+    #     return app.send_static_file('addMemb.svg')
+    # if path == '/svgs/settings.svg':
+    #     return app.send_static_file('settings.svg')
+    # if path == '/svgs/svgexport-14.svg':
+    #     return app.send_static_file('svgexport-14.svg')
+    # if path == '/svgs/svgexport-94.svg':
+    #     return app.send_static_file('svgexport-94.svg')
+    # if path == '/svgs/gray-disc-home.svg':
+    #     return app.send_static_file('gray-disc-home.svg')
+    # if path == '/svgs/svgexport-16.svg':
+    #     return app.send_static_file('svgexport-16.svg')
+    # if path == '/svgs/svgexport-67.svg':
+    #     return app.send_static_file('svgexport-67.svg')
+    # if path == '/svgs/downCarrotSharp.svg':
+    #     return app.send_static_file('downCarrotSharp.svg')
+    # if path == '/svgs/XX.svg"':
+    #     return app.send_static_file('XX.svg')
+    # if path == '/svgs/leaveServer.svg':
+    #     return app.send_static_file('leaveServer.svg')
     return app.send_static_file('index.html')
