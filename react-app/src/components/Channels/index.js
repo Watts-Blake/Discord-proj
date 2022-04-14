@@ -3,9 +3,11 @@ import { NavLink } from "react-router-dom";
 
 import { getOneChannel } from "../../store/channels";
 import { useDispatch } from "react-redux";
+// import { useState } from "react";
 
 const Channels = ({ channels }) => {
   const channelsArr = Object.values(channels.channels);
+  // const [showServerOptions, setShowServerOptions] = useState(false)
   const dispatch = useDispatch();
   const handleChannelChange = async (serverId, channelId) => {
     await dispatch(getOneChannel(serverId, channelId));

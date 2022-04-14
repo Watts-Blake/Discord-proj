@@ -1,6 +1,11 @@
+.members_list {
+  width: 240px;
+}
+
 .member {
   display: flex;
   flex-direction: row;
+  width: 90%;
 }
 
 .member_photo {

@@ -32,7 +32,6 @@ function App() {
   return (
     loaded && (
       <BrowserRouter>
-        <NavBar />
         <Switch>
           <Route path="/login" exact={true}>
             <LoginForm />
@@ -47,15 +46,12 @@ function App() {
             <User />
           </ProtectedRoute>
           <ProtectedRoute path="/" exact={true}>
+            <NavBar />
             <h1>My Home Page</h1>
           </ProtectedRoute>
           <ProtectedRoute path="/channels">
-            <div className="all">
-              <LeftNavBar
-                className="left_nav"
-                userServers={userServers}
-                user={user}
-              />
+            <div className="logged_app">
+              <LeftNavBar userServers={userServers} user={user} />
               <MainContent className="main_content" user={user} />
             </div>
           </ProtectedRoute>

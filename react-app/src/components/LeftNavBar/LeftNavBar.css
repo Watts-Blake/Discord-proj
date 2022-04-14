@@ -3,10 +3,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  width: 72px;
+  background-color: #202225;
 }
 
+/* .left_nav {
+  width: 72px;
+  display: flex; */
+/* } */
+
 .left_side_icon {
-  height: 50px;
-  width: 50px;
+  height: 48px;
+  width: 48px;
   border-radius: 100%;
 }

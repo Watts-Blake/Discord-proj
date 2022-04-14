@@ -10,3 +10,7 @@
   align-items: center;
   width: 100%;
 }
+.all_messages {
+  height: 90%;
+  overflow-y: auto;
+}

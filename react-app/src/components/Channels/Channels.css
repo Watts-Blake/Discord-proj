@@ -1,4 +1,5 @@
 .channels {
   display: flex;
   flex-direction: column;
+  width: 240px;
 }
