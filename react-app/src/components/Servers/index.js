@@ -2,7 +2,6 @@ import "./Servers.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import { getOneServer } from "../../store/servers";
 import { useDispatch } from "react-redux";
 
