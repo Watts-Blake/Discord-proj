@@ -34,6 +34,13 @@ const REMOVE_USER_SERVER = "servers/RemoveServer";
 export const removeUserServer = (serverId) => {
   return { type: REMOVE_USER_SERVER, serverId };
 };
+
+export const deleteServer = (serverId) => async (dispatch) => {
+  await csrfFetch(`/api/servers/${serverId}`, {
+    method: 'DELETE'
+  });
+  dispatch(removeUserServer(serverId))
+};
 //----------------------------------------------------------------------current server
 //remember to dispatch setChannels, setCurrentChannel, setMembers
 const SET_CURRENT_SERVER = "currentServer/SetCurrentServer";
@@ -42,7 +49,7 @@ export const setCurrentServer = (server) => {
 };
 
 export const getOneServer = (serverId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/servers/${serverId}`);
+  const res = await csrfFetch(`/api/servers/${serverId}/`);
 
   const server = await res.json();
 

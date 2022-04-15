@@ -10,11 +10,13 @@ import { useParams } from "react-router-dom";
 import { getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
 import ServerOptions from "../ServerOptions";
+import EditServerModal from "../EditServer/EditServerModal";
 
 const OneServer = () => {
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
   const { serverId, channelId } = useParams();
+  const [showModal, setShowModal] = useState(false);
   const serversObj = useSelector((state) => state.servers);
   const user = useSelector((state) => state.session.user);
   const channelsObj = useSelector((state) => state.channels);
@@ -41,10 +43,17 @@ const OneServer = () => {
   ]);
 
   const handleCloseServerOpts = (e) => {
+    if (!showServerOptions) return;
     if (!e.target.id.includes("server_opts")) {
       console.log(e.target);
       setShowServerOptions(false);
     }
+    let leftNav = document.getElementById("left_nav");
+    leftNav.addEventListener("click", (e) => {
+      if (!e.target.id.includes("server_opts")) {
+        setShowServerOptions(false);
+      }
+    });
   };
 
   return (
@@ -87,7 +96,11 @@ const OneServer = () => {
             <Channels channels={channelsObj} className="channels" />
             <LoggedInUserTab user={user} />
             {showServerOptions && (
-              <ServerOptions serversObj={serversObj} user={user} />
+              <ServerOptions
+                setShowModal={setShowModal}
+                serversObj={serversObj}
+                user={user}
+              />
             )}
           </div>
 
@@ -99,6 +112,12 @@ const OneServer = () => {
             <Members serversObj={serversObj} className="members" />
           </div>
         </div>
+        <EditServerModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          serversObj={serversObj}
+          user={user}
+        />
       </div>
     )
   );

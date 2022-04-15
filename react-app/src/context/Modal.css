@@ -23,7 +23,6 @@
 #modal-content {
   position: absolute;
   background-color: #585858;
-  border-radius: 5px;
 
   display: flex;
   justify-content: center;
