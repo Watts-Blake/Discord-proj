@@ -1,6 +1,6 @@
 import "./Channels.css";
 import { NavLink } from "react-router-dom";
-
+import CreateChannelModal from "../AddChannel/AddChannelModal";
 import { getOneChannel } from "../../store/channels";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -30,7 +30,7 @@ const Channels = ({ channels }) => {
     <div className="channels">
       <div className="channels_header">
         <h4>TEXT CHANNELS</h4>
-        <img className="channels_plus" src="/svgs/grey-plus.svg" alt="add" />
+        <CreateChannelModal user={user} />
       </div>
       {channelsArr?.map((channel) => (
         <NavLink
