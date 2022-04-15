@@ -32,11 +32,38 @@ const UPDATE_CHANNEL_ON_SERVER = "channels/UpdateChannel";
 export const updateChannel = (serverId, channel) => {
   return { type: UPDATE_CHANNEL_ON_SERVER, serverId, channel };
 };
+
+export const putChannel = (channel) => async (dispatch) => {
+  const res = await csrfFetch(
+    `/api/servers/${channel.serverId}/channels/${channel.id}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(channel),
+    }
+  );
+
+  const updatedChannel = await res.json();
+
+  dispatch(updateChannel(updatedChannel.serverId, updatedChannel));
+};
+
 const REMOVE_CHANNEL_FROM_SERVER = "channels/RemoveChannel";
 
 export const removeChanel = (serverId, channelId) => {
   return { type: REMOVE_CHANNEL_FROM_SERVER, serverId, channelId };
 };
+
+export const deleteChannel = (serverId, channelId) => async (dispatch) => {
+  const res = await csrfFetch(
+    `/api/servers/${serverId}/channels/${channelId}`,
+    {
+      method: "DELETE",
+    }
+  );
+  const deletedChannel = await res.json();
+  dispatch(removeChanel(serverId, deletedChannel.channelId));
+};
+
 //----------------------------------------------------------------------current channel
 // remember to dispatch setMessages, setPins
 const SET_CURRENT_CHANNEL = "currentChannel/SetCurrentChannel";
@@ -81,6 +108,7 @@ const channelsReducer = (
 
     case UPDATE_CHANNEL_ON_SERVER: {
       newState.channels[action.channel.id] = action.channel;
+      newState.currentChannel = action.channel;
       return newState;
     }
 

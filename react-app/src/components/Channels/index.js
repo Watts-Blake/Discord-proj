@@ -5,7 +5,7 @@ import { getOneChannel } from "../../store/channels";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import EditChannelModal from "../EditChannel/EditChannelModal";
 const Channels = ({ channels }) => {
   const channelsArr = Object.values(channels.channels);
   const { channelId } = useParams();
@@ -51,7 +51,7 @@ const Channels = ({ channels }) => {
               (ownerId === user.id && hoverId === channel.id)) && (
               <div className="channel_right">
                 <img src="/svgs/addMemb.svg" alt="add" />
-                <img src="/svgs/settings.svg" alt="add" />
+                <EditChannelModal channel={channel} user={user} />
               </div>
             )}
           </div>
