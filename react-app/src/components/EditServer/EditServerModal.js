@@ -1,5 +1,4 @@
 import "./Modal.css";
-import React, { useState } from "react";
 
 import { Modal } from "../../context/Modal";
 import EditServer from ".";
