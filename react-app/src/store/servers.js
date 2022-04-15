@@ -37,9 +37,9 @@ export const removeUserServer = (serverId) => {
 
 export const deleteServer = (serverId) => async (dispatch) => {
   await csrfFetch(`/api/servers/${serverId}`, {
-    method: 'DELETE'
+    method: "DELETE",
   });
-  dispatch(removeUserServer(serverId))
+  dispatch(removeUserServer(serverId));
 };
 //----------------------------------------------------------------------current server
 //remember to dispatch setChannels, setCurrentChannel, setMembers
@@ -49,7 +49,7 @@ export const setCurrentServer = (server) => {
 };
 
 export const getOneServer = (serverId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/servers/${serverId}/`);
+  const res = await csrfFetch(`/api/servers/${serverId}`);
 
   const server = await res.json();
 
@@ -104,7 +104,7 @@ const serversReducer = (
     }
 
     case REMOVE_USER_SERVER: {
-      delete newState.userServers[action.server.id];
+      delete newState.userServers[action.serverId];
       return newState;
     }
 

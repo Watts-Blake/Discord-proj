@@ -1,39 +1,35 @@
 import "./Modal.css";
 
 import { useState } from "react";
-import { Redirect } from "react-router-dom";
-import { deleteServer } from "../../store/servers";
+import { useHistory } from "react-router-dom";
+import { deleteServer, getOneServer } from "../../store/servers";
+import { getOneChannel } from "../../store/channels";
 import { useDispatch } from "react-redux";
+
+import { grabFirstServerId, grabFirstChannelId } from "../../utils";
 
 const EditServer = ({ serversObj, user, setShowModal }) => {
   const server = serversObj.currentServer;
   const [selected, setSelected] = useState("Overview");
   const [name, setName] = useState(server.name);
   const dispatch = useDispatch();
-
-  const grabFirstServerId = (serverMember) => {
-    let servers = Object.values(serverMember);
-
-    // let finalChannels = Object.values(newChannels[0].channels);
-    return servers[0].id;
-  };
-  const grabFirstChannelId = (serverMember) => {
-    let channels = Object.values(serverMember);
-    let newChannels = Object.values(channels);
-    let finalChannels = Object.values(newChannels[0].channels);
-    return finalChannels[0].id;
-  };
+  let history = useHistory();
 
   const handleDelete = async () => {
-    await dispatch(deleteServer(server.id));
+    await dispatch(deleteServer(server.id)).then(() => setShowModal(false));
 
-    return (
-      <Redirect
-        to={`/channels/${grabFirstServerId(
-          user.serverMember
-        )}/${grabFirstChannelId(user.serverMember)}`}
-      />
-    );
+    if (
+      grabFirstServerId(user.serverMember) &&
+      grabFirstChannelId(user.serverMember)
+    ) {
+      let firstServerId = grabFirstServerId(user.serverMember);
+      let firsChannelId = grabFirstChannelId(user.serverMember);
+      console.log("inside delete ifffffffffffffffffffffffff");
+      history.push(`/channels/${firstServerId}/${firsChannelId}`);
+      await dispatch(getOneServer(firstServerId)).then(() =>
+        dispatch(getOneChannel(firstServerId, firsChannelId))
+      );
+    }
   };
   return (
     <div className="edit_server_modal">
@@ -45,7 +41,7 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
             <h3>USER MANAGEMENT</h3>
             <h4>Members</h4>
           </div>
-          <div className="delete">
+          <div className="delete" onClick={handleDelete}>
             <h3>Delete Server</h3>
             <img src="/svgs/trash.svg" alt="trash" />
           </div>
