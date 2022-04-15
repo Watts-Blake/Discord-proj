@@ -18,21 +18,17 @@ def get_all_or_post_to_servers():
         return {'servers': server.to_resource_dict() for server in servers}
 #---------------------------------------------------------create new server
     if request.method == 'POST':
-        print('right ufcking hereeee', request.files)
         # print('right here you fucking wombat', request.files['image'])
         url = "https://www.svgrepo.com/show/331368/discord-v2.svg"
 
         if "image" in request.files:
             image = request.files["image"]
-            print('hereeeeeeeeeeeeeeeeeeee', image)
+
             image.filename = get_unique_filename(image.filename)
             if not allowed_file(image.filename):
                 return {"errors": "file type not permitted"}, 400
             upload = upload_file_to_s3(image)
-            print('uploadddddddddddd', upload)
             url = upload["url"]
-        print('urlllllllllllllllllllll', url)
-        print('ownerrrrrrrrr', request.form)
         server = Server(owner_id=current_user.id, server_picture=url, name=request.form['name'], )
         # topic=request.form['topic'], description=request.form['description'] )
         db.session.add(server)
@@ -58,9 +54,20 @@ def get_one__put_delete_server(server_id):
         return server.to_dict()
 
     if request.method == 'PUT':
-        server = request.json
+        url = server.server_picture
+
+        if "image" in request.files:
+            image = request.files["image"]
+
+            image.filename = get_unique_filename(image.filename)
+            if not allowed_file(image.filename):
+                return {"errors": "file type not permitted"}, 400
+            upload = upload_file_to_s3(image)
+            url = upload["url"]
+        server.name = request.form['name']
+        server.server_picture = url
         db.session.commit()
-        return server.to_resource_dict()
+        return server.to_dict()
 
     if request.method == 'DELETE':
         db.session.delete(server)

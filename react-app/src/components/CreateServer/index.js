@@ -8,6 +8,7 @@ const CreateServer = ({ setShowModal }) => {
   const [showCreateAbout, setShowCreateAbout] = useState(false);
   const [showCreateFinal, setShowCreatFinal] = useState(false);
   const [name, setName] = useState("");
+  const [emptyFile, setEmptyFile] = useState("");
   const baseImage = "/svgs/svgexport-94.svg";
   const [serverImage, setServerImage] = useState(baseImage);
   const [imageLoading, setImageLoading] = useState(false);
@@ -50,6 +51,7 @@ const CreateServer = ({ setShowModal }) => {
   const updateImage = (e) => {
     const file = e.target.files[0];
     setServerImage(file);
+    setEmptyFile("");
   };
 
   return (
@@ -115,6 +117,7 @@ const CreateServer = ({ setShowModal }) => {
               accept="image/*"
               hidden={true}
               onChange={updateImage}
+              value={emptyFile}
             />
             {imageLoading && <p>Loading...</p>}
             <input

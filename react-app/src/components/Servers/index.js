@@ -10,6 +10,7 @@ const Servers = ({ userServers }) => {
   const [loaded, setLoaded] = useState(false);
 
   const grabFirstChannelId = (channels) => {
+    console.log("hereeeeeeeee", channels);
     let newChannels = Object.values(channels);
     return newChannels[0].id;
   };
