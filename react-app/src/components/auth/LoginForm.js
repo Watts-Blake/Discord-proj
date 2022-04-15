@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { login } from "../../store/session";
 
+import { grabFirstServerId, grabFirstChannelId } from "../../utils";
+
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
@@ -27,18 +29,7 @@ const LoginForm = () => {
   const updatePassword = (e) => {
     setPassword(e.target.value);
   };
-  const grabFirstServerId = (serverMember) => {
-    let servers = Object.values(serverMember);
 
-    // let finalChannels = Object.values(newChannels[0].channels);
-    return servers[0].id;
-  };
-  const grabFirstChannelId = (serverMember) => {
-    let channels = Object.values(serverMember);
-    let newChannels = Object.values(channels);
-    let finalChannels = Object.values(newChannels[0].channels);
-    return finalChannels[0].id;
-  };
   if (user) {
     return (
       <Redirect

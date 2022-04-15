@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { postUserServer } from "../../store/servers";
 import { useDispatch } from "react-redux";
-const CreateServer = () => {
+const CreateServer = ({ setShowModal }) => {
   const [showHomeCreate, setShowHomeCreate] = useState(true);
   const [showCreateAbout, setShowCreateAbout] = useState(false);
   const [showCreateFinal, setShowCreatFinal] = useState(false);
@@ -42,7 +42,9 @@ const CreateServer = () => {
     formData.append("image", image);
     formData.append("name", name);
 
-    await dispatch(postUserServer(formData)).then(() => setImageLoading(false));
+    await dispatch(postUserServer(formData))
+      .then(() => setImageLoading(false))
+      .then(() => setShowModal(false));
   };
 
   const updateImage = (e) => {

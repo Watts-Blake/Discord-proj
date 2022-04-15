@@ -17,7 +17,7 @@ const CreateServerModal = () => {
       ></img>
       {showModal && (
         <Modal className="modal" onClose={() => setShowModal(false)}>
-          <CreateServer></CreateServer>
+          <CreateServer setShowModal={setShowModal}></CreateServer>
         </Modal>
       )}
     </>

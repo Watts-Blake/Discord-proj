@@ -1,8 +1,6 @@
 import "./ServerOptions.css";
 
-import EditServerModal from "../EditServer/EditServerModal";
-
-const ServerOptions = ({ serversObj, user }) => {
+const ServerOptions = ({ serversObj, user, setShowModal }) => {
   return (
     <div className="server_opts" id="server_opts">
       <div className="sing_server_opt" id="server_opts_inv">
@@ -10,11 +8,14 @@ const ServerOptions = ({ serversObj, user }) => {
         <img id="server_opts_add_img" src="/svgs/addMemb.svg" alt="add" />
       </div>
       {serversObj.currentServer.owner.id === user.id && (
-        <EditServerModal
-          serversObj={serversObj}
-          user={user}
-          id="server_opts_modal1"
-        />
+        <div
+          onClick={() => setShowModal(true)}
+          className="sing_server_opt"
+          id="server_opts_edit"
+        >
+          <h4 id="server_opts_edit_title">Server Settings</h4>
+          <img id="server_opts_edit_img" src="/svgs/settings.svg" alt="add" />
+        </div>
       )}
       <div className="sing_server_opt" id="server_opts_leave">
         <h4 id="server_opts_leave_title">Leave Server</h4>{" "}
