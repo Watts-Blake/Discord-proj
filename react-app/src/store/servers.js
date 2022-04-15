@@ -26,7 +26,7 @@ export const postUserServer = (formData) => async (dispatch) => {
 };
 
 const UPDATE_USER_SERVERS = "servers/UpdateServers";
-export const updateUserServer = (server) => {
+export const updateUserServers = (server) => {
   return { type: UPDATE_USER_SERVERS, server };
 };
 
@@ -61,6 +61,20 @@ export const getOneServer = (serverId) => async (dispatch) => {
 const UPDATE_CURRENT_SERVER = "currentServer/UpdateServer";
 export const updateCurrentServer = (server) => {
   return { type: UPDATE_CURRENT_SERVER, server };
+};
+
+export const putCurrentServer = (serverId, formData) => async (dispatch) => {
+  console.log("from thunkkkkkk", formData["serverPicture"]);
+  const res = await fetch(`/api/servers/${serverId}`, {
+    method: "PUT",
+    body: formData,
+  });
+  const updatedServer = await res.json();
+
+  dispatch(updateCurrentServer(updatedServer));
+  dispatch(updateUserServers(updatedServer));
+
+  return updatedServer.picture;
 };
 //------------------------------------------------------------------------members
 const ADD_MEMBER_TO_SERVER = "currentServer/AddMember";
