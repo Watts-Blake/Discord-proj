@@ -16,6 +16,7 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
 
   const [selected, setSelected] = useState("Overview");
   const [name, setName] = useState(server.name);
+  console.log(name);
   const [image, setImage] = useState(server.picture);
   const [emptyFile, setEmptyFile] = useState("");
   const [requireSave, setRequireSave] = useState(false);
@@ -135,8 +136,8 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
                 <input
                   id="server_name"
                   className="server_name"
-                  defaultValue={name}
-                  placeholder={name}
+                  placeholder={server.name}
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                 ></input>
               </div>

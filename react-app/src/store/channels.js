@@ -12,6 +12,21 @@ const ADD_CHANNEL_TO_SERVER = "channels/AddChannel";
 export const addChannel = (serverId, channel) => {
   return { type: ADD_CHANNEL_TO_SERVER, serverId, channel };
 };
+
+export const postChannel = (channel) => async (dispatch) => {
+  const res = await csrfFetch(`/api/servers/${channel.serverId}/channels`, {
+    method: "POST",
+    body: JSON.stringify(channel),
+  });
+
+  const newChannel = await res.json();
+
+  console.log(newChannel);
+  dispatch(addChannel(newChannel.serverId, newChannel));
+  dispatch(setCurrentChannel(newChannel));
+  return newChannel;
+};
+
 const UPDATE_CHANNEL_ON_SERVER = "channels/UpdateChannel";
 
 export const updateChannel = (serverId, channel) => {

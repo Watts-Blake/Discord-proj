@@ -120,6 +120,7 @@ def get_all_or_post_to_channel(server_id):
         data = request.json
         channel = Channel(name=data['name'], server_id=data['serverId'])
         db.session.add(channel)
+        db.session.commit()
 
         first_message = ChannelMessage(channel_id=channel.id, sender_id=1, content=f'Welcome to {channel.server.name}\'s Channel {channel.name}')
         db.session.add(first_message)
