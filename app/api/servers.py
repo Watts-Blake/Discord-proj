@@ -136,7 +136,7 @@ def get_one__put_delete_channel(server_id, channel_id):
 
     if request.method == 'PUT':
 
-        channel = request.json
+        channel.name = request.json['name']
         db.session.commit()
         return channel.to_dict()
 
