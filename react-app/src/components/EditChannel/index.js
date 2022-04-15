@@ -6,8 +6,8 @@ import { useHistory } from "react-router-dom";
 import { deleteChannel, putChannel } from "../../store/channels";
 import { getOneChannel } from "../../store/channels";
 import { useDispatch } from "react-redux";
-import { putCurrentServer } from "../../store/servers";
-import { grabFirstServerId, grabFirstChannelId } from "../../utils";
+// import { putCurrentServer } from "../../store/servers";
+// import { grabFirstServerId, grabFirstChannelId } from "../../utils";
 
 const EditChannel = ({ channel, user, setShowModal }) => {
   const dispatch = useDispatch();
