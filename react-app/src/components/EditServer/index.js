@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { deleteServer, getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { putCurrentServer } from "../../store/servers";
 import { grabFirstServerId, grabFirstChannelId } from "../../utils";
 
