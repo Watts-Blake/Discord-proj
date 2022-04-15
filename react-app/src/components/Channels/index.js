@@ -48,12 +48,13 @@ const Channels = ({ channels }) => {
               <img src="/svgs/pound.svg" alt="#" /> <p>{channel.name}</p>
             </div>
             {((ownerId === user.id && currentChannelId * 1 === channel.id) ||
-              (ownerId === user.id && hoverId === channel.id)) && (
-              <div className="channel_right">
-                <img src="/svgs/addMemb.svg" alt="add" />
-                <EditChannelModal channel={channel} user={user} />
-              </div>
-            )}
+              (ownerId === user.id && hoverId === channel.id)) &&
+              channel.name !== "General" && (
+                <div className="channel_right">
+                  <img src="/svgs/addMemb.svg" alt="add" />
+                  <EditChannelModal channel={channel} user={user} />
+                </div>
+              )}
           </div>
         </NavLink>
       ))}
