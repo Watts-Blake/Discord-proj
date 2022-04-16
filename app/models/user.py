@@ -25,13 +25,11 @@ class User(db.Model, UserMixin):
 
     server_member = relationship('ServerMember', backref='member')
 
+    channel_member = relationship('ChannelMember', backref='member')
+
     channel_messages_sent = relationship('ChannelMessage', backref='sender',cascade="all, delete")
 
-    dm_rooms_owned = relationship('DmRoom', backref='owner', cascade='all, delete')
-
-    dm_member = relationship('DmMember', backref='member',cascade="all, delete")
-
-    dm_sent = relationship('Dm', backref='sender',cascade="all, delete")
+    dm_channels_owned = relationship('Channel', backref='owner', cascade='all, delete')
 
 
     @property
@@ -54,8 +52,8 @@ class User(db.Model, UserMixin):
         'serverOwned': {server.id: server.to_resource_dict() for server in self.servers_owned},
         'serverMember': {member.server_id: member.server.to_dict() for member in self.server_member},
         # 'channelMessagesSent': {message.id: message.to_dict() for message in self.channel_messages_sent},
-        'dmMember': {member.id: member.room.to_resource_dict() for member in self.dm_member},
-        # 'dmSent': {message.id :message.to_dict() for message in self.dm_sent}
+        'channelMember': {member.id: member.channel.to_resource_dict() for member in self.channel_member},
+        'dmChannelsOwned': {dm_channel.id: dm_channel.to_resource_dict() for dm_channel in self.servers_owned},
     }
     def to_resource_dict(self):
         return {
@@ -75,11 +73,5 @@ class User(db.Model, UserMixin):
 
         for channel in self.channel_member:
             if channel.channel_id == channel_id:
-                return True
-        return False
-
-    def in_dm_room(self, room_id):
-        for dm_room in self.dm_member:
-            if dm_room.dm_room_id == room_id:
                 return True
         return False
