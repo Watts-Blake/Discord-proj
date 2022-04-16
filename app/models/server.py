@@ -23,8 +23,6 @@ class Server(db.Model):
 
     channels = relationship('Channel', backref='server', cascade="all,delete-orphan")
 
-    vc_channels = relationship('VoiceChannel', backref='server',cascade="all,delete-orphan")
-
     members = relationship('ServerMember', cascade='all, delete-orphan', backref='server')
 
     def to_dict(self):
@@ -36,7 +34,6 @@ class Server(db.Model):
             'topic': self.topic,
             'description': self.description,
             'channels':{channel.id: channel.to_resource_dict() for channel in self.channels},
-            'voiceChannels': {channel.id: channel.to_dict() for channel in self.vc_channels},
             'members': {member.id: member.member.to_resource_dict() for member in self.members}
         }
     def to_resource_dict(self):
