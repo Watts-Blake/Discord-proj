@@ -1,9 +1,8 @@
 import "./Home.css";
 import NavBar from "../NavBar";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+
 const Home = () => {
-  const user = useSelector((state) => state.session.user);
   return (
     <div className="home">
       <NavBar className="nav" />
