@@ -17,11 +17,16 @@ const NavBar = () => {
       </NavLink>
       <div>
         {!user && (
-          <div>
-            <NavLink to="/login" exact={true} activeClassName="active">
+          <div className="user_actions">
+            <NavLink
+              to="/login"
+              exact={true}
+              className="log_btn"
+              activeClassName="active"
+            >
               Login
             </NavLink>
-            <NavLink to="/sign-up" exact={true} activeClassName="active">
+            <NavLink to="/signup" exact={true} activeClassName="active">
               Sign Up
             </NavLink>
           </div>

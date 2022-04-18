@@ -13,6 +13,20 @@ nav {
   margin: 20px 50px 0px 30px;
 }
 
+.user_actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.log_btn {
+  background-color: #ffff;
+  padding: 5px 10px 5px 10px;
+  border-radius: 20px;
+}
+
 .home_link {
   display: flex;
   flex-direction: row;
