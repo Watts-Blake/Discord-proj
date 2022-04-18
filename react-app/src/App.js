@@ -10,7 +10,7 @@ import User from "./components/User";
 import { authenticate } from "./store/session";
 import LeftNavBar from "./components/LeftNavBar";
 import MainContent from "./components/MainContent";
-
+import Home from "./components/Home";
 import { useSelector } from "react-redux";
 
 function App() {
@@ -45,10 +45,9 @@ function App() {
           <ProtectedRoute path="/users/:userId" exact={true}>
             <User />
           </ProtectedRoute>
-          <ProtectedRoute path="/" exact={true}>
-            <NavBar />
-            <h1>My Home Page</h1>
-          </ProtectedRoute>
+          <Route path="/" exact={true}>
+            <Home />
+          </Route>
           <ProtectedRoute path="/channels">
             <div className="logged_app">
               <LeftNavBar userServers={userServers} user={user} />
