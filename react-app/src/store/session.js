@@ -1,5 +1,5 @@
 import { setUserServers } from "./servers";
-
+import { setUserDms } from "./dms";
 // constants
 
 const SET_USER = "session/SET_USER";
@@ -30,6 +30,7 @@ export const authenticate = () => async (dispatch) => {
 
     dispatch(setUser(data));
     dispatch(setUserServers(data.serverMember));
+    dispatch(setUserDms(data.dmChannelMember));
     // dispatch(getOneServer(data.serverMember[1].id));
     // dispatch(
     //   getOneChannel(
@@ -55,6 +56,7 @@ export const login = (email, password) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(setUserServers(data.serverMember));
+    dispatch(setUserDms(data.dmChannelMember));
     // dispatch(getOneServer(data.serverMember[1].id));
     // dispatch(
     //   getOneChannel(

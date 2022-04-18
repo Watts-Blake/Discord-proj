@@ -71,10 +71,11 @@ export const setCurrentChannel = (channel) => {
   return { type: SET_CURRENT_CHANNEL, channel };
 };
 
-export const getOneChannel = (serverId, channelId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/servers/${serverId}/channels/${channelId}`);
+export const getOneChannel = (channelId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/channels/${channelId}`);
 
   const channel = await res.json();
+  console.log("right here", channel);
   dispatch(setCurrentChannel(channel));
 };
 

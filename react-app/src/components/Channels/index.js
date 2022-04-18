@@ -21,8 +21,8 @@ const Channels = ({ channels }) => {
   }, [channelId]);
 
   const dispatch = useDispatch();
-  const handleChannelChange = async (serverId, channelId) => {
-    await dispatch(getOneChannel(serverId, channelId)).then(() =>
+  const handleChannelChange = async (channelId) => {
+    await dispatch(getOneChannel(channelId)).then(() =>
       setCurrentChannelId(channelId)
     );
   };
@@ -36,7 +36,7 @@ const Channels = ({ channels }) => {
         <NavLink
           key={`${channel.id}`}
           to={`/channels/${channel.serverId}/${channel.id}`}
-          onClick={() => handleChannelChange(channel.serverId, channel.id)}
+          onClick={() => handleChannelChange(channel.id)}
         >
           <div
             className="channel"

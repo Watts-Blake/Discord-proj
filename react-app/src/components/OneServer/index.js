@@ -29,7 +29,7 @@ const OneServer = () => {
     ) {
       console.log("inside ifffffff");
       dispatch(getOneServer(serverId)).then(() =>
-        dispatch(getOneChannel(serverId, channelId)).then(() => setLoaded(true))
+        dispatch(getOneChannel(channelId)).then(() => setLoaded(true))
       );
     } else {
       setLoaded(true);

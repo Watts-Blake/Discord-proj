@@ -52,22 +52,23 @@ const dmRoomReducer = (
 ) => {
   let newState = { ...state };
   switch (action.type) {
-    // case SET_USER_DM_ROOMS: {
-    // }
-    // case ADD_DM_TO_DM_ROOMS: {
-    // }
-    // case UPDATE_DM_ROOM_ON_DMROOMS: {
-    // }
-    // case REMOVE_DM_ROOM_FROM_DM_ROOMS: {
-    // }
-    // case SET_CURRENT_DM_ROOM: {
-    // }
-    // case ADD_DM_ROOM_MESSAGE: {
-    // }
-    // case UPDATE_DM_ROOM_MESSAGE: {
-    // }
-    // case REMOVE_DM_ROOM_MESSAGE: {
-    // }
+    case SET_USER_DM_ROOMS: {
+      newState.dmRooms = action.dmRooms;
+    }
+    case ADD_DM_TO_DM_ROOMS: {
+    }
+    case UPDATE_DM_ROOM_ON_DMROOMS: {
+    }
+    case REMOVE_DM_ROOM_FROM_DM_ROOMS: {
+    }
+    case SET_CURRENT_DM_ROOM: {
+    }
+    case ADD_DM_ROOM_MESSAGE: {
+    }
+    case UPDATE_DM_ROOM_MESSAGE: {
+    }
+    case REMOVE_DM_ROOM_MESSAGE: {
+    }
     default:
       return state;
   }

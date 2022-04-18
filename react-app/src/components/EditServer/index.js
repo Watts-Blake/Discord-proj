@@ -50,7 +50,7 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
       console.log("inside delete ifffffffffffffffffffffffff");
       history.push(`/channels/${firstServerId}/${firsChannelId}`);
       await dispatch(getOneServer(firstServerId)).then(() =>
-        dispatch(getOneChannel(firstServerId, firsChannelId))
+        dispatch(getOneChannel(firsChannelId))
       );
     }
   };

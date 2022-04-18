@@ -10,7 +10,7 @@ class Channel(db.Model):
     __tablename__ = 'channels'
 
     id = db.Column(Integer, primary_key=True)
-    name = db.Column(String(100), nullable=False)
+    name = db.Column(String(100))
     server_id = db.Column(Integer, ForeignKey('servers.id'))
     owner_id = db.Column(Integer, ForeignKey('users.id'))
     type_text = db.Column(Boolean, default=False)

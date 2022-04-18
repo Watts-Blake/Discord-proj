@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
 
     channel_messages_sent = relationship('ChannelMessage', backref='sender',cascade="all, delete")
 
-    dm_channels_owned = relationship('Channel', backref='owner', cascade='all, delete')
+    channels_owned = relationship('Channel', backref='owner', cascade='all, delete')
 
 
     @property
@@ -53,7 +53,8 @@ class User(db.Model, UserMixin):
         'serverMember': {member.server_id: member.server.to_dict() for member in self.server_member},
         # 'channelMessagesSent': {message.id: message.to_dict() for message in self.channel_messages_sent},
         'channelMember': {member.id: member.channel.to_resource_dict() for member in self.channel_member},
-        'dmChannelsOwned': {dm_channel.id: dm_channel.to_resource_dict() for dm_channel in self.servers_owned},
+        'dmChannelsOwned': { channel.id: channel.to_resource_dict() for channel in self.channels_owned if channel.dm_channel == True  },
+        'dmChannelMember': {member.id: member.channel.to_resource_dict() for member in self.channel_member if member.channel.dm_channel == True},
     }
     def to_resource_dict(self):
         return {

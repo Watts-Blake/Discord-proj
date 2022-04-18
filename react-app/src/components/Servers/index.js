@@ -22,7 +22,7 @@ const Servers = ({ userServers }) => {
 
   const handleServerClick = async (channelId, serverId) => {
     await dispatch(getOneServer(serverId)).then(() =>
-      dispatch(getOneChannel(serverId, channelId))
+      dispatch(getOneChannel(channelId))
     );
   };
 
