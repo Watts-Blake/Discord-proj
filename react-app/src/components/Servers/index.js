@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { getOneServer } from "../../store/servers";
 import { useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 import { getOneChannel } from "../../store/channels";
 const Servers = ({ userServers, dmRoomsView, setDmRoomsView }) => {
@@ -21,9 +22,9 @@ const Servers = ({ userServers, dmRoomsView, setDmRoomsView }) => {
 
   const handleServerClick = async (channelId, serverId) => {
     await dispatch(getOneServer(serverId)).then(() =>
-      dispatch(getOneChannel(channelId))
+      dispatch(getOneChannel(channelId)).then(() => setDmRoomsView(false))
     );
-    setDmRoomsView(false);
+    return <Redirect to={`/channels/${serverId}/${channelId}`} />;
   };
 
   return (

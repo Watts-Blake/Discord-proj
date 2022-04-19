@@ -31,7 +31,8 @@ const OneServer = ({ setDmRoomsView, dmRoomsView }) => {
   useEffect(() => {
     console.log("urlllllllllll", dmRoomsView);
     setChannelLoaded(false);
-    if (dmRoomsView) {
+    if (window.location.href.includes("@me")) {
+      setDmRoomsView(true);
       if (dmRoomId && dmRoomId * 1 !== prevRoom) {
         setChannelLoaded(false);
         dispatch(getOneChannel(dmRoomId))

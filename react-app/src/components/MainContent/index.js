@@ -10,8 +10,11 @@ const MainContent = ({ user, dmRoomsView, setDmRoomsView }) => {
     <>
       <BrowserRouter>
         <Switch>
-          <ProtectedRoute path="/channels/@me/">
-            <OneServer setDmRoomsView={setDmRoomsView} dmRoomsView={true} />
+          <ProtectedRoute path="/channels/@me/:dmRoomId" exact={true}>
+            <OneServer
+              setDmRoomsView={setDmRoomsView}
+              dmRoomsView={dmRoomsView}
+            />
           </ProtectedRoute>
           <ProtectedRoute path="/channels/:serverId?/:channelId" exact={true}>
             {!dmRoomsView && (

@@ -106,7 +106,8 @@ const channelsReducer = (
   state = {
     channels: {},
     currentChannel: { channel: null, pins: {} },
-    userDmChannels: null,
+    userDmChannels: {},
+    dmCurrentChannel: {},
   },
   action
 ) => {

@@ -19,23 +19,30 @@ const Channels = ({ setDmRoomsView, dmRoomsView }) => {
   const currentServer = useSelector((state) => state.servers.currentServer);
   const channelsObj = useSelector((state) => state.channels);
   let url = useLocation();
+  const dispatch = useDispatch();
   useEffect(() => {
-    setCurrentChannelId(channelId);
+    window.location.href.includes("@me")
+      ? setDmRoomsView(true)
+      : setDmRoomsView(false);
+    setCurrentChannelId(channelId || dmRoomId);
     if (currentServer) {
       setOwnerId(currentServer?.owner?.id);
     }
-    url.pathname.includes("@me") ? setDmRoomsView(true) : setDmRoomsView(false);
+    dmRoomsView
+      ? setChannels(Object.values(channelsObj.userDmChannels))
+      : setChannels(Object.values(channelsObj.channels));
   }, [
-    channelId,
+    dispatch,
     currentServer,
     setOwnerId,
-    dmRoomId,
-    url.pathname,
+    channelsObj.channels,
+    channelId,
+    channelsObj.userDmChannels,
     dmRoomsView,
+    dmRoomId,
     setDmRoomsView,
   ]);
 
-  const dispatch = useDispatch();
   const handleChannelChange = async (channelId) => {
     url.pathname.includes("@me") ? setDmRoomsView(true) : setDmRoomsView(false);
     await dispatch(getOneChannel(channelId)).then(() =>
@@ -49,34 +56,54 @@ const Channels = ({ setDmRoomsView, dmRoomsView }) => {
         {dmRoomsView && <h4>DIRECT MESSAGES</h4>}
         <CreateChannelModal user={user} />
       </div>
-      {!dmRoomsView &&
-        Object.values(channelsObj?.channels).map((channel) => (
-          <NavLink
-            key={channel.id}
-            to={`/channels/${channel.serverId}/${channel.id}`}
-            onClick={() => handleChannelChange(channel.id)}
+
+      {channels?.map((channel) => (
+        <NavLink
+          key={channel.id}
+          to={
+            dmRoomsView
+              ? `/channels/@me/${channel.id}`
+              : `/channels/${channel.serverId}/${channel.id}`
+          }
+          onClick={() => handleChannelChange(channel.id)}
+        >
+          <div
+            className="channel"
+            onMouseEnter={() => setHoverId(channel.id)}
+            onMouseLeave={() => setHoverId(null)}
           >
-            <div
-              className="channel"
-              onMouseEnter={() => setHoverId(channel.id)}
-              onMouseLeave={() => setHoverId(null)}
-            >
-              {" "}
-              <div className="channel_left">
-                <img src="/svgs/pound.svg" alt="#" /> <p>{channel.name}</p>
-              </div>
-              {((ownerId === user.id && currentChannelId * 1 === channel.id) ||
-                (ownerId === user.id && hoverId === channel.id)) &&
-                channel.name !== "General" && (
-                  <div className="channel_right">
-                    <img src="/svgs/addMemb.svg" alt="add" />
-                    <EditChannelModal channel={channel} user={user} />
-                  </div>
-                )}
+            <div className="channel_left">
+              <img
+                className={`${dmRoomsView && "direct_message_icon"}`}
+                src={
+                  dmRoomsView
+                    ? Object.keys(channel?.members).length > 2
+                      ? "/svgs/group-message-ico.svg"
+                      : Object.values(channel.members)[0]?.profilePicture
+                    : "/svgs/pound.svg"
+                }
+                alt="#"
+              />{" "}
+              {dmRoomsView ? (
+                Object.values(channel.members).map((member) => (
+                  <p key={member.id}>{member.username}</p>
+                ))
+              ) : (
+                <p>{channel.name}</p>
+              )}
             </div>
-          </NavLink>
-        ))}
-      {dmRoomsView &&
+            {((ownerId === user.id && currentChannelId * 1 === channel.id) ||
+              (ownerId === user.id && hoverId === channel.id)) &&
+              channel.name !== "General" && (
+                <div className="channel_right">
+                  <img src="/svgs/addMemb.svg" alt="add" />
+                  <EditChannelModal channel={channel} user={user} />
+                </div>
+              )}
+          </div>
+        </NavLink>
+      ))}
+      {/* {dmRoomsView &&
         Object.values(channelsObj?.userDmChannels)?.map((channel) => (
           <NavLink
             key={channel.id}
@@ -112,7 +139,7 @@ const Channels = ({ setDmRoomsView, dmRoomsView }) => {
                 )}
             </div>
           </NavLink>
-        ))}
+        ))} */}
     </div>
   );
 };
