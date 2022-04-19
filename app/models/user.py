@@ -17,8 +17,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
     profile_picture = db.Column(String(2000))
-    created_at = db.Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = db.Column(DateTime(timezone=True), onupdate=func.now())
+    created_at = db.Column(DateTime(), server_default=func.utcnow())
+    updated_at = db.Column(DateTime(), onupdate=func.utcnow())
 
 
     servers_owned = relationship('Server', backref='owner',cascade="all, delete")
@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
 
     channel_messages_sent = relationship('ChannelMessage', backref='sender',cascade="all, delete")
 
-    dm_channels_owned = relationship('Channel', backref='owner', cascade='all, delete')
+    channels_owned = relationship('Channel', backref='owner', cascade='all, delete')
 
 
     @property
@@ -52,8 +52,9 @@ class User(db.Model, UserMixin):
         'serverOwned': {server.id: server.to_resource_dict() for server in self.servers_owned},
         'serverMember': {member.server_id: member.server.to_dict() for member in self.server_member},
         # 'channelMessagesSent': {message.id: message.to_dict() for message in self.channel_messages_sent},
-        'channelMember': {member.id: member.channel.to_resource_dict() for member in self.channel_member},
-        'dmChannelsOwned': {dm_channel.id: dm_channel.to_resource_dict() for dm_channel in self.servers_owned},
+        'channelMember': {room.id: room.channel.to_dict() for room in self.channel_member},
+        'dmChannelsOwned': { channel.id: channel.to_resource_dict() for channel in self.channels_owned if channel.dm_channel == True  },
+        'dmChannelMember': {member.id: member.channel.to_dict() for member in self.channel_member if member.channel.dm_channel == True},
     }
     def to_resource_dict(self):
         return {

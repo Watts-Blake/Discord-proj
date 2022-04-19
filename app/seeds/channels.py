@@ -1,4 +1,4 @@
-from app.models import channel, db, Channel, ChannelMessage
+from app.models import db, Channel, ChannelMessage, ChannelMember
 
 
 
@@ -11,7 +11,25 @@ def seed_channels():
 
     db.session.commit()
 
+def seed_dm_channels():
+    channels = [{'dm_channel':True,'owner_id': 19},{'dm_channel':True,'owner_id': 19},{ 'dm_channel':True,'owner_id': 19},{'dm_channel':True,'owner_id': 2},{'dm_channel':True,'owner_id': 2},{ 'dm_channel':True,'owner_id': 2},{ 'dm_channel':True,'owner_id': 3},{ 'dm_channel':True,'owner_id': 3},{ 'dm_channel':True,'owner_id': 3}]
+    for channel in channels:
+        new_channel = Channel(owner_id=channel['owner_id'], dm_channel=channel['dm_channel'])
+        db.session.add(new_channel)
 
+    db.session.commit()
+
+def seed_channel_members():
+    channel_members = [{'channel_id': 10, 'user_id': 2}, {'channel_id': 10, 'user_id': 19}, {'channel_id': 12, 'user_id': 2}, {'channel_id': 12, 'user_id': 19},{'channel_id': 12, 'user_id': 3}, {'channel_id': 16, 'user_id': 3}, {'channel_id': 16, 'user_id': 19}]
+
+    for member in channel_members:
+        new_member = ChannelMember(channel_id=member['channel_id'], user_id=member['user_id'])
+        db.session.add(new_member)
+    db.session.commit()
+
+def undo_channel_members():
+    db.session.execute('TRUNCATE channelMembers RESTART IDENTITY CASCADE;')
+    db.session.commit()
 
 
 def undo_channels():

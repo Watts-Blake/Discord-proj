@@ -25,18 +25,17 @@ const SignUpForm = () => {
     setImage(file);
     setEmptyFile("");
   };
-  console.log(image);
 
   const onSignUp = async (e) => {
     e.preventDefault();
-    console.log("from submit", image);
+
     const formData = new FormData();
     formData.append("email", email);
     formData.append("image", image);
     formData.append("username", username);
     formData.append("password", password);
     formData.append("repeat_password", repeatPassword);
-    console.log("hereeeeeeeeeeeeeeeeeeee", email);
+
     if (password === repeatPassword) {
       const data = await dispatch(signUp(formData));
       if (data) {

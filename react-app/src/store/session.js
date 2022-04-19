@@ -1,5 +1,5 @@
 import { setUserServers } from "./servers";
-
+import { setUserDms } from "./channels";
 // constants
 
 const SET_USER = "session/SET_USER";
@@ -30,6 +30,7 @@ export const authenticate = () => async (dispatch) => {
 
     dispatch(setUser(data));
     dispatch(setUserServers(data.serverMember));
+    dispatch(setUserDms(data.dmChannelMember));
     // dispatch(getOneServer(data.serverMember[1].id));
     // dispatch(
     //   getOneChannel(
@@ -55,6 +56,7 @@ export const login = (email, password) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(setUserServers(data.serverMember));
+    dispatch(setUserDms(data.dmChannelMember));
     // dispatch(getOneServer(data.serverMember[1].id));
     // dispatch(
     //   getOneChannel(
@@ -87,7 +89,6 @@ export const logout = () => async (dispatch) => {
 };
 
 export const signUp = (formData) => async (dispatch) => {
-  console.log("from thunk", formData);
   const response = await fetch("/api/auth/signup", {
     method: "POST",
     body: formData,

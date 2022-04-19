@@ -1,10 +1,15 @@
 import { csrfFetch } from "./csrf";
 
 //---------------------------------------------------------------------channels
-const SET_SERVER_CHANNELS = "channels/setsChannels";
+const SET_SERVER_CHANNELS = "channels/setChannels";
 // remmeber to dispatch setCurrentChannel
 export const setChannels = (channels) => {
   return { type: SET_SERVER_CHANNELS, channels };
+};
+const SET_USER_DM_CHANNELS = "dms/setsUserDmChannels";
+// remmeber to dispatch setCurrentDmRoom
+export const setUserDms = (dmRooms) => {
+  return { type: SET_USER_DM_CHANNELS, dmRooms };
 };
 
 const ADD_CHANNEL_TO_SERVER = "channels/AddChannel";
@@ -21,7 +26,6 @@ export const postChannel = (channel) => async (dispatch) => {
 
   const newChannel = await res.json();
 
-  console.log(newChannel);
   dispatch(addChannel(newChannel.serverId, newChannel));
   dispatch(setCurrentChannel(newChannel));
   return newChannel;
@@ -71,11 +75,17 @@ export const setCurrentChannel = (channel) => {
   return { type: SET_CURRENT_CHANNEL, channel };
 };
 
-export const getOneChannel = (serverId, channelId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/servers/${serverId}/channels/${channelId}`);
+export const getOneChannel = (channelId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/channels/${channelId}`);
 
   const channel = await res.json();
   dispatch(setCurrentChannel(channel));
+  return channel;
+};
+
+const CLEAR_CURRENT_CHANNEL = "currentChannel/Clear";
+export const clearCurrentChannel = (channel) => {
+  return { type: CLEAR_CURRENT_CHANNEL, channel };
 };
 
 const ADD_CHANNEL_MESSAGE = "currentChannel/AddMessage";
@@ -96,11 +106,18 @@ const channelsReducer = (
   state = {
     channels: {},
     currentChannel: { channel: null, pins: {} },
+    userDmChannels: {},
+    dmCurrentChannel: {},
   },
   action
 ) => {
   let newState = { ...state };
   switch (action.type) {
+    case SET_USER_DM_CHANNELS: {
+      newState.userDmChannels = action.dmRooms;
+      return newState;
+    }
+
     case ADD_CHANNEL_TO_SERVER: {
       newState.channels[action.channel.id] = action.channel;
       return newState;
@@ -124,6 +141,11 @@ const channelsReducer = (
 
     case SET_CURRENT_CHANNEL: {
       newState.currentChannel = action.channel;
+      return newState;
+    }
+
+    case CLEAR_CURRENT_CHANNEL: {
+      newState.currentChannel = null;
       return newState;
     }
 
