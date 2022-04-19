@@ -4,16 +4,17 @@ import Channels from "../Channels";
 import OneChannel from "../OneChannel";
 import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 
 import { getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
 import ServerOptions from "../ServerOptions";
 import EditServerModal from "../EditServer/EditServerModal";
-import { clearCurrentChannel } from "../../store/channels";
 
-const OneServer = ({ setDmRoomsView, dmRoomsView }) => {
+const OneServer = () => {
+  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
   const [loaded, setLoaded] = useState(false);
   const { serverId, channelId, dmRoomId } = useParams();
   const [channelLoaded, setChannelLoaded] = useState(false);
@@ -64,6 +65,8 @@ const OneServer = ({ setDmRoomsView, dmRoomsView }) => {
     prevServerId,
     serverId,
     url.pathname,
+    dmRoomsView,
+    setDmRoomsView,
   ]);
 
   const handleCloseServerOpts = (e) => {

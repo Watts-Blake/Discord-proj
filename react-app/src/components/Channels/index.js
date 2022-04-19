@@ -6,8 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import EditChannelModal from "../EditChannel/EditChannelModal";
-
-const Channels = ({ setDmRoomsView, dmRoomsView }) => {
+import { useContext } from "react";
+import { DmRoomViewContext } from "../../context/DmRoomViewContext";
+const Channels = () => {
+  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
   const { channelId, dmRoomId } = useParams();
 
   const [ownerId, setOwnerId] = useState();

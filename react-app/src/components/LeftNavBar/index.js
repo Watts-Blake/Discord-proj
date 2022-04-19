@@ -5,13 +5,15 @@ import CreateServerModal from "../CreateServer/CreateServerModal";
 import { grabFirstChannelId } from "../../utils";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useState, useEffect, useContext } from "react";
+import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 
-const LeftNavBar = ({ userServers, user, dmRoomsView, setDmRoomsView }) => {
+const LeftNavBar = ({ userServers, user }) => {
+  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
   const userDmRooms = useSelector((state) => state.channels.userDmChannels);
   console.log(userDmRooms);
   const handleHomeClick = (channelId) => {
     setDmRoomsView(true);
-    return <Redirect to={`/channels/@me/${channelId}`} />;
   };
   return (
     user && (
