@@ -23,16 +23,18 @@ const Channels = () => {
   let url = useLocation();
   const dispatch = useDispatch();
   useEffect(() => {
-    window.location.href.includes("@me")
+    let isActive = true;
+    window.location.href.includes("@me") && isActive
       ? setDmRoomsView(true)
       : setDmRoomsView(false);
     setCurrentChannelId(channelId || dmRoomId);
-    if (currentServer) {
+    if (currentServer && isActive) {
       setOwnerId(currentServer?.owner?.id);
     }
-    dmRoomsView
+    dmRoomsView && isActive
       ? setChannels(Object.values(channelsObj.userDmChannels))
       : setChannels(Object.values(channelsObj.channels));
+    return () => (isActive = false);
   }, [
     dispatch,
     currentServer,
