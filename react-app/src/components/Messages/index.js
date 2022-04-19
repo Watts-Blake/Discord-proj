@@ -1,10 +1,8 @@
 import "./Messages.css";
 
-import { useRef, useEffect, useContext } from "react";
+import { useRef, useEffect } from "react";
 
-import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 const Messages = ({ messages }) => {
-  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
   const messagesEnd = useRef(null);
   useEffect(() => {
     messagesEnd.current?.scrollIntoView();

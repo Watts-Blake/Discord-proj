@@ -3,7 +3,6 @@ import Servers from "../Servers";
 import { NavLink } from "react-router-dom";
 import CreateServerModal from "../CreateServer/CreateServerModal";
 
-import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useContext } from "react";
 import { DmRoomViewContext } from "../../context/DmRoomViewContext";
