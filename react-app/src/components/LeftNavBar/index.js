@@ -2,18 +2,21 @@ import "./LeftNavBar.css";
 import Servers from "../Servers";
 import { NavLink } from "react-router-dom";
 import CreateServerModal from "../CreateServer/CreateServerModal";
-import { grabFirstChannelId } from "../../utils";
+
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useState, useEffect, useContext } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useContext } from "react";
 import { DmRoomViewContext } from "../../context/DmRoomViewContext";
+import { getOneChannel } from "../../store/channels";
 
 const LeftNavBar = ({ userServers, user }) => {
+  const dispatch = useDispatch();
   const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
   const userDmRooms = useSelector((state) => state.channels.userDmChannels);
   console.log(userDmRooms);
-  const handleHomeClick = (channelId) => {
+  const handleHomeClick = async (channelId) => {
     setDmRoomsView(true);
+    await dispatch(getOneChannel(channelId));
   };
   return (
     user && (

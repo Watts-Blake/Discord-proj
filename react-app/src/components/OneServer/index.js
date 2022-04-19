@@ -29,34 +29,72 @@ const OneServer = () => {
   const channelsObj = useSelector((state) => state.channels);
   let url = useLocation();
 
+  // useEffect(() => {
+  //   if (window.location.href.includes("@me")) {
+  //     setDmRoomsView(true);
+  //     if (dmRoomId && dmRoomId * 1 !== prevRoom) {
+  //       setLoaded(false);
+  //       setChannelLoaded(false);
+  //       dispatch(getOneChannel(dmRoomId)).then(() => setPrevRoom(dmRoomId));
+  //     }
+  //     setChannelLoaded(true);
+  //     setLoaded(true);
+  //   }
+  // }, [dispatch, dmRoomId, dmRoomsView, prevRoom, setDmRoomsView]);
+
+  // useEffect(() => {
+  //   if (!dmRoomsView) {
+  //     if (serverId * 1 !== prevServerId && channelId !== prevRoom) {
+  //       setLoaded(false);
+  //       setChannelLoaded(false);
+  //       dispatch(getOneServer(serverId))
+  //         .then(() => setPrevServerId(serverId))
+  //         .then(() => setPrevRoom(channelId));
+  //       if (channelId * 1 !== prevRoom) {
+  //         setChannelLoaded(false);
+  //         dispatch(getOneChannel(channelId));
+  //       }
+  //     }
+  //     setChannelLoaded(true);
+  //     setLoaded(true);
+  //   }
+  // }, [dispatch, dmRoomsView, serverId, prevServerId, prevRoom, channelId]);
+
   useEffect(() => {
     console.log("urlllllllllll", dmRoomsView);
+    let isActive = true;
     setChannelLoaded(false);
-    if (window.location.href.includes("@me")) {
+    if (window.location.href.includes("@me") && isActive) {
       setDmRoomsView(true);
-      if (dmRoomId && dmRoomId * 1 !== prevRoom) {
+      if (dmRoomId && dmRoomId * 1 !== prevRoom && isActive) {
         setChannelLoaded(false);
         dispatch(getOneChannel(dmRoomId))
           .then(() => setPrevRoom(dmRoomId))
-          .then(() => setLoaded(true));
+          .catch((error) => console.log(error.message));
       }
     } else {
-      if (serverId && channelId) {
-        if (serverId * 1 !== prevServerId) {
+      if (
+        (serverId || channelId) &&
+        serverId * 1 !== prevServerId &&
+        isActive
+      ) {
+        setChannelLoaded(false);
+        dispatch(getOneServer(serverId))
+          .then(() => setPrevServerId(serverId))
+          .then(() => setPrevRoom(channelId))
+          .catch((error) => console.log(error.message));
+
+        if (channelId * 1 !== prevRoom && isActive) {
           setChannelLoaded(false);
-          dispatch(getOneServer(serverId))
-            .then(() => setPrevServerId(serverId))
-            .then(() => setPrevRoom(channelId))
-            .then(() => setLoaded(true));
-          if (channelId * 1 !== prevRoom) {
-            setChannelLoaded(false);
-            dispatch(getOneChannel(channelId));
-          }
+          dispatch(getOneChannel(channelId)).catch((error) =>
+            console.log(error.message)
+          );
         }
       }
     }
     setChannelLoaded(true);
     setLoaded(true);
+    return () => (isActive = false);
   }, [
     dispatch,
     dmRoomId,
@@ -165,7 +203,11 @@ const OneServer = () => {
 
           <div className="members_container">
             {channelLoaded && (
-              <Members serversObj={serversObj} className="members" />
+              <Members
+                serversObj={serversObj}
+                channelsObj={channelsObj}
+                className="members"
+              />
             )}
           </div>
         </div>
