@@ -16,7 +16,7 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
 
   const [selected, setSelected] = useState("Overview");
   const [name, setName] = useState(server.name);
-  console.log(name);
+
   const [image, setImage] = useState(server.picture);
   const [emptyFile, setEmptyFile] = useState("");
   const [requireSave, setRequireSave] = useState(false);
@@ -47,7 +47,7 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
     ) {
       let firstServerId = grabFirstServerId(user.serverMember);
       let firsChannelId = grabFirstChannelId(user.serverMember);
-      console.log("inside delete ifffffffffffffffffffffffff");
+
       history.push(`/channels/${firstServerId}/${firsChannelId}`);
       await dispatch(getOneServer(firstServerId)).then(() =>
         dispatch(getOneChannel(firsChannelId))
@@ -65,7 +65,6 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
 
   const handleImageUpdate = (e) => {
     setImage(e.target.files[0]);
-    console.log(e.target.files);
   };
 
   const reset = () => {

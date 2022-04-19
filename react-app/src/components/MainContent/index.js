@@ -1,24 +1,22 @@
 import "./MainContent.css";
-import OneDmRoom from "../OneDmRoom";
 import OneServer from "../OneServer";
-import DmRooms from "../DmRooms";
 import { BrowserRouter } from "react-router-dom";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import { Switch } from "react-router-dom";
+import { useState } from "react";
 
-const MainContent = ({ user }) => {
+const MainContent = ({ user, dmRoomsView, setDmRoomsView }) => {
   return (
     <>
       <BrowserRouter>
         <Switch>
-          <ProtectedRoute path="/home/@me">
-            <DmRooms />
+          <ProtectedRoute path="/channels/@me/">
+            <OneServer setDmRoomsView={setDmRoomsView} dmRoomsView={true} />
           </ProtectedRoute>
-          <ProtectedRoute path="/home/@me/:dmRoomId">
-            <OneDmRoom />
-          </ProtectedRoute>
-          <ProtectedRoute path="/channels/:serverId?/:channelId">
-            <OneServer />
+          <ProtectedRoute path="/channels/:serverId?/:channelId" exact={true}>
+            {!dmRoomsView && (
+              <OneServer setDmRoomsView={setDmRoomsView} dmRoomsView={false} />
+            )}
           </ProtectedRoute>
         </Switch>
       </BrowserRouter>

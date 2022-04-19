@@ -39,7 +39,7 @@ const EditChannel = ({ channel, user, setShowModal }) => {
 
     if (grabFirstChannelId(user.serverMember)) {
       let firsChannelId = grabFirstChannelId(user.serverMember);
-      console.log("inside delete ifffffffffffffffffffffffff");
+
       history.push(`/channels/${channel.serverId}/${firsChannelId}`);
       await dispatch(getOneChannel(firsChannelId));
     }

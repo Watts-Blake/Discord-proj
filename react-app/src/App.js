@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 
 function App() {
   const [loaded, setLoaded] = useState(false);
+  const [dmRoomsView, setDmRoomsView] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
   const servers = useSelector((state) => state.servers);
@@ -49,8 +50,18 @@ function App() {
           </Route>
           <ProtectedRoute path="/channels">
             <div className="logged_app">
-              <LeftNavBar userServers={userServers} user={user} />
-              <MainContent className="main_content" user={user} />
+              <LeftNavBar
+                userServers={userServers}
+                setDmRoomsView={setDmRoomsView}
+                dmRoomsView={dmRoomsView}
+                user={user}
+              />
+              <MainContent
+                setDmRoomsView={setDmRoomsView}
+                dmRoomsView={dmRoomsView}
+                className="main_content"
+                user={user}
+              />
             </div>
           </ProtectedRoute>
         </Switch>

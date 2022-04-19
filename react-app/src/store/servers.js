@@ -15,7 +15,6 @@ export const addUserServer = (server) => {
   return { type: ADD_USER_SERVER, server };
 };
 export const postUserServer = (formData) => async (dispatch) => {
-  console.log("from thunkkkkkk", formData["serverPicture"]);
   const res = await fetch("/api/servers/", {
     method: "POST",
     body: formData,
@@ -64,7 +63,6 @@ export const updateCurrentServer = (server) => {
 };
 
 export const putCurrentServer = (serverId, formData) => async (dispatch) => {
-  console.log("from thunkkkkkk", formData["serverPicture"]);
   const res = await fetch(`/api/servers/${serverId}`, {
     method: "PUT",
     body: formData,

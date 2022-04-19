@@ -5,47 +5,69 @@ import OneChannel from "../OneChannel";
 import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 import { getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
 import ServerOptions from "../ServerOptions";
 import EditServerModal from "../EditServer/EditServerModal";
+import { clearCurrentChannel } from "../../store/channels";
 
-const OneServer = () => {
+const OneServer = ({ setDmRoomsView, dmRoomsView }) => {
   const [loaded, setLoaded] = useState(false);
-  const dispatch = useDispatch();
-  const { serverId, channelId } = useParams();
+  const { serverId, channelId, dmRoomId } = useParams();
+  const [channelLoaded, setChannelLoaded] = useState(false);
+  const [prevRoom, setPrevRoom] = useState();
+  const [prevServerId, setPrevServerId] = useState();
   const [showModal, setShowModal] = useState(false);
+  const [showServerOptions, setShowServerOptions] = useState(false);
+
+  const dispatch = useDispatch();
   const serversObj = useSelector((state) => state.servers);
   const user = useSelector((state) => state.session.user);
   const channelsObj = useSelector((state) => state.channels);
-  const [showServerOptions, setShowServerOptions] = useState(false);
+  let url = useLocation();
 
   useEffect(() => {
-    if (
-      serversObj.currentServer.server === null ||
-      channelsObj.currentChannel.channel === null
-    ) {
-      console.log("inside ifffffff");
-      dispatch(getOneServer(serverId)).then(() =>
-        dispatch(getOneChannel(channelId)).then(() => setLoaded(true))
-      );
+    console.log("urlllllllllll", dmRoomsView);
+    setChannelLoaded(false);
+    if (dmRoomsView) {
+      if (dmRoomId && dmRoomId * 1 !== prevRoom) {
+        setChannelLoaded(false);
+        dispatch(getOneChannel(dmRoomId))
+          .then(() => setPrevRoom(dmRoomId))
+          .then(() => setLoaded(true));
+      }
     } else {
-      setLoaded(true);
+      if (serverId && channelId) {
+        if (serverId * 1 !== prevServerId) {
+          setChannelLoaded(false);
+          dispatch(getOneServer(serverId))
+            .then(() => setPrevServerId(serverId))
+            .then(() => setPrevRoom(channelId))
+            .then(() => setLoaded(true));
+          if (channelId * 1 !== prevRoom) {
+            setChannelLoaded(false);
+            dispatch(getOneChannel(channelId));
+          }
+        }
+      }
     }
+    setChannelLoaded(true);
+    setLoaded(true);
   }, [
     dispatch,
-    channelsObj.currentChannel,
-    serversObj.currentServer,
-    serverId,
+    dmRoomId,
     channelId,
+    prevRoom,
+    prevServerId,
+    serverId,
+    url.pathname,
   ]);
 
   const handleCloseServerOpts = (e) => {
     if (!showServerOptions) return;
     if (!e.target.id.includes("server_opts")) {
-      console.log(e.target);
       setShowServerOptions(false);
     }
     let leftNav = document.getElementById("left_nav");
@@ -64,36 +86,63 @@ const OneServer = () => {
         onClick={handleCloseServerOpts}
       >
         <div className="header">
-          <div className="server_options">
-            <h2 className="server_options_name">
-              {serversObj.currentServer.name}
-            </h2>
-            {!showServerOptions && (
-              <img
-                src="/svgs/downCarrotSharp.svg"
-                alt="downCarrot"
-                className="sever_opt_button"
-                id="open_server_opts"
-                onClick={() => setShowServerOptions(true)}
-              />
-            )}
-            {showServerOptions && (
-              <img
-                src="/svgs/XX.svg"
-                alt="x"
-                className="sever_opt_button"
-                onClick={() => setShowServerOptions(false)}
-              />
-            )}
-          </div>
-          <div className="channel_header">
-            <img src="/svgs/pound.svg" alt="#" />
-            {channelsObj.currentChannel.name}
-          </div>
+          {serverId && (
+            <div className="server_options">
+              {!dmRoomsView && (
+                <h2 className="server_options_name">
+                  {serversObj.currentServer.name}
+                </h2>
+              )}
+              {dmRoomsView && (
+                <h2 className="server_options_name">{user.username}</h2>
+              )}
+              {!showServerOptions && (
+                <img
+                  src="/svgs/downCarrotSharp.svg"
+                  alt="downCarrot"
+                  className="sever_opt_button"
+                  id="open_server_opts"
+                  onClick={() => setShowServerOptions(true)}
+                />
+              )}
+              {showServerOptions && (
+                <img
+                  src="/svgs/XX.svg"
+                  alt="x"
+                  className="sever_opt_button"
+                  onClick={() => setShowServerOptions(false)}
+                />
+              )}
+            </div>
+          )}
+          {channelLoaded &&
+            (!dmRoomsView ? (
+              <div className="channel_header">
+                <img src="/svgs/pound.svg" alt="#" />
+                {channelsObj.currentChannel?.name}
+              </div>
+            ) : (
+              <div className="channel_header">{user.username}'s </div>
+            ))}
         </div>
         <div className="one_channel_container">
           <div className="channels_container">
-            <Channels channels={channelsObj} className="channels" />
+            {!dmRoomsView && (
+              <Channels
+                channels={channelsObj}
+                dmRoomsView={dmRoomsView}
+                setDmRoomsView={setDmRoomsView}
+                className="channels"
+              />
+            )}
+            {dmRoomsView && (
+              <Channels
+                channels={channelsObj}
+                dmRoomsView={dmRoomsView}
+                setDmRoomsView={setDmRoomsView}
+                className="channels"
+              />
+            )}
             <LoggedInUserTab user={user} />
             {showServerOptions && (
               <ServerOptions
@@ -105,11 +154,15 @@ const OneServer = () => {
           </div>
 
           <div className="one_channel">
-            <OneChannel channelsObj={channelsObj} className="one_channel" />
+            {channelLoaded && (
+              <OneChannel channelsObj={channelsObj} className="one_channel" />
+            )}
           </div>
 
           <div className="members_container">
-            <Members serversObj={serversObj} className="members" />
+            {channelLoaded && (
+              <Members serversObj={serversObj} className="members" />
+            )}
           </div>
         </div>
         <EditServerModal

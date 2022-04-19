@@ -31,3 +31,8 @@
   gap: 5px;
   align-items: center;
 }
+
+.direct_message_icon {
+  height: 40px;
+  border-radius: 100%;
+}

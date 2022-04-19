@@ -6,11 +6,10 @@ import { getOneServer } from "../../store/servers";
 import { useDispatch } from "react-redux";
 
 import { getOneChannel } from "../../store/channels";
-const Servers = ({ userServers }) => {
+const Servers = ({ userServers, dmRoomsView, setDmRoomsView }) => {
   const [loaded, setLoaded] = useState(false);
 
   const grabFirstChannelId = (channels) => {
-    console.log("hereeeeeeeee", channels);
     let newChannels = Object.values(channels);
     return newChannels[0].id;
   };
@@ -24,6 +23,7 @@ const Servers = ({ userServers }) => {
     await dispatch(getOneServer(serverId)).then(() =>
       dispatch(getOneChannel(channelId))
     );
+    setDmRoomsView(false);
   };
 
   return (
