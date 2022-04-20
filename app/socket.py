@@ -4,7 +4,7 @@ import os
 # configure cors_allowed_origins
 if os.environ.get('FLASK_ENV') == 'production':
     origins = [
-        'https://diss-cord.herokuapp.com/',
+        'http://diss-cord.herokuapp.com/',
         'https://diss-cord.herokuapp.com/'
     ]
 else:
