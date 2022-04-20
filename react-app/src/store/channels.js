@@ -88,19 +88,62 @@ export const clearCurrentChannel = (channel) => {
   return { type: CLEAR_CURRENT_CHANNEL, channel };
 };
 
+//----------------------------------------------------------------add message
 const ADD_CHANNEL_MESSAGE = "currentChannel/AddMessage";
 export const addChannelMessage = (message) => {
   return { type: ADD_CHANNEL_MESSAGE, message };
 };
+
+export const postMessage = (channelId, formData) => async (dispatch) => {
+  const res = await csrfFetch(`/api/channels/${channelId}/messages`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const newMessage = await res.json();
+
+  dispatch(addChannelMessage(newMessage));
+  return newMessage;
+};
+//----------------------------------------------------------------update message
 const UPDATE_CHANNEL_MESSAGE = "currentChannel/UpdateMessage";
 export const updateChannelMessage = (message) => {
   return { type: UPDATE_CHANNEL_MESSAGE, message };
 };
+
+export const putMessage =
+  (channelId, messageId, formData) => async (dispatch) => {
+    const res = await csrfFetch(
+      `/api/channels/${channelId}/messages/${messageId}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const updatedMessage = await res.json();
+
+    dispatch(updateChannelMessage(updatedMessage));
+    return updatedMessage;
+  };
+//----------------------------------------------------------------delete message
 const REMOVE_CHANNEL_MESSAGE = "currentChannel/RemoveMessage";
 
-export const removeChanelMessage = (messageId) => {
+export const removeChannelMessage = (messageId) => {
   return { type: REMOVE_CHANNEL_MESSAGE, messageId };
 };
+
+export const deleteChannelMessage =
+  (channelId, messageId) => async (dispatch) => {
+    const res = await csrfFetch(
+      `/api/channels/${channelId}/messages/${messageId}`,
+      {
+        method: "DELETE",
+      }
+    );
+    const deletedMessage = await res.json();
+    dispatch(removeChannelMessage(deletedMessage.messageId));
+  };
 //--------------------------------------reducer
 const channelsReducer = (
   state = {
