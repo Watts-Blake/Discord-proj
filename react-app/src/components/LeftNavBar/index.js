@@ -36,7 +36,7 @@ const LeftNavBar = ({ userServers, user }) => {
           dmRoomsView={dmRoomsView}
         ></Servers>
         <CreateServerModal></CreateServerModal>
-        <NavLink to="/home/guild-discovery">
+        <NavLink to="/guild-discovery">
           <img
             className="left_side_icon"
             src="/svgs/svgexport-16.svg"

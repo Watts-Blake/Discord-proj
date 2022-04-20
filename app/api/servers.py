@@ -13,9 +13,9 @@ servers_routes = Blueprint('servers', __name__, url_prefix='servers')
 def get_all_or_post_to_servers():
 # --------------------------------------------------------get all servers
     if request.method == 'GET':
-        servers= Server.query.get().all()
+        servers= db.session.query(Server).all()
 
-        return {'servers': server.to_resource_dict() for server in servers}
+        return {'servers':{server.id: server.to_resource_dict() for server in servers}}
 #---------------------------------------------------------create new server
     if request.method == 'POST':
         # print('right here you fucking wombat', request.files['image'])

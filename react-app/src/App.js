@@ -10,6 +10,7 @@ import { authenticate } from "./store/session";
 import LeftNavBar from "./components/LeftNavBar";
 import MainContent from "./components/MainContent";
 import Home from "./components/Home";
+import AllServers from "./components/AllServers";
 import { useSelector } from "react-redux";
 
 function App() {
@@ -51,6 +52,12 @@ function App() {
             <div className="logged_app">
               <LeftNavBar userServers={userServers} user={user} />
               <MainContent className="main_content" user={user} />
+            </div>
+          </ProtectedRoute>
+          <ProtectedRoute path="/guild-discovery">
+            <div className="logged_app">
+              <LeftNavBar userServers={userServers} user={user} />
+              <AllServers className="main_content" user={user} />
             </div>
           </ProtectedRoute>
         </Switch>

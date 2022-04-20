@@ -5,6 +5,21 @@ import { setChannels } from "./channels";
 //---------------------------------------actions------------------------------
 
 //---------------------------------------------------------------------servers
+
+const SET_ALL_SERVERS = "servers/SetAllServers";
+
+export const setAllServers = (servers) => {
+  return { type: SET_ALL_SERVERS, servers };
+};
+
+export const getAllServers = () => async (dispatch) => {
+  const res = await fetch("/api/servers/");
+  const servers = await res.json();
+  console.log("from thunk", servers);
+  dispatch(setAllServers(servers.servers));
+  return servers.servers;
+};
+
 const SET_USER_SERVERS = "servers/SetUserServers";
 export const setUserServers = (servers) => {
   return { type: SET_USER_SERVERS, servers };
@@ -100,6 +115,10 @@ const serversReducer = (
 ) => {
   let newState = { ...state };
   switch (action.type) {
+    case SET_ALL_SERVERS: {
+      newState.allServers = action.servers;
+      return newState;
+    }
     case SET_USER_SERVERS: {
       newState.userServers = action.servers;
       return newState;
