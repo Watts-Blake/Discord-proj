@@ -66,6 +66,7 @@ class ChannelMessage(db.Model):
     sender_id = db.Column(Integer, ForeignKey('users.id'), nullable=False)
     pinned = db.Column(Boolean, default=False)
     content = db.Column(String(2000), nullable=False)
+    picture = db.Column(String(2000))
     created_at = db.Column(DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(DateTime(timezone=True), onupdate=func.now())
 
