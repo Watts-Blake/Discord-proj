@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, session, request
-from app.models import User, db
+from app.models import User, db, Channel, ChannelMessage, ChannelMember
 from app.forms import LoginForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.aws import upload_file_to_s3, allowed_file, get_unique_filename
@@ -94,6 +94,22 @@ def sign_up():
     )
     db.session.add(user)
     db.session.commit()
+
+    new_channel = Channel(owner_id=2, dm_channel=True)
+    db.session.add(new_channel)
+    db.session.commit()
+
+    new_channel_member_me = ChannelMember(channel_id=new_channel.id, user_id=2)
+    db.session.add(new_channel_member_me)
+    new_channel_member = ChannelMember(channel_id=new_channel.id, user_id=user.id)
+    db.session.add(new_channel_member)
+
+    db.session.commit()
+
+    new_message = ChannelMessage(channel_id=new_channel.id, sender_id=2, content='Hello, Thank you for visiting Diss-cord, a on going project clone of Discord')
+    db.session.add(new_message)
+    db.session.commit()
+
     login_user(user)
     return user.to_dict()
 

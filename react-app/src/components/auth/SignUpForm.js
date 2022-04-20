@@ -61,11 +61,10 @@ const SignUpForm = () => {
   };
 
   if (user) {
+    console.log(Object.values(user.dmChannelMember)[0].id);
     return (
       <Redirect
-        to={`/channels/${grabFirstServerId(
-          user.serverMember
-        )}/${grabFirstChannelId(user.serverMember)}`}
+        to={`/channels/@me/${Object.values(user.dmChannelMember)[0].id}`}
       />
     );
   }

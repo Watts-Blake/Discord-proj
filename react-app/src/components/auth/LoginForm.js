@@ -39,9 +39,7 @@ const LoginForm = () => {
   if (user) {
     return (
       <Redirect
-        to={`/channels/${grabFirstServerId(
-          user.serverMember
-        )}/${grabFirstChannelId(user.serverMember)}`}
+        to={`/channels/@me/${Object.values(user.dmChannelMember)[0].id}`}
       />
     );
   }
