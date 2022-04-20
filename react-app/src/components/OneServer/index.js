@@ -66,7 +66,7 @@ const OneServer = () => {
     setChannelLoaded(false);
     if (window.location.href.includes("@me") && isActive) {
       setDmRoomsView(true);
-      if (dmRoomId && dmRoomId * 1 !== prevRoom && isActive) {
+      if (dmRoomId && dmRoomId * 1 !== prevRoom && !prevRoom && isActive) {
         setChannelLoaded(false);
         dispatch(getOneChannel(dmRoomId))
           .then(() => setPrevRoom(dmRoomId))
@@ -76,6 +76,7 @@ const OneServer = () => {
       if (
         (serverId || channelId) &&
         serverId * 1 !== prevServerId &&
+        !prevServerId &&
         isActive
       ) {
         setChannelLoaded(false);
@@ -84,7 +85,7 @@ const OneServer = () => {
           .then(() => setPrevRoom(channelId))
           .catch((error) => console.log(error.message));
 
-        if (channelId * 1 !== prevRoom && isActive) {
+        if (channelId * 1 !== prevRoom && !prevRoom && isActive) {
           setChannelLoaded(false);
           dispatch(getOneChannel(channelId)).catch((error) =>
             console.log(error.message)

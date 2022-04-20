@@ -10,6 +10,7 @@ from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.servers import servers_routes
 from.api.channels import channel_routes
+from .socket import socketio
 
 from .seeds import seed_commands
 
@@ -37,6 +38,7 @@ app.register_blueprint(servers_routes, url_prefix='/api/servers')
 app.register_blueprint(channel_routes, url_prefix='/api/channels')
 db.init_app(app)
 Migrate(app, db)
+socketio.init_app(app)
 
 # Application Security
 CORS(app)
@@ -76,3 +78,6 @@ def react_root(path):
     if path[0:4] == 'svgs':
         return app.send_static_file(path[5:])
     return app.send_static_file('index.html')
+
+if __name__ == '__main__':
+    socketio.run(app)

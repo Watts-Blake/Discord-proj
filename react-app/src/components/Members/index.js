@@ -11,7 +11,10 @@ const Members = ({ serversObj }) => {
     const currentChannel = channels?.currentChannel;
     console.log("hereeeeeee", currentChannel);
     if (currentChannel && isActive) {
-      if (currentChannel?.name === "General")
+      if (
+        currentChannel?.name === "General" &&
+        serversObj.currentServer.members
+      )
         setMembers(Object.values(serversObj?.currentServer?.members));
 
       if (currentChannel?.name !== "General" && currentChannel.members)
