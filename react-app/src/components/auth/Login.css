@@ -67,6 +67,12 @@
   color: #00a9ec;
 }
 
+.buttons_container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
 .submit_btn {
   margin-bottom: 40px;
   width: 200px;
