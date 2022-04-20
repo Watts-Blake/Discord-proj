@@ -4,7 +4,6 @@ import { Redirect } from "react-router-dom";
 import { login } from "../../store/session";
 import "./Login.css";
 import { Link } from "react-router-dom";
-import { grabFirstServerId, grabFirstChannelId } from "../../utils";
 
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);

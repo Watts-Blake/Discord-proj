@@ -5,8 +5,6 @@ import { signUp } from "../../store/session";
 import "./Signup.css";
 import { Link } from "react-router-dom";
 
-import { grabFirstChannelId, grabFirstServerId } from "../../utils";
-
 const SignUpForm = () => {
   const [errors, setErrors] = useState([]);
   const [username, setUsername] = useState("");

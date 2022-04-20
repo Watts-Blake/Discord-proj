@@ -34,7 +34,8 @@ class Server(db.Model):
             'topic': self.topic,
             'description': self.description,
             'channels':{channel.id: channel.to_resource_dict() for channel in self.channels},
-            'members': {member.id: member.member.to_resource_dict() for member in self.members}
+            'members': {member.id: member.member.to_resource_dict() for member in self.members},
+            'firstChannelId': self.channels[0].id
         }
     def to_resource_dict(self):
         return {
@@ -44,6 +45,7 @@ class Server(db.Model):
             'name': self.name,
             'topic': self.topic,
             'description': self.description,
+            'firstChannelId': self.channels[0].id
         }
 
 class ServerMember(db.Model):
