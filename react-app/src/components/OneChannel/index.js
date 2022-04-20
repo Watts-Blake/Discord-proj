@@ -2,7 +2,7 @@ import "./OneChannel.css";
 import Messages from "../Messages";
 import ChatInput from "../ChatInput";
 import { postMessage } from "../../store/channels";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 let socket;
