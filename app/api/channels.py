@@ -31,15 +31,15 @@ def get_one_put_delete_channel(channel_id):
         return {'channelId': channel.id}
 
 @channel_routes.route('/<int:channel_id>/messages', methods=['POST'])
-def get_channel_message(channel_id):
+def post_channel_message(channel_id):
     url = None
     if "image" in request.files:
         image = request.files["image"]
-    if not allowed_file(image.filename):
-        return {"errors": "file type not permitted"}, 400
-    image.filename = get_unique_filename(image.filename)
-    upload = upload_file_to_s3(image)
-    url = upload["url"]
+        if not allowed_file(image.filename):
+            return {"errors": "file type not permitted"}, 400
+        image.filename = get_unique_filename(image.filename)
+        upload = upload_file_to_s3(image)
+        url = upload["url"]
 
     new_message = ChannelMessage(
         channel_id=channel_id,
@@ -53,7 +53,7 @@ def get_channel_message(channel_id):
     return new_message.to_dict()
 
 @channel_routes.route('/<int:channel_id>/messages/<int:message_id>', methods=['PUT', 'DELETE'])
-def get_one_put_delete_channel(message_id):
+def put_delete_message(message_id):
     message = ChannelMessage.query.get(message_id)
 
 

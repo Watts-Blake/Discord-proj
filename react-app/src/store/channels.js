@@ -95,7 +95,7 @@ export const addChannelMessage = (message) => {
 };
 
 export const postMessage = (channelId, formData) => async (dispatch) => {
-  const res = await csrfFetch(`/api/channels/${channelId}/messages`, {
+  const res = await fetch(`/api/channels/${channelId}/messages`, {
     method: "POST",
     body: formData,
   });
@@ -113,7 +113,7 @@ export const updateChannelMessage = (message) => {
 
 export const putMessage =
   (channelId, messageId, formData) => async (dispatch) => {
-    const res = await csrfFetch(
+    const res = await fetch(
       `/api/channels/${channelId}/messages/${messageId}`,
       {
         method: "POST",

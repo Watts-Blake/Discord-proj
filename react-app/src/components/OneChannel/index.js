@@ -1,15 +1,20 @@
 import "./OneChannel.css";
 import Messages from "../Messages";
 import ChatInput from "../ChatInput";
+import { postMessage } from "../../store/channels";
+import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 let socket;
+
 const OneChannel = ({ channelsObj }) => {
   const currentChannel = channelsObj?.currentChannel;
   const channelId = currentChannel?.id;
   const [prevRoom, setPrevRoom] = useState(`channel${channelId}`);
   const [socketRoom, setSocketRoom] = useState();
   const [messages, setMessages] = useState([]);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setSocketRoom(`channel${channelId}`);
@@ -28,7 +33,7 @@ const OneChannel = ({ channelsObj }) => {
   useEffect(() => {
     socket = io();
     socket.on("message", (data) => {
-      setMessages((messages) => [...messages, data]);
+      setMessages((messages) => [...messages, data["message"]]);
     });
 
     return () => {
@@ -50,15 +55,17 @@ const OneChannel = ({ channelsObj }) => {
     setPrevRoom(socketRoom);
   }, [prevRoom, socketRoom]);
 
-  const sendMessage = async (e) => {
-    e.preventDefault();
+  const sendMessage = async (formData) => {
+    await dispatch(postMessage(channelId, formData)).then((message) =>
+      socket.send({ message, room: socketRoom })
+    );
   };
 
   return (
     <>
       {currentChannel?.messages && <Messages messages={messages} />}
 
-      <ChatInput className="chat_input" />
+      <ChatInput sendMessage={sendMessage} className="chat_input" />
     </>
   );
 };

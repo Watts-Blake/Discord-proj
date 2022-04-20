@@ -48,5 +48,7 @@ def leave(data):
 
 @socketio.on('message')
 def on_chat_sent(data):
+    # data = req['message']
     print('data issssss hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', data)
-    send({'id':data['id'],'dm_room_id': data['dm_room_id'] , 'channel_id':data['channel_id'], 'content': data['content'], 'created_at': data['created_at'], 'room':data['room'], 'sender_username': data['sender_username'], 'sender_profile_picture': data['sender_profile_picture'] }, room=data['room'],)
+    send({'message': data['message']}, room=data['room'],)
+    # send({'id':data['id'],'channelId': data['channelId'] ,'content': data['content'], 'createdAt': data['createdAt'], 'updatedAt': data['updatedAt'], 'pinned': data['pinned'], 'senderUsername': data['senderUsername'], 'senderProfilePicture': data['senderProfilePicture']}, room=data['room'],)
