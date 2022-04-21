@@ -48,18 +48,18 @@ function App() {
           <Route path="/" exact={true}>
             <Home />
           </Route>
-          <ProtectedRoute path="/channels">
+          <BrowserRouter>
             <div className="logged_app">
               <LeftNavBar userServers={userServers} user={user} />
-              <MainContent className="main_content" user={user} />
+
+              <ProtectedRoute path="/channels">
+                <MainContent className="main_content" user={user} />
+              </ProtectedRoute>
+              <ProtectedRoute path="/guild-discovery">
+                <AllServers className="main_content" user={user} />
+              </ProtectedRoute>
             </div>
-          </ProtectedRoute>
-          <ProtectedRoute path="/guild-discovery" exact={true}>
-            <div className="logged_app">
-              <LeftNavBar userServers={userServers} user={user} />
-              <AllServers className="main_content" user={user} />
-            </div>
-          </ProtectedRoute>
+          </BrowserRouter>
         </Switch>
       </BrowserRouter>
     )

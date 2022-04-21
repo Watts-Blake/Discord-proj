@@ -7,15 +7,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useContext } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { DmRoomViewContext } from "../../context/DmRoomViewContext";
-
+import { leaveUserServer } from "../../store/servers";
+import { clearCurrentServer } from "../../store/servers";
+import { clearCurrentChannel } from "../../store/channels";
 import { getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
 import ServerOptions from "../ServerOptions";
 import EditServerModal from "../EditServer/EditServerModal";
 
+import { useHistory } from "react-router-dom";
+
 const OneServer = () => {
   const [loaded, setLoaded] = useState(false);
-  const { dmRoomsView } = useContext(DmRoomViewContext);
+  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
   const { serverId, channelId, dmRoomId } = useParams();
   const [channelLoaded, setChannelLoaded] = useState(false);
   const [prevRoom, setPrevRoom] = useState();
@@ -29,6 +33,18 @@ const OneServer = () => {
   const channelsObj = useSelector((state) => state.channels);
   const currentChannel = channelsObj.currentChannel;
   let url = useLocation();
+  const currentServer = serversObj?.currentServer;
+  const membersObj = currentServer?.members;
+
+  let history = useHistory();
+  const [member, setMember] = useState(false);
+  useEffect(() => {
+    let membersArr;
+    if (membersObj) membersArr = Object.values(membersObj);
+    if (membersArr)
+      setMember(membersArr.find((member) => member.userId === user.id));
+    setLoaded(true);
+  }, [membersObj, user.id, history]);
 
   useEffect(() => {
     let isActive = true;
@@ -63,7 +79,10 @@ const OneServer = () => {
     }
     setChannelLoaded(true);
     setLoaded(true);
-    return () => (isActive = false);
+    return () => {
+      isActive = false;
+      setLoaded(null);
+    };
   }, [
     dispatch,
     dmRoomId,
@@ -87,6 +106,13 @@ const OneServer = () => {
     });
   };
 
+  const handleLeave = async () => {
+    await dispatch(leaveUserServer(currentServer.id, member.id))
+      .then(() => dispatch(clearCurrentServer()))
+      .then(() => dispatch(clearCurrentChannel()))
+      .then(() => setDmRoomsView(false));
+  };
+
   return (
     loaded && (
       <div
@@ -95,7 +121,7 @@ const OneServer = () => {
         onClick={handleCloseServerOpts}
       >
         <div className="header">
-          {currentChannel.serverId ? (
+          {currentChannel?.serverId ? (
             <div className="server_options">
               <h2 className="server_options_name">
                 {serversObj.currentServer?.name}
@@ -154,6 +180,8 @@ const OneServer = () => {
                 setShowModal={setShowModal}
                 serversObj={serversObj}
                 user={user}
+                handleLeave={handleLeave}
+                member={member}
               />
             )}
           </div>

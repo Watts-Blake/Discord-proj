@@ -9,13 +9,16 @@ import { getOneChannel } from "../../store/channels";
 import { useContext } from "react";
 import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 const AllServers = () => {
+  console.log("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   const dispatch = useDispatch();
   const { setDmRoomsView } = useContext(DmRoomViewContext);
   const [loaded, setLoaded] = useState(false);
   const [servers, setServers] = useState("");
   const user = useSelector((state) => state.session.user);
   const userServers = useSelector((state) => state.servers.userServers);
+  let history = useHistory();
 
   const filterServers = (serversObj, filterOutObj) => {
     let newServers = serversObj;
@@ -30,14 +33,11 @@ const AllServers = () => {
   };
 
   useEffect(() => {
-    let isActive = true;
-    setLoaded(false);
-    isActive &&
-      dispatch(getAllServers())
-        .then((servers) => setServers(filterServers(servers, userServers)))
-        .then(() => setLoaded(true));
-    return () => (isActive = false);
-  }, [dispatch, userServers]);
+    console.log("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+    dispatch(getAllServers())
+      .then((servers) => setServers(filterServers(servers, userServers)))
+      .then(() => setLoaded(true));
+  }, [dispatch, userServers, history]);
 
   const handleJoin = async (serverId, channelId) => {
     await dispatch(joinUserServer(serverId, user.id))

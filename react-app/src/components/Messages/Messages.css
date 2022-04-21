@@ -7,6 +7,7 @@
 .messages {
   max-height: 84vh;
   overflow-y: auto;
+  width: 100%;
 }
 .message {
   display: flex;

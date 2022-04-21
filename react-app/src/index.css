@@ -1,12 +1,4 @@
-#root {
-  width: 100%;
-  height: 100%;
-  max-width: 100vw;
-}
-
 body {
-  height: 100vh;
-  width: 100vw;
   max-width: 100vw;
   background-color: #36393f;
   margin: 0 0;
@@ -18,11 +10,17 @@ body {
 
 .logged_app {
   display: flex;
-  width: 100%;
+  width: 100vw;
   height: 100%;
+
+  position: absolute;
+  top: 0;
 }
 
 a {
   color: #8e9297;
   text-decoration: inherit;
+}
+#left_nav {
+  width: 72px;
 }

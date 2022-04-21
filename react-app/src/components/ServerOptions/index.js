@@ -1,37 +1,20 @@
 import "./ServerOptions.css";
-import { useState, useEffect, useContext } from "react";
-import { useDispatch } from "react-redux";
-import { leaveUserServer } from "../../store/servers";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import { NavLink } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import { DmRoomViewContext } from "../../context/DmRoomViewContext";
-import { clearCurrentServer } from "../../store/servers";
-import { clearCurrentChannel } from "../../store/channels";
 
-const ServerOptions = ({ serversObj, user, setShowModal }) => {
-  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
-  let history = useHistory();
-  const [member, setMember] = useState(false);
+const ServerOptions = ({
+  serversObj,
+  user,
+  setShowModal,
+  handleLeave,
+  member,
+}) => {
   const [loaded, setLoaded] = useState(false);
-  const dispatch = useDispatch();
-  const currentServer = serversObj?.currentServer;
-  const membersObj = currentServer?.members;
-  const membersArr = Object.values(membersObj);
-  console.log("here", member);
-  useEffect(() => {
-    setMember(membersArr.find((member) => member.userId === user.id));
-    setLoaded(true);
-  }, [membersArr, user.id]);
 
-  const handleLeave = async () => {
-    setLoaded(false);
-    await dispatch(leaveUserServer(currentServer.id, member.id))
-      .then(() => history.push("/guild-discovery"))
-      .then(() => dispatch(clearCurrentServer()))
-      .then(() => dispatch(clearCurrentChannel()))
-      .then(() => setDmRoomsView(false));
-  };
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
 
   return (
     loaded && (
@@ -56,10 +39,12 @@ const ServerOptions = ({ serversObj, user, setShowModal }) => {
             </div>
           </>
         ) : member ? (
-          <div
+          <NavLink
             className="sing_server_opt"
             id="server_opts_leave"
+            to="/guild-discovery"
             onClick={() => handleLeave()}
+            replace={true}
           >
             <h4 id="server_opts_leave_title">Leave Server</h4>{" "}
             <img
@@ -67,7 +52,7 @@ const ServerOptions = ({ serversObj, user, setShowModal }) => {
               src="/svgs/leaveServer.svg"
               alt="leave"
             />
-          </div>
+          </NavLink>
         ) : (
           <div className="sing_server_opt" id="server_opts_join">
             <h4 id="server_opts_join_title">Join Server</h4>{" "}

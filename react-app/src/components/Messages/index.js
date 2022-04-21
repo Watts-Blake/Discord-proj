@@ -3,9 +3,13 @@ import "./Messages.css";
 import { useRef, useEffect } from "react";
 
 const Messages = ({ messages }) => {
-  const messagesEnd = useRef(null);
+  let messagesEnd = useRef(null);
   useEffect(() => {
-    messagesEnd.current?.scrollIntoView();
+    let isActive = true;
+    isActive && messagesEnd.current?.scrollIntoView();
+    return () => {
+      isActive = false;
+    };
   }, [messages]);
   return (
     <div className="messages">

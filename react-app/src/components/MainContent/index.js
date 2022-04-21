@@ -24,18 +24,16 @@ const MainContent = ({ user }) => {
 
   return (
     loaded && (
-      <>
-        <BrowserRouter>
-          <Switch>
-            <ProtectedRoute path="/channels/@me/:dmRoomId" exact={true}>
-              <OneServer />
-            </ProtectedRoute>
-            <ProtectedRoute path="/channels/:serverId?/:channelId" exact={true}>
-              <OneServer />
-            </ProtectedRoute>
-          </Switch>
-        </BrowserRouter>
-      </>
+      <BrowserRouter>
+        <Switch>
+          <ProtectedRoute path="/channels/@me/:dmRoomId" exact={true}>
+            <OneServer />
+          </ProtectedRoute>
+          <ProtectedRoute path="/channels/:serverId?/:channelId" exact={true}>
+            <OneServer />
+          </ProtectedRoute>
+        </Switch>
+      </BrowserRouter>
     )
   );
 };
