@@ -1,6 +1,5 @@
 import "./MainContent.css";
 import OneServer from "../OneServer";
-import { BrowserRouter } from "react-router-dom";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import { Switch } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -24,7 +23,7 @@ const MainContent = ({ user }) => {
 
   return (
     loaded && (
-      <BrowserRouter>
+      <>
         <Switch>
           <ProtectedRoute path="/channels/@me/:dmRoomId" exact={true}>
             <OneServer />
@@ -33,7 +32,7 @@ const MainContent = ({ user }) => {
             <OneServer />
           </ProtectedRoute>
         </Switch>
-      </BrowserRouter>
+      </>
     )
   );
 };
