@@ -29,40 +29,10 @@ const OneServer = () => {
   const channelsObj = useSelector((state) => state.channels);
   let url = useLocation();
 
-  // useEffect(() => {
-  //   if (window.location.href.includes("@me")) {
-  //     setDmRoomsView(true);
-  //     if (dmRoomId && dmRoomId * 1 !== prevRoom) {
-  //       setLoaded(false);
-  //       setChannelLoaded(false);
-  //       dispatch(getOneChannel(dmRoomId)).then(() => setPrevRoom(dmRoomId));
-  //     }
-  //     setChannelLoaded(true);
-  //     setLoaded(true);
-  //   }
-  // }, [dispatch, dmRoomId, dmRoomsView, prevRoom, setDmRoomsView]);
-
-  // useEffect(() => {
-  //   if (!dmRoomsView) {
-  //     if (serverId * 1 !== prevServerId && channelId !== prevRoom) {
-  //       setLoaded(false);
-  //       setChannelLoaded(false);
-  //       dispatch(getOneServer(serverId))
-  //         .then(() => setPrevServerId(serverId))
-  //         .then(() => setPrevRoom(channelId));
-  //       if (channelId * 1 !== prevRoom) {
-  //         setChannelLoaded(false);
-  //         dispatch(getOneChannel(channelId));
-  //       }
-  //     }
-  //     setChannelLoaded(true);
-  //     setLoaded(true);
-  //   }
-  // }, [dispatch, dmRoomsView, serverId, prevServerId, prevRoom, channelId]);
-
   useEffect(() => {
     console.log("urlllllllllll", dmRoomsView);
     let isActive = true;
+    setLoaded(false);
     setChannelLoaded(false);
     if (window.location.href.includes("@me") && isActive) {
       setDmRoomsView(true);

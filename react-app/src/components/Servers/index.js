@@ -10,17 +10,12 @@ import { getOneChannel } from "../../store/channels";
 const Servers = ({ userServers, dmRoomsView, setDmRoomsView }) => {
   const [loaded, setLoaded] = useState(false);
 
-  const grabFirstChannelId = (channels) => {
-    let newChannels = Object.values(channels);
-    return newChannels[0].id;
-  };
-
   const dispatch = useDispatch();
   useEffect(() => {
     setLoaded(true);
   }, [userServers]);
 
-  const handleServerClick = async (channelId, serverId) => {
+  const handleServerClick = async (serverId, channelId) => {
     await dispatch(getOneServer(serverId)).then(() =>
       dispatch(getOneChannel(channelId)).then(() => setDmRoomsView(false))
     );
@@ -32,14 +27,12 @@ const Servers = ({ userServers, dmRoomsView, setDmRoomsView }) => {
       <div className="server_container">
         {userServers?.map((server) => (
           <NavLink
-            to={`/channels/${server.id}/${grabFirstChannelId(server.channels)}`}
-            onClick={() =>
-              handleServerClick(grabFirstChannelId(server.channels), server.id)
-            }
+            to={`/channels/${server.id}/${server.firstChannelId}`}
+            onClick={() => handleServerClick(server.id, server.firstChannelId)}
             key={server.id}
           >
             <img
-              className="left_side_icon"
+              className="left_side_server_icon"
               src={server.picture}
               alt="server icon"
             />

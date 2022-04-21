@@ -29,6 +29,28 @@ const ADD_USER_SERVER = "servers/AddServer";
 export const addUserServer = (server) => {
   return { type: ADD_USER_SERVER, server };
 };
+
+export const joinUserServer = (serverId, userId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/servers/${serverId}/members`, {
+    method: "POST",
+    body: JSON.stringify({ serverId, userId }),
+  });
+
+  const data = await res.json();
+  dispatch(addUserServer(data.server));
+};
+export const leaveUserServer = (serverId, membershipId) => async (dispatch) => {
+  const res = await csrfFetch(
+    `/api/servers/${serverId}/members/${membershipId}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  const data = await res.json();
+  dispatch(removeUserServer(data.serverId));
+};
+
 export const postUserServer = (formData) => async (dispatch) => {
   const res = await fetch("/api/servers/", {
     method: "POST",

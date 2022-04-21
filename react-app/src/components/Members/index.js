@@ -11,18 +11,34 @@ const Members = ({ serversObj }) => {
     const currentChannel = channels?.currentChannel;
     console.log("hereeeeeee", currentChannel);
     if (currentChannel && isActive) {
-      if (
-        currentChannel?.name === "General" &&
-        serversObj.currentServer.members
-      )
-        setMembers(Object.values(serversObj?.currentServer?.members));
+      // if (
+      //   (!currentChannel?.privateChannel || !currentChannel?.dmChannel) &&
+      //   serversObj?.currentServer?.members
+      // ) {
+      //   setMembers(Object.values(serversObj?.currentServer?.members));
+      // } else {
+      //   if
+      //   setMembers(Object.values(currentChannel?.members));
+      // }
 
-      if (currentChannel?.name !== "General" && currentChannel.members)
-        setMembers(Object.values(currentChannel.members));
+      if (
+        (currentChannel.privateChannel || currentChannel.dmChannel) &&
+        currentChannel?.members
+      ) {
+        setMembers(Object.values(currentChannel?.members));
+      }
+
+      if (
+        !currentChannel?.privateChannel &&
+        !currentChannel?.dmChannel &&
+        serversObj?.currentServer?.members
+      ) {
+        setMembers(Object.values(serversObj?.currentServer?.members));
+      }
     }
     setLoaded(true);
     return () => (isActive = false);
-  }, [channels, serversObj.currentServer.members]);
+  }, [channels.currentChannel, serversObj.currentServer.members]);
 
   // useEffect(() => {
   //   const membersObj = serversObj.currentServer;

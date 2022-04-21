@@ -1,6 +1,12 @@
 .server_container {
-  margin-top: 10px;
+  margin-top: 0px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.left_side_server_icon {
+  height: 44px;
+  width: 44px;
+  border-radius: 100%;
 }

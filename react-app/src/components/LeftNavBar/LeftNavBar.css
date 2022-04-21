@@ -4,17 +4,37 @@
   align-items: center;
   justify-content: flex-start;
   width: 72px;
+  height: 100vh;
   background-color: #1c1d1f;
-  padding-top: 20px;
+  gap: 10px;
 }
 
 /* .left_nav {
   width: 72px;
   display: flex; */
 /* } */
+.icon_container {
+  width: 44px;
+  height: 44px;
+  background-color: #2f3136;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .left_side_icon {
-  height: 48px;
-  width: 48px;
+  height: 28px;
+  width: 28px;
   border-radius: 100%;
+}
+
+.home_dm_btn {
+  margin-top: 10px;
+}
+
+.home_seperator {
+  width: 60%;
+  height: 2px;
+  background-color: #373a3f;
 }
