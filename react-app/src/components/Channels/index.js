@@ -107,43 +107,6 @@ const Channels = () => {
           </div>
         </NavLink>
       ))}
-      {/* {dmRoomsView &&
-        Object.values(channelsObj?.userDmChannels)?.map((channel) => (
-          <NavLink
-            key={channel.id}
-            to={`/channels/@me/${channel.id}`}
-            onClick={() => handleChannelChange(channel.id)}
-          >
-            <div
-              className="channel"
-              onMouseEnter={() => setHoverId(channel.id)}
-              onMouseLeave={() => setHoverId(null)}
-            >
-              <div className="channel_left">
-                <img
-                  className="direct_message_icon"
-                  src={
-                    Object.keys(channel?.members).length > 2
-                      ? "/svgs/group-message-ico.svg"
-                      : Object.values(channel.members)[0]?.profilePicture
-                  }
-                  alt="people"
-                />
-                {Object.values(channel.members).map((member) => (
-                  <p key={member.id}>{member.username}</p>
-                ))}
-              </div>
-              {((ownerId === user.id && currentChannelId * 1 === channel.id) ||
-                (ownerId === user.id && hoverId === channel.id)) &&
-                channel.name !== "General" && (
-                  <div className="channel_right">
-                    <img src="/svgs/addMemb.svg" alt="add" />
-                    <EditChannelModal channel={channel} user={user} />
-                  </div>
-                )}
-            </div>
-          </NavLink>
-        ))} */}
     </div>
   );
 };

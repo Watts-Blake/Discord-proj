@@ -6,7 +6,7 @@ import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
+
 import ProtectedRoute from "../auth/ProtectedRoute";
 
 import { getOneChannel } from "../../store/channels";
@@ -58,14 +58,14 @@ const DmChannelRooms = () => {
 
           <div className="one_channel">
             {channelLoaded && (
-              <BrowserRouter>
+              <>
                 <ProtectedRoute path="/channels/@me/:dmRoomId">
                   <OneChannel
                     channelsObj={channelsObj}
                     className="one_channel"
                   />
                 </ProtectedRoute>
-              </BrowserRouter>
+              </>
             )}
           </div>
 

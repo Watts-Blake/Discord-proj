@@ -6,22 +6,15 @@ import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useContext } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 
-import { getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
-import ServerOptions from "../ServerOptions";
-import EditServerModal from "../EditServer/EditServerModal";
 
 const OneServer = () => {
   const [loaded, setLoaded] = useState(false);
-  const { dmRoomsView } = useContext(DmRoomViewContext);
+
   const { serverId, channelId, dmRoomId } = useParams();
   const [channelLoaded, setChannelLoaded] = useState(false);
   const [prevRoom, setPrevRoom] = useState();
-  const [prevServerId, setPrevServerId] = useState();
-  const [showModal, setShowModal] = useState(false);
-  const [showServerOptions, setShowServerOptions] = useState(false);
 
   const dispatch = useDispatch();
   const serversObj = useSelector((state) => state.servers);
@@ -41,15 +34,7 @@ const OneServer = () => {
     setChannelLoaded(true);
     setLoaded(true);
     return () => (isActive = false);
-  }, [
-    dispatch,
-    dmRoomId,
-    channelId,
-    prevRoom,
-    prevServerId,
-    serverId,
-    url.pathname,
-  ]);
+  }, [dispatch, dmRoomId, channelId, prevRoom, serverId, url.pathname]);
 
   return (
     loaded && (

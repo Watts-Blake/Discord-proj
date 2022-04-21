@@ -48,7 +48,7 @@ function App() {
           <Route path="/" exact={true}>
             <Home />
           </Route>
-          <BrowserRouter>
+          <>
             <div className="logged_app">
               <LeftNavBar userServers={userServers} user={user} />
 
@@ -59,7 +59,7 @@ function App() {
                 <AllServers className="main_content" user={user} />
               </ProtectedRoute>
             </div>
-          </BrowserRouter>
+          </>
         </Switch>
       </BrowserRouter>
     )
