@@ -1,29 +1,36 @@
 import "./ServerOptions.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { leaveUserServer } from "../../store/servers";
-import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { DmRoomViewContext } from "../../context/DmRoomViewContext";
+import { clearCurrentServer } from "../../store/servers";
+import { clearCurrentChannel } from "../../store/channels";
 
 const ServerOptions = ({ serversObj, user, setShowModal }) => {
+  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
+  let history = useHistory();
   const [member, setMember] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
   const currentServer = serversObj?.currentServer;
   const membersObj = currentServer?.members;
   const membersArr = Object.values(membersObj);
-  console.log("here", membersArr);
+  console.log("here", member);
   useEffect(() => {
     setMember(membersArr.find((member) => member.userId === user.id));
     setLoaded(true);
   }, [membersArr, user.id]);
 
   const handleLeave = async () => {
-    const memberShipId = membersArr.find(
-      (member) => member.userId === user.id
-    ).id;
-    await dispatch(leaveUserServer(currentServer.id, memberShipId)).then(() => (
-      <Redirect to="/channels/@me" />
-    ));
+    setLoaded(false);
+    await dispatch(leaveUserServer(currentServer.id, member.id))
+      .then(() => history.push("/guild-discovery"))
+      .then(() => dispatch(clearCurrentServer()))
+      .then(() => dispatch(clearCurrentChannel()))
+      .then(() => setDmRoomsView(false));
   };
 
   return (
@@ -52,7 +59,7 @@ const ServerOptions = ({ serversObj, user, setShowModal }) => {
           <div
             className="sing_server_opt"
             id="server_opts_leave"
-            onClick={handleLeave}
+            onClick={() => handleLeave()}
           >
             <h4 id="server_opts_leave_title">Leave Server</h4>{" "}
             <img

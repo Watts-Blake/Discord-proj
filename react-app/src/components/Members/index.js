@@ -9,18 +9,8 @@ const Members = ({ serversObj }) => {
   useEffect(() => {
     let isActive = true;
     const currentChannel = channels?.currentChannel;
-    console.log("hereeeeeee", currentChannel);
-    if (currentChannel && isActive) {
-      // if (
-      //   (!currentChannel?.privateChannel || !currentChannel?.dmChannel) &&
-      //   serversObj?.currentServer?.members
-      // ) {
-      //   setMembers(Object.values(serversObj?.currentServer?.members));
-      // } else {
-      //   if
-      //   setMembers(Object.values(currentChannel?.members));
-      // }
 
+    if (currentChannel && isActive) {
       if (
         (currentChannel.privateChannel || currentChannel.dmChannel) &&
         currentChannel?.members
@@ -38,16 +28,8 @@ const Members = ({ serversObj }) => {
     }
     setLoaded(true);
     return () => (isActive = false);
-  }, [channels.currentChannel, serversObj.currentServer.members]);
+  }, [channels.currentChannel, serversObj.currentServer?.members]);
 
-  // useEffect(() => {
-  //   const membersObj = serversObj.currentServer;
-  //   dmRoomsView
-  //     ? setMembers(Object.values(currentChannelMembs))
-  //     : setMembers(Object.values(membersObj.members));
-
-  //   setLoaded(true);
-  // }, [serversObj.currentServer, dmRoomsView, currentChannelMembs]);
   return (
     loaded && (
       <div className="members_list">

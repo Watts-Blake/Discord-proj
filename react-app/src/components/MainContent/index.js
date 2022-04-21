@@ -13,10 +13,13 @@ const MainContent = ({ user }) => {
   let url = useLocation();
 
   useEffect(() => {
-    setLoaded(false);
-    url.pathname.includes("@me") ? setDmRoomsView(true) : setDmRoomsView(false);
-    console.log("right hereeeeeeee", dmRoomsView);
+    let isActive = true;
+    isActive && setLoaded(false);
+    isActive && url.pathname.includes("@me")
+      ? setDmRoomsView(true)
+      : setDmRoomsView(false);
     setLoaded(true);
+    return () => (isActive = false);
   }, [setDmRoomsView, url.pathname, dmRoomsView]);
 
   return (

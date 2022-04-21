@@ -4,14 +4,18 @@ import { getAllServers } from "../../store/servers";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { joinUserServer } from "../../store/servers";
+import { getOneServer } from "../../store/servers";
+import { getOneChannel } from "../../store/channels";
+import { useContext } from "react";
+import { DmRoomViewContext } from "../../context/DmRoomViewContext";
+import { Redirect } from "react-router-dom";
 const AllServers = () => {
   const dispatch = useDispatch();
+  const { setDmRoomsView } = useContext(DmRoomViewContext);
   const [loaded, setLoaded] = useState(false);
   const [servers, setServers] = useState("");
   const user = useSelector((state) => state.session.user);
   const userServers = useSelector((state) => state.servers.userServers);
-  console.log("userservers", Object.values(userServers));
-  console.log("allservers", servers);
 
   const filterServers = (serversObj, filterOutObj) => {
     let newServers = serversObj;
@@ -26,13 +30,22 @@ const AllServers = () => {
   };
 
   useEffect(() => {
-    dispatch(getAllServers())
-      .then((servers) => setServers(filterServers(servers, userServers)))
-      .then(() => setLoaded(true));
+    let isActive = true;
+    setLoaded(false);
+    isActive &&
+      dispatch(getAllServers())
+        .then((servers) => setServers(filterServers(servers, userServers)))
+        .then(() => setLoaded(true));
+    return () => (isActive = false);
   }, [dispatch, userServers]);
 
-  const handleJoin = async (serverId) => {
-    await dispatch(joinUserServer(serverId, user.id));
+  const handleJoin = async (serverId, channelId) => {
+    await dispatch(joinUserServer(serverId, user.id))
+      .then(() => dispatch(getOneServer(serverId)))
+      .then(() => dispatch(getOneChannel(channelId)))
+      .then(() => setDmRoomsView(false));
+
+    return <Redirect to={`/channels/${serverId}/${channelId}`} />;
   };
 
   return (
@@ -68,7 +81,9 @@ const AllServers = () => {
                     </div>
                     <NavLink
                       to={`/channels/${server.id}/${server.firstChannelId}`}
-                      onClick={(e) => handleJoin(server.id)}
+                      onClick={() =>
+                        handleJoin(server.id, server.firstChannelId)
+                      }
                     >
                       <div className="join_server_button">
                         <p>Join Server</p>

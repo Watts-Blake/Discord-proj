@@ -14,8 +14,8 @@ import ServerOptions from "../ServerOptions";
 import EditServerModal from "../EditServer/EditServerModal";
 
 const OneServer = () => {
-  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
   const [loaded, setLoaded] = useState(false);
+  const { dmRoomsView } = useContext(DmRoomViewContext);
   const { serverId, channelId, dmRoomId } = useParams();
   const [channelLoaded, setChannelLoaded] = useState(false);
   const [prevRoom, setPrevRoom] = useState();
@@ -30,12 +30,9 @@ const OneServer = () => {
   let url = useLocation();
 
   useEffect(() => {
-    console.log("urlllllllllll", dmRoomsView);
     let isActive = true;
-    setLoaded(false);
     setChannelLoaded(false);
     if (window.location.href.includes("@me") && isActive) {
-      setDmRoomsView(true);
       if (dmRoomId && dmRoomId * 1 !== prevRoom && !prevRoom && isActive) {
         setChannelLoaded(false);
         dispatch(getOneChannel(dmRoomId))
@@ -44,10 +41,10 @@ const OneServer = () => {
       }
     } else {
       if (
+        isActive &&
         (serverId || channelId) &&
         serverId * 1 !== prevServerId &&
-        !prevServerId &&
-        isActive
+        !prevServerId
       ) {
         setChannelLoaded(false);
         dispatch(getOneServer(serverId))
@@ -74,8 +71,6 @@ const OneServer = () => {
     prevServerId,
     serverId,
     url.pathname,
-    dmRoomsView,
-    setDmRoomsView,
   ]);
 
   const handleCloseServerOpts = (e) => {
@@ -103,7 +98,7 @@ const OneServer = () => {
             <div className="server_options">
               {!dmRoomsView && (
                 <h2 className="server_options_name">
-                  {serversObj.currentServer.name}
+                  {serversObj.currentServer?.name}
                 </h2>
               )}
               {dmRoomsView && (
@@ -135,24 +130,20 @@ const OneServer = () => {
                 {channelsObj.currentChannel?.name}
               </div>
             ) : (
-              <div className="channel_header">{user.username}'s </div>
+              dmRoomsView && (
+                <div className="channel_header">{user.username}'s </div>
+              )
             ))}
         </div>
         <div className="one_channel_container">
           <div className="channels_container">
             {!dmRoomsView && (
-              <Channels
-                channels={channelsObj}
-                dmRoomsView={dmRoomsView}
-                setDmRoomsView={setDmRoomsView}
-                className="channels"
-              />
+              <Channels channels={channelsObj} className="channels" />
             )}
             {dmRoomsView && (
               <Channels
                 channels={channelsObj}
                 dmRoomsView={dmRoomsView}
-                setDmRoomsView={setDmRoomsView}
                 className="channels"
               />
             )}

@@ -54,7 +54,7 @@ function App() {
               <MainContent className="main_content" user={user} />
             </div>
           </ProtectedRoute>
-          <ProtectedRoute path="/guild-discovery">
+          <ProtectedRoute path="/guild-discovery" exact={true}>
             <div className="logged_app">
               <LeftNavBar userServers={userServers} user={user} />
               <AllServers className="main_content" user={user} />

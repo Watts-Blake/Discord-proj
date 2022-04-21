@@ -84,6 +84,11 @@ export const setCurrentServer = (server) => {
   return { type: SET_CURRENT_SERVER, server };
 };
 
+const CLEAR_CURRENT_SERVER = "currentServer/CLEAR-current";
+export const clearCurrentServer = () => {
+  return { type: CLEAR_CURRENT_SERVER };
+};
+
 export const getOneServer = (serverId) => async (dispatch) => {
   const res = await csrfFetch(`/api/servers/${serverId}`);
 
@@ -137,6 +142,10 @@ const serversReducer = (
 ) => {
   let newState = { ...state };
   switch (action.type) {
+    case CLEAR_CURRENT_SERVER: {
+      newState.currentServer = null;
+      return newState;
+    }
     case SET_ALL_SERVERS: {
       newState.allServers = action.servers;
       return newState;

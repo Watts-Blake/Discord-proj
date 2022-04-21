@@ -84,8 +84,8 @@ export const getOneChannel = (channelId) => async (dispatch) => {
 };
 
 const CLEAR_CURRENT_CHANNEL = "currentChannel/Clear";
-export const clearCurrentChannel = (channel) => {
-  return { type: CLEAR_CURRENT_CHANNEL, channel };
+export const clearCurrentChannel = () => {
+  return { type: CLEAR_CURRENT_CHANNEL };
 };
 
 //----------------------------------------------------------------add message
