@@ -27,7 +27,7 @@ const Channels = () => {
     window.location.href.includes("@me") && isActive
       ? setDmRoomsView(true)
       : setDmRoomsView(false);
-    setCurrentChannelId(channelId || dmRoomId);
+    isActive && setCurrentChannelId(channelId || dmRoomId);
     if (currentServer && isActive) {
       setOwnerId(currentServer?.owner?.id);
     }

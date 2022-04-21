@@ -9,12 +9,14 @@ const CreateServerModal = () => {
 
   return (
     <>
-      <img
-        className="left_side_icon"
-        src="/svgs/svgexport-14.svg"
-        alt="create server"
-        onClick={() => setShowModal(true)}
-      ></img>
+      <div className="icon_container">
+        <img
+          className="left_side_icon"
+          src="/svgs/svgexport-14.svg"
+          alt="create server"
+          onClick={() => setShowModal(true)}
+        ></img>
+      </div>
       {showModal && (
         <Modal className="modal" onClose={() => setShowModal(false)}>
           <CreateServer setShowModal={setShowModal}></CreateServer>

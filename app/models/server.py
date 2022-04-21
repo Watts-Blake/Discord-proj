@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Integer, ForeignKey, String, DateTime
+from sqlalchemy import Integer, ForeignKey, String, DateTime, Boolean
 from sqlalchemy.sql import func, table, column
 from sqlalchemy.orm import relationship, Session, backref
 from alembic import op
@@ -15,8 +15,9 @@ class Server(db.Model):
     owner_id = db.Column(Integer, ForeignKey('users.id'), nullable=False,)
     server_picture = db.Column(String(2000))
     name = db.Column(String(100),nullable=False)
-    topic = db.Column(String(100), )
-    description = db.Column(String(255),)
+    topic = db.Column(String(100))
+    description = db.Column(String(255))
+    private_server = db.Column(Boolean, default=False)
     created_at = db.Column(DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(DateTime(timezone=True), onupdate=func.now())
 
@@ -34,8 +35,10 @@ class Server(db.Model):
             'topic': self.topic,
             'description': self.description,
             'channels':{channel.id: channel.to_resource_dict() for channel in self.channels},
-            'members': {member.id: member.member.to_resource_dict() for member in self.members},
-            'firstChannelId': self.channels[0].id
+            'members': {member.id: member.to_dict() for member in self.members},
+            'firstChannelId': self.channels[0].id,
+            'membersLength': len(self.members),
+            'privateServer': self.private_server
         }
     def to_resource_dict(self):
         return {
@@ -45,7 +48,9 @@ class Server(db.Model):
             'name': self.name,
             'topic': self.topic,
             'description': self.description,
-            'firstChannelId': self.channels[0].id
+            'firstChannelId': self.channels[0].id,
+            'membersLength': len(self.members),
+            'privateServer': self.private_server
         }
 
 class ServerMember(db.Model):
@@ -59,6 +64,7 @@ class ServerMember(db.Model):
 
     def to_dict(self):
         return {
+            'id': self.id,
             'username': self.member.username,
             'userId': self.member.id,
             'profilePicture': self.member.profile_picture,

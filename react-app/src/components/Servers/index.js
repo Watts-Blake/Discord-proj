@@ -3,27 +3,26 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { getOneServer } from "../../store/servers";
+import { getOneChannel } from "../../store/channels";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { useContext } from "react";
+import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 
-import { getOneChannel } from "../../store/channels";
-const Servers = ({ userServers, dmRoomsView, setDmRoomsView }) => {
+const Servers = ({ userServers }) => {
   const [loaded, setLoaded] = useState(false);
-
-  const grabFirstChannelId = (channels) => {
-    let newChannels = Object.values(channels);
-    return newChannels[0].id;
-  };
+  const { setDmRoomsView } = useContext(DmRoomViewContext);
 
   const dispatch = useDispatch();
   useEffect(() => {
     setLoaded(true);
   }, [userServers]);
 
-  const handleServerClick = async (channelId, serverId) => {
-    await dispatch(getOneServer(serverId)).then(() =>
-      dispatch(getOneChannel(channelId)).then(() => setDmRoomsView(false))
-    );
+  const handleServerClick = async (serverId, channelId) => {
+    await dispatch(getOneServer(serverId))
+      .then(() => dispatch(getOneChannel(channelId)))
+      .then(() => setDmRoomsView(false));
+
     return <Redirect to={`/channels/${serverId}/${channelId}`} />;
   };
 
@@ -32,14 +31,12 @@ const Servers = ({ userServers, dmRoomsView, setDmRoomsView }) => {
       <div className="server_container">
         {userServers?.map((server) => (
           <NavLink
-            to={`/channels/${server.id}/${grabFirstChannelId(server.channels)}`}
-            onClick={() =>
-              handleServerClick(grabFirstChannelId(server.channels), server.id)
-            }
+            to={`/channels/${server.id}/${server.firstChannelId}`}
+            onClick={() => handleServerClick(server.id, server.firstChannelId)}
             key={server.id}
           >
             <img
-              className="left_side_icon"
+              className="left_side_server_icon"
               src={server.picture}
               alt="server icon"
             />

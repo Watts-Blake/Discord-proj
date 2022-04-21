@@ -50,9 +50,11 @@ const OneChannel = ({ channelsObj }) => {
   };
 
   useEffect(() => {
-    leaveRoom(prevRoom);
-    joinRoom(socketRoom);
-    setPrevRoom(socketRoom);
+    let isActive = true;
+    isActive && leaveRoom(prevRoom);
+    isActive && joinRoom(socketRoom);
+    isActive && setPrevRoom(socketRoom);
+    return () => (isActive = false);
   }, [prevRoom, socketRoom]);
 
   const sendMessage = async (formData) => {

@@ -91,24 +91,25 @@ def get_all_or_post_to_server_members(server_id):
         data = request.json
         joining_member = User.query.get(data['userId'])
         data = request.json
-        member = ServerMember(server_id=data['serverId'], user_id=data['userId'])
+        member = ServerMember(server_id=server_id, user_id=data['userId'])
         db.session.add(member)
 
         first_message = ChannelMessage(channel_id=server_general_channel.id, sender_id=1, content=f'👋{joining_member.username} has slid into the server')
         db.session.add(first_message)
         db.session.commit()
+        server = Server.query.get(server_id)
 
-        return member.to_dict()
+        return {'member':member.to_dict(), 'server': server.to_dict()}
 
-@servers_routes.route('/<int:server_id>/members/<int:memberId>', methods=['DELETE'])
+@servers_routes.route('/<int:server_id>/members/<int:member_id>', methods=['DELETE'])
 def delete_server_member(server_id, member_id):
-    server_general_channel = Channel.query.filter(Channel.server_id == server_id, Channel.name == 'General').get()
+    server_general_channel = Channel.query.filter(Channel.server_id == server_id).filter(Channel.name == 'General').first()
     member = ServerMember.query.get(member_id)
     db.session.delete(member)
-    leaving_message = ChannelMessage(channel_id=server_general_channel.id, sender_id=1, content=f'😭 {member.username} has left the server')
+    leaving_message = ChannelMessage(channel_id=server_general_channel.id, sender_id=1, content=f'😭 {member.member.username} has left the server')
     db.session.add(leaving_message)
     db.session.commit()
-    return {'memberId': member_id}
+    return {'memberId': member_id, 'serverId': server_general_channel.server_id }
 
 @servers_routes.route('/<int:server_id>/channels', methods=['GET', 'POST'])
 def get_all_or_post_to_channel(server_id):

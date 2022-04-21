@@ -16,3 +16,7 @@
   justify-content: space-between;
   margin: 0 10px;
 }
+
+.join_server {
+  transform: scaleX(-1);
+}

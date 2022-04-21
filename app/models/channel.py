@@ -30,12 +30,22 @@ class Channel(db.Model):
             'serverId': self.server_id,
             'messages': {message.id:message.to_dict() for message in self.messages},
             'members': {member.id: member.member.to_resource_dict() for member in self.members},
+            'privateChannel': self.private_channel,
+            'dmChannel': self.dm_channel,
+            'textChannel': self.type_text,
+            'voiceChannel': self.type_voice,
+            'membersLength': len(self.members)
         }
     def to_resource_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'serverId': self.server_id,
+             'privateChannel': self.private_channel,
+            'dmChannel': self.dm_channel,
+            'textChannel': self.type_text,
+            'voiceChannel': self.type_voice,
+            'membersLength': len(self.members)
         }
 
 class ChannelMember(db.Model):

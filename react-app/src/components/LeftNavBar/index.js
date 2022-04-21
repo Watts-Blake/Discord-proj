@@ -14,22 +14,25 @@ const LeftNavBar = ({ userServers, user }) => {
   const userDmRooms = useSelector((state) => state.channels.userDmChannels);
   console.log(userDmRooms);
   const handleHomeClick = async (channelId) => {
-    setDmRoomsView(true);
-    await dispatch(getOneChannel(channelId));
+    await dispatch(getOneChannel(channelId)).then(() => setDmRoomsView(true));
   };
   return (
     user && (
       <div className="left_side" id="left_nav">
         <NavLink
+          className="home_dm_btn"
           to={`/channels/@me/${Object.values(userDmRooms)[0].id}`}
           onClick={() => handleHomeClick(Object.values(userDmRooms)[0].id)}
         >
-          <img
-            className="left_side_icon"
-            src="/svgs/gray-disc-home.svg"
-            alt="home"
-          ></img>
+          <div className="icon_container">
+            <img
+              className="left_side_icon"
+              src="/svgs/gray-disc-home.svg"
+              alt="home"
+            ></img>
+          </div>
         </NavLink>
+        <span className="home_seperator" />
         <Servers
           userServers={userServers}
           setDmRoomsView={setDmRoomsView}
@@ -37,11 +40,13 @@ const LeftNavBar = ({ userServers, user }) => {
         ></Servers>
         <CreateServerModal></CreateServerModal>
         <NavLink to="/guild-discovery">
-          <img
-            className="left_side_icon"
-            src="/svgs/svgexport-16.svg"
-            alt="explore"
-          ></img>
+          <div className="icon_container">
+            <img
+              className="left_side_icon"
+              src="/svgs/svgexport-16.svg"
+              alt="explore"
+            ></img>
+          </div>
         </NavLink>
       </div>
     )
