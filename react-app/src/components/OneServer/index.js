@@ -27,6 +27,7 @@ const OneServer = () => {
   const serversObj = useSelector((state) => state.servers);
   const user = useSelector((state) => state.session.user);
   const channelsObj = useSelector((state) => state.channels);
+  const currentChannel = channelsObj.currentChannel;
   let url = useLocation();
 
   useEffect(() => {
@@ -94,16 +95,12 @@ const OneServer = () => {
         onClick={handleCloseServerOpts}
       >
         <div className="header">
-          {serverId && (
+          {currentChannel.serverId ? (
             <div className="server_options">
-              {!dmRoomsView && (
-                <h2 className="server_options_name">
-                  {serversObj.currentServer?.name}
-                </h2>
-              )}
-              {dmRoomsView && (
-                <h2 className="server_options_name">{user.username}</h2>
-              )}
+              <h2 className="server_options_name">
+                {serversObj.currentServer?.name}
+              </h2>
+
               {!showServerOptions && (
                 <img
                   src="/svgs/downCarrotSharp.svg"
@@ -121,6 +118,10 @@ const OneServer = () => {
                   onClick={() => setShowServerOptions(false)}
                 />
               )}
+            </div>
+          ) : (
+            <div className="server_options">
+              <h2 className="server_options_name">{user.username}</h2>
             </div>
           )}
           {channelLoaded &&
