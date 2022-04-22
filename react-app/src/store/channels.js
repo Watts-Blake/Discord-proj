@@ -1,6 +1,12 @@
 import { csrfFetch } from "./csrf";
 
 //---------------------------------------------------------------------channels
+
+const CLEAR_CHANNELS_STORE = "logout/CLEAR CHANNELS";
+export const logoutChannels = () => {
+  return { type: CLEAR_CHANNELS_STORE };
+};
+
 const SET_SERVER_CHANNELS = "channels/setChannels";
 // remmeber to dispatch setCurrentChannel
 export const setChannels = (channels) => {
@@ -156,6 +162,16 @@ const channelsReducer = (
 ) => {
   let newState = { ...state };
   switch (action.type) {
+    case CLEAR_CHANNELS_STORE: {
+      newState = {
+        channels: {},
+        currentChannel: { channel: null, pins: {} },
+        userDmChannels: {},
+        dmCurrentChannel: {},
+      };
+      return newState;
+    }
+
     case SET_USER_DM_CHANNELS: {
       newState.userDmChannels = action.dmRooms;
       return newState;
