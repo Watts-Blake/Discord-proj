@@ -10,8 +10,6 @@ const CreateServer = ({ setShowModal }) => {
   const [showCreateFinal, setShowCreatFinal] = useState(false);
   const [name, setName] = useState("");
   const [valid, setValid] = useState(false);
-  const [validName, setValidName] = useState();
-  const [validPhoto, setValidPhoto] = useState(true);
   const [activeCreate, setActiveCreate] = useState(false);
   const [errors, setErrors] = useState([]);
   const [emptyFile, setEmptyFile] = useState("");
@@ -101,7 +99,6 @@ const CreateServer = ({ setShowModal }) => {
     const file = e.target.files[0];
 
     if (file && !fileTypes.includes(`${file.type.split("/")[1]}`)) {
-      setValidPhoto(false);
       setServerImage(baseImage);
       errors.push(
         "Please Upload a new file, or click create to use our default icon. Uploaded file should be a pdf, png, jpg, jpeg, or gif."
