@@ -12,7 +12,7 @@ import MainContent from "./components/MainContent";
 import Home from "./components/Home";
 import AllServers from "./components/AllServers";
 import { useSelector } from "react-redux";
-import Wampus from "./components/Wampus";
+// import Wampus from "./components/Wampus";
 
 function App() {
   const [loaded, setLoaded] = useState(false);

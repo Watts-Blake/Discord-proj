@@ -4,7 +4,7 @@ import Channels from "../Channels";
 import OneChannel from "../OneChannel";
 import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useLocation, Redirect } from "react-router-dom";
 import { checkMember } from "../../utils";
 import { getOneChannel } from "../../store/channels";
