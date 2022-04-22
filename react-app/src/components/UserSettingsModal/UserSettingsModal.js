@@ -12,12 +12,15 @@ const UserSettingsModal = () => {
     }
   };
   useEffect(() => {
-    if (showModal) {
+    let isActive = true;
+    if (isActive && showModal) {
       document.addEventListener("click", addEvent, true);
     }
-    if (!showModal) {
+    if (isActive && !showModal) {
       document.removeEventListener("click", addEvent, true);
     }
+
+    return () => (isActive = false);
   }, [showModal]);
 
   return (
