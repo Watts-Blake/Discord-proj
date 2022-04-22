@@ -8,7 +8,6 @@ import { getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
 import { useContext } from "react";
 import { DmRoomViewContext } from "../../context/DmRoomViewContext";
-import { Redirect } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 const AllServers = () => {
   console.log("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
@@ -39,13 +38,13 @@ const AllServers = () => {
       .then(() => setLoaded(true));
   }, [dispatch, userServers, history]);
 
-  const handleJoin = async (serverId, channelId) => {
+  const handleJoin = async (e, serverId, channelId) => {
+    e.preventDefault();
     await dispatch(joinUserServer(serverId, user.id))
       .then(() => dispatch(getOneServer(serverId)))
       .then(() => dispatch(getOneChannel(channelId)))
-      .then(() => setDmRoomsView(false));
-
-    return <Redirect to={`/channels/${serverId}/${channelId}`} />;
+      .then(() => setDmRoomsView(false))
+      .then(() => history.push(`/channels/${serverId}/${channelId}`));
   };
 
   return (
@@ -81,8 +80,8 @@ const AllServers = () => {
                     </div>
                     <NavLink
                       to={`/channels/${server.id}/${server.firstChannelId}`}
-                      onClick={() =>
-                        handleJoin(server.id, server.firstChannelId)
+                      onClick={(e) =>
+                        handleJoin(e, server.id, server.firstChannelId)
                       }
                     >
                       <div className="join_server_button">
