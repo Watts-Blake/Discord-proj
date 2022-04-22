@@ -1,13 +1,9 @@
 import "./UserSettings.css";
 
-import React, { useState } from "react";
+import React from "react";
 
-import { Modal } from "../../context/Modal";
-import { useSelector } from "react-redux";
 import { logout } from "../../store/session";
 import { useDispatch } from "react-redux";
-
-import { useEffect } from "react";
 
 const UserSettings = ({ setShowModal }) => {
   const dispatch = useDispatch();
