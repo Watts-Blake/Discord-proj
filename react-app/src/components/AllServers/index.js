@@ -8,7 +8,6 @@ import { getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
 import { useContext } from "react";
 import { DmRoomViewContext } from "../../context/DmRoomViewContext";
-import { Redirect } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 const AllServers = () => {
   console.log("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
