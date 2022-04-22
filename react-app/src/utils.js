@@ -47,3 +47,5 @@ export const checkMember = async (serverId, channelId, userId) => {
 //         errors.push('Unsupported file type.')
 //       };
 //     };
+
+export const fileTypes = ["pdf", "png", "jpg", "jpeg", "gif"];
