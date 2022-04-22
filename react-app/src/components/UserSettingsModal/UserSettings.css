@@ -1,0 +1,24 @@
+.user_settings_modal {
+  position: absolute;
+  left: 10px;
+  bottom: 68px;
+  z-index: 20;
+  width: 220px;
+  height: fit-content;
+  background-color: #18191c;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logout_button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 10px;
+  align-items: center;
+}
+
+.logout_img {
+  height: 24px;
+}
