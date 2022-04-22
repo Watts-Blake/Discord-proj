@@ -12,9 +12,9 @@ body {
   display: flex;
   width: 100vw;
   height: 100%;
-
   position: absolute;
   top: 0;
+  margin-bottom: 0;
 }
 
 a {
@@ -23,4 +23,6 @@ a {
 }
 #left_nav {
   width: 72px;
+  height: 100%;
+  margin-bottom: -300px;
 }
