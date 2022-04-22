@@ -98,7 +98,7 @@ const AllServers = () => {
             )}
           </div>
         ) : (
-          <h2>
+          <h2 className="joined_all_msg">
             You have joined all of the available servers, please check back
             later too see if anymore have been added...
           </h2>
