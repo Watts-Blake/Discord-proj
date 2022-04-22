@@ -47,6 +47,8 @@ const CreateServer = ({ setShowModal }) => {
   useEffect(() => {
     if (name.length > 0) {
       setActiveCreate(true);
+    } else {
+      setActiveCreate(false);
     }
     if (errors.length > 1) setErrors([]);
   }, [name, serverImage, errors]);
