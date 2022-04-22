@@ -1,5 +1,5 @@
 import "./LoggedInUserTab.css";
-
+import UserSettingsModal from "../UserSettingsModal/UserSettingsModal";
 const LoggedInUserTab = ({ user }) => {
   return (
     <div className="logged_user_container">
@@ -11,9 +11,7 @@ const LoggedInUserTab = ({ user }) => {
         ></img>
         <p>{user.username}</p>
       </div>
-      <div className="logged_user_right">
-        <img src="/svgs/svgexport-67.svg" alt="settings" />
-      </div>
+      <UserSettingsModal />
     </div>
   );
 };

@@ -1,5 +1,7 @@
 import { setUserServers } from "./servers";
 import { setUserDms } from "./channels";
+import { logoutChannels } from "./channels";
+import { logoutServers } from "./servers";
 // constants
 
 const SET_USER = "session/SET_USER";
@@ -31,13 +33,6 @@ export const authenticate = () => async (dispatch) => {
     dispatch(setUser(data));
     dispatch(setUserServers(data.serverMember));
     dispatch(setUserDms(data.dmChannelMember));
-    // dispatch(getOneServer(data.serverMember[1].id));
-    // dispatch(
-    //   getOneChannel(
-    //     data.serverMember[1].id,
-    //     data.serverMember[1].channels[1].id
-    //   )
-    // );
   }
 };
 
@@ -57,13 +52,6 @@ export const login = (email, password) => async (dispatch) => {
     const data = await response.json();
     dispatch(setUserServers(data.serverMember));
     dispatch(setUserDms(data.dmChannelMember));
-    // dispatch(getOneServer(data.serverMember[1].id));
-    // dispatch(
-    //   getOneChannel(
-    //     data.serverMember[1].id,
-    //     data.serverMember[1].channels[1].id
-    //   )
-    // );
     dispatch(setUser(data));
     return null;
   } else if (response.status < 500) {
@@ -85,6 +73,8 @@ export const logout = () => async (dispatch) => {
 
   if (response.ok) {
     dispatch(removeUser());
+    dispatch(logoutServers());
+    dispatch(logoutChannels());
   }
 };
 

@@ -6,6 +6,12 @@ import { setChannels } from "./channels";
 
 //---------------------------------------------------------------------servers
 
+const CLEAR_ALL_SERVERS = "logout/CLEAR SERVERS";
+
+export const logoutServers = () => {
+  return { type: CLEAR_ALL_SERVERS };
+};
+
 const SET_ALL_SERVERS = "servers/SetAllServers";
 
 export const setAllServers = (servers) => {
@@ -142,6 +148,17 @@ const serversReducer = (
 ) => {
   let newState = { ...state };
   switch (action.type) {
+    case CLEAR_ALL_SERVERS: {
+      newState = {
+        userServers: { server: null },
+        allServers: { server: null },
+        currentServer: {
+          server: null,
+        },
+      };
+      return newState;
+    }
+
     case CLEAR_CURRENT_SERVER: {
       newState.currentServer = null;
       return newState;
