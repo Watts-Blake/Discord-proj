@@ -5,14 +5,14 @@ import { useHistory } from "react-router-dom";
 // import { deleteServer, getOneServer } from "../../store/servers";
 import { deleteChannel, putChannel } from "../../store/channels";
 import { getOneChannel } from "../../store/channels";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { putCurrentServer } from "../../store/servers";
 import { grabFirstChannelId } from "../../utils";
 
-const EditChannel = ({ channel, user, setShowModal }) => {
+const EditChannel = ({ user, setShowModal }) => {
   const dispatch = useDispatch();
   let history = useHistory();
-
+  const channel = useSelector((state) => state.channels.currentChannel);
   const [selected, setSelected] = useState("Overview");
   const [name, setName] = useState(channel.name);
 
@@ -27,9 +27,10 @@ const EditChannel = ({ channel, user, setShowModal }) => {
   }, [name, channel.name]);
 
   const handleSubmit = async () => {
+    console.log(channel.name);
     await dispatch(
       putChannel({ id: channel.id, name: name, serverId: channel.serverId })
-    );
+    ).then(() => setRequireSave(false));
   };
 
   const handleDelete = async () => {

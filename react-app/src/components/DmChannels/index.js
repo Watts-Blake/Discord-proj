@@ -5,13 +5,13 @@ import OneChannel from "../OneChannel";
 import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useContext } from "react";
-import { useParams, useLocation } from "react-router-dom";
-
+import { useParams, useLocation, Redirect } from "react-router-dom";
+import { checkMember } from "../../utils";
 import { getOneChannel } from "../../store/channels";
 
-const OneServer = () => {
+const DmChannels = () => {
   const [loaded, setLoaded] = useState(false);
-
+  const [validated, setValidated] = useState(true);
   const { serverId, channelId, dmRoomId } = useParams();
   const [channelLoaded, setChannelLoaded] = useState(false);
   const [prevRoom, setPrevRoom] = useState();
@@ -31,11 +31,30 @@ const OneServer = () => {
         .then(() => setPrevRoom(dmRoomId))
         .catch((error) => console.log(error.message));
     }
+
+    isActive &&
+      checkMember(false, dmRoomId, user.id).then((result) =>
+        setValidated(result)
+      );
+    if (!checkMember(false, dmRoomId, user.id) && isActive) {
+    }
     setChannelLoaded(true);
     setLoaded(true);
-    return () => (isActive = false);
-  }, [dispatch, dmRoomId, channelId, prevRoom, serverId, url.pathname]);
+    return () => {
+      isActive = false;
+      setLoaded(null);
+    };
+  }, [
+    dispatch,
+    dmRoomId,
+    channelId,
+    prevRoom,
+    serverId,
+    url.pathname,
+    user.id,
+  ]);
 
+  if (!validated) return <Redirect to="/channels/wampus/404" />;
   return (
     loaded && (
       <div className="one_server" id="one_server">
@@ -76,4 +95,4 @@ const OneServer = () => {
   );
 };
 
-export default OneServer;
+export default DmChannels;

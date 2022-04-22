@@ -12,6 +12,7 @@ import MainContent from "./components/MainContent";
 import Home from "./components/Home";
 import AllServers from "./components/AllServers";
 import { useSelector } from "react-redux";
+import Wampus from "./components/Wampus";
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -48,6 +49,9 @@ function App() {
           <Route path="/" exact={true}>
             <Home />
           </Route>
+          {/* <Route path="/*" exact={true}>
+            <Wampus />
+          </Route> */}
           <>
             <div className="logged_app">
               <LeftNavBar userServers={userServers} user={user} />

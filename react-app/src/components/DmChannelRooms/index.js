@@ -6,8 +6,9 @@ import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
-import ProtectedRoute from "../auth/ProtectedRoute";
+import { checkMember } from "../../utils";
 
 import { getOneChannel } from "../../store/channels";
 
@@ -32,10 +33,22 @@ const DmChannelRooms = () => {
         .then(() => setPrevRoom(dmRoomId))
         .catch((error) => console.log(error.message));
     }
+    console.log("hereeeeeee", checkMember(false, channelId, user.id));
+    if (!checkMember(false, channelId, user.id) && isActive) {
+      return <Redirect to="404/wampus" />;
+    }
     setChannelLoaded(true);
     setLoaded(true);
     return () => (isActive = false);
-  }, [dispatch, dmRoomId, channelId, prevRoom, serverId, url.pathname]);
+  }, [
+    dispatch,
+    dmRoomId,
+    channelId,
+    prevRoom,
+    serverId,
+    url.pathname,
+    user.id,
+  ]);
 
   return (
     loaded && (
@@ -58,14 +71,7 @@ const DmChannelRooms = () => {
 
           <div className="one_channel">
             {channelLoaded && (
-              <>
-                <ProtectedRoute path="/channels/@me/:dmRoomId">
-                  <OneChannel
-                    channelsObj={channelsObj}
-                    className="one_channel"
-                  />
-                </ProtectedRoute>
-              </>
+              <OneChannel channelsObj={channelsObj} className="one_channel" />
             )}
           </div>
 

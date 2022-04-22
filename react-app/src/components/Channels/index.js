@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import EditChannelModal from "../EditChannel/EditChannelModal";
 import { useContext } from "react";
 import { DmRoomViewContext } from "../../context/DmRoomViewContext";
+
 const Channels = () => {
   const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
   const { channelId, dmRoomId } = useParams();
@@ -39,7 +40,7 @@ const Channels = () => {
     dispatch,
     currentServer,
     setOwnerId,
-    channelsObj.channels,
+    channelsObj,
     channelId,
     channelsObj.userDmChannels,
     dmRoomsView,

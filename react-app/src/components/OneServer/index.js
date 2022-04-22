@@ -5,7 +5,7 @@ import OneChannel from "../OneChannel";
 import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useContext } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Redirect } from "react-router-dom";
 import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 import { leaveUserServer } from "../../store/servers";
 import { clearCurrentServer } from "../../store/servers";
@@ -14,11 +14,13 @@ import { getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
 import ServerOptions from "../ServerOptions";
 import EditServerModal from "../EditServer/EditServerModal";
+import { checkMember } from "../../utils";
 
 import { useHistory } from "react-router-dom";
 
 const OneServer = () => {
   const [loaded, setLoaded] = useState(false);
+  const [validated, setValidated] = useState(true);
   const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
   const { serverId, channelId, dmRoomId } = useParams();
   const [channelLoaded, setChannelLoaded] = useState(false);
@@ -43,8 +45,11 @@ const OneServer = () => {
     if (membersObj) membersArr = Object.values(membersObj);
     if (membersArr)
       setMember(membersArr.find((member) => member.userId === user.id));
+    checkMember(serverId, false, user.id).then((result) =>
+      setValidated(result)
+    );
     setLoaded(true);
-  }, [membersObj, user.id, history]);
+  }, [membersObj, user.id, history, serverId]);
 
   useEffect(() => {
     let isActive = true;
@@ -112,7 +117,7 @@ const OneServer = () => {
       .then(() => dispatch(clearCurrentChannel()))
       .then(() => setDmRoomsView(false));
   };
-
+  if (!validated) return <Redirect to="/channels/wampus/404" />;
   return (
     loaded && (
       <div

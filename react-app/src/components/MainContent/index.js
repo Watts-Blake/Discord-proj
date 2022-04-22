@@ -5,6 +5,8 @@ import { Switch } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { DmRoomViewContext } from "../../context/DmRoomViewContext";
+import Wampus from "../Wampus";
+import DmChannels from "../DmChannels";
 
 const MainContent = ({ user }) => {
   const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
@@ -25,11 +27,20 @@ const MainContent = ({ user }) => {
     loaded && (
       <>
         <Switch>
-          <ProtectedRoute path="/channels/@me/:dmRoomId" exact={true}>
+          <ProtectedRoute path="/channels/@me/:dmRoomId(\d+)" exact={true}>
+            <DmChannels />
+          </ProtectedRoute>
+          <ProtectedRoute
+            path="/channels/:serverId(\d+)/:channelId"
+            exact={true}
+          >
             <OneServer />
           </ProtectedRoute>
-          <ProtectedRoute path="/channels/:serverId?/:channelId" exact={true}>
-            <OneServer />
+          <ProtectedRoute path="/channels/wampus/404" exact={true}>
+            <Wampus />
+          </ProtectedRoute>
+          <ProtectedRoute path="/channels/*">
+            <Wampus />
           </ProtectedRoute>
         </Switch>
       </>
