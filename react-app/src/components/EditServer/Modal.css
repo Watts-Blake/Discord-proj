@@ -167,13 +167,31 @@
 }
 
 .save {
-  background-color: #2e7d46;
+  background-color: #2e7d4680;
   border-radius: 5px;
+  color: rgba(218, 218, 218, 0.794);
   padding: 5px 12px;
+}
+
+.active_save.save {
+  background-color: #2e7d46;
+  color: #ffff;
 }
 
 .server_picture {
   height: 80px;
   width: 80px;
   border-radius: 100%;
+}
+
+.errors_edit {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: red;
+  text-align: center;
+  width: 400px;
+  margin-left: 60px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
