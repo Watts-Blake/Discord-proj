@@ -51,9 +51,9 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
     } else {
       valid = 1;
     }
-    if (name.length > 20) {
+    if (name.length > 15) {
       valid = -1;
-      errors.push("Your Server Name must be less than 20 characters.");
+      errors.push("Your Server Name must be 15 or less characters.");
       setActiveSave(false);
     } else {
       valid = 1;
