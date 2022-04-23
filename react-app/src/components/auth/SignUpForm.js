@@ -11,7 +11,6 @@ const SignUpForm = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [valid, setValid] = useState(false);
   const [activeSignup, setActiveSignup] = useState(false);
   const [repeatPassword, setRepeatPassword] = useState("");
   const [emptyFile, setEmptyFile] = useState("");
@@ -20,74 +19,79 @@ const SignUpForm = () => {
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(errors);
-    if (username.length > 0) {
-      setActiveSignup(true);
-    } else {
-      setActiveSignup(false);
-    }
-    if (errors.length > 1) setErrors([]);
-  }, [username, image, errors]);
-
-  useEffect(() => {
-    if (valid) setErrors([]);
-  }, [valid]);
-
   const updateImage = (e) => {
     const file = e.target.files[0];
+    setImage(file);
+
     if (file && !fileTypes.includes(`${file.type.split("/")[1]}`)) {
-      errors.push(
-        "Please Upload a new file, or click signup to use our default picture. Uploaded file should be a pdf, png, jpg, jpeg, or gif."
-      );
+      console.log("innnnnnnnnnnnnn");
       setImage(baseImage);
+      setErrors([
+        ...errors,
+        "Please Upload a new file, or continue to signup and use our default picture. Uploaded file should be a pdf, png, jpg, jpeg, or gif.",
+      ]);
     } else {
       setImage(file);
-      setValid(true);
     }
 
     setEmptyFile("");
   };
 
   const validate = () => {
-    let valid = true;
+    setErrors([]);
+    let errors = [];
+    let valid = 0;
     if (username.length < 1) {
-      valid = false;
+      valid = -1;
       errors.push("You must include a username.");
+      console.log(errors);
       setActiveSignup(false);
     } else {
-      valid = true;
+      valid = 1;
     }
     if (username.length > 20) {
-      valid = false;
+      valid = -1;
       errors.push("Your username must be less than 20 characters.");
+      console.log(errors);
+      setUsername("");
       setActiveSignup(false);
     } else {
-      valid = true;
+      if (valid > 0) valid = 1;
     }
     // eslint-disable-next-line
     let reg = // eslint-disable-next-line
       /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     if (!email.toLowerCase().match(reg)) {
-      valid = false;
+      valid = -1;
+      setEmail("");
       errors.push("Invalid email.");
+      console.log(errors);
       setActiveSignup(false);
     } else {
-      valid = true;
+      if (valid > 0) valid = 1;
     }
     if (password !== repeatPassword) {
-      valid = false;
-      errors.push("Passwords do not math.");
+      valid = -1;
+      setPassword("");
+      setRepeatPassword("");
+      errors.push("Passwords do not match.");
+      console.log(errors);
       setActiveSignup(false);
     } else {
-      valid = true;
+      if (valid > 0) valid = 1;
     }
 
-    if (valid) return true;
+    if (valid > 0) {
+      return true;
+    } else {
+      setErrors(errors);
+      return false;
+    }
   };
 
   const onSignUp = async (e) => {
     e.preventDefault();
+
     if (validate()) {
       const formData = new FormData();
       formData.append("email", email);
@@ -132,8 +136,7 @@ const SignUpForm = () => {
     } else {
       setActiveSignup(false);
     }
-    if (errors.length > 1) setErrors([]);
-  }, [username, email, password, repeatPassword, errors]);
+  }, [username, email, password, repeatPassword, image, errors, emptyFile]);
 
   if (user) {
     console.log(Object.values(user.dmChannelMember)[0].id);
@@ -153,10 +156,6 @@ const SignUpForm = () => {
       />
       <div className="sign_form">
         <h1 className="sign_title">Create an account</h1>
-        <div className="error">
-          {errors.length > 1 &&
-            errors.map((error, ind) => <div key={error}>{error}</div>)}
-        </div>
         <label htmlFor="upload">
           {image === baseImage && (
             <img
@@ -173,6 +172,15 @@ const SignUpForm = () => {
             ></img>
           )}
         </label>
+
+        {errors.length > 0 && (
+          <div className="error">
+            {errors.map((error, ind) => (
+              <div key={ind || error}>{error}</div>
+            ))}
+          </div>
+        )}
+
         <div>
           <input
             id="upload"
