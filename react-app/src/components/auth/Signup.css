@@ -52,10 +52,17 @@
 .submit_sign_btn {
   margin-bottom: 40px;
   width: 200px;
-  background-color: #5865f2;
+  background-color: #747eec6c;
   border: none;
   height: 30px;
   box-shadow: none;
-  color: #ffff;
+  color: rgba(221, 221, 221, 0.7);
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.active.submit_sign_btn {
+  color: rgb(255, 255, 255);
+  background-color: #5865f2;
 }

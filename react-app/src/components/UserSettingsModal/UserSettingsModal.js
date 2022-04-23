@@ -20,7 +20,9 @@ const UserSettingsModal = () => {
       document.removeEventListener("click", addEvent, true);
     }
 
-    return () => (isActive = false);
+    return () => {
+      isActive = false;
+    };
   }, [showModal]);
 
   return (
