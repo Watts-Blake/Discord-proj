@@ -27,7 +27,6 @@ const SignUpForm = () => {
       console.log("innnnnnnnnnnnnn");
       setImage(baseImage);
       setErrors([
-        ...errors,
         "Please Upload a new file, or continue to signup and use our default picture. Uploaded file should be a pdf, png, jpg, jpeg, or gif.",
       ]);
     } else {

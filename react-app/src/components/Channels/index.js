@@ -20,6 +20,7 @@ const Channels = () => {
   // const [showServerOptions, setShowServerOptions] = useState(false)
   const user = useSelector((state) => state.session.user);
   const currentServer = useSelector((state) => state.servers.currentServer);
+  console.log(currentServer);
   const channelsObj = useSelector((state) => state.channels);
   let url = useLocation();
   const dispatch = useDispatch();
@@ -59,7 +60,9 @@ const Channels = () => {
       <div className="channels_header">
         {!dmRoomsView && <h4>TEXT CHANNELS</h4>}
         {dmRoomsView && <h4>DIRECT MESSAGES</h4>}
-        <CreateChannelModal user={user} />
+        {user.id === currentServer?.owner?.id && (
+          <CreateChannelModal user={user} />
+        )}
       </div>
 
       {channels?.map((channel) => (
@@ -101,7 +104,7 @@ const Channels = () => {
               (ownerId === user.id && hoverId === channel.id)) &&
               channel.name !== "General" && (
                 <div className="channel_right">
-                  <img src="/svgs/addMemb.svg" alt="add" />
+                  {/* <img src="/svgs/addMemb.svg" alt="add" /> */}
                   <EditChannelModal channel={channel} user={user} />
                 </div>
               )}

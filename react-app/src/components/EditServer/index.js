@@ -1,5 +1,5 @@
 import "./Modal.css";
-
+import { fileTypes } from "../../utils";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { deleteServer, getOneServer } from "../../store/servers";
@@ -16,7 +16,8 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
 
   const [selected, setSelected] = useState("Overview");
   const [name, setName] = useState(server.name);
-
+  const [errors, setErrors] = useState([]);
+  const [activeSave, setActiveSave] = useState(false);
   const [image, setImage] = useState(server.picture);
   const [emptyFile, setEmptyFile] = useState("");
   const [requireSave, setRequireSave] = useState(false);
@@ -27,15 +28,54 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
     } else {
       setRequireSave(false);
     }
+    if (name.length < 20) {
+      setErrors([]);
+    }
   }, [image, server.picture, name, server.name]);
 
+  useEffect(() => {
+    if (name.length > 0) {
+      setActiveSave(true);
+    } else {
+      setActiveSave(false);
+    }
+  }, [name, errors]);
+
+  const validate = () => {
+    let errors = [];
+    let valid = 0;
+    if (name.length < 1) {
+      valid = -1;
+      errors.push("You must include a Server Name.");
+      setActiveSave(false);
+    } else {
+      valid = 1;
+    }
+    if (name.length > 15) {
+      valid = -1;
+      errors.push("Your Server Name must be 15 or less characters.");
+      setActiveSave(false);
+    } else {
+      valid = 1;
+    }
+
+    if (valid > 0) {
+      return true;
+    } else {
+      setErrors(errors);
+      return false;
+    }
+  };
+
   const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append("image", image);
-    formData.append("name", name);
-    await dispatch(putCurrentServer(server.id, formData)).then((picture) =>
-      setImage(picture)
-    );
+    if (validate()) {
+      const formData = new FormData();
+      formData.append("image", image);
+      formData.append("name", name);
+      await dispatch(putCurrentServer(server.id, formData)).then((picture) =>
+        setImage(picture)
+      );
+    }
   };
 
   const handleDelete = async () => {
@@ -64,7 +104,19 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
   };
 
   const handleImageUpdate = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    setImage(file);
+
+    if (file && !fileTypes.includes(`${file.type.split("/")[1]}`)) {
+      setImage(server.picture);
+      setErrors([
+        "The uploaded file was not supported, your server icon has been reverted to its previous upload. Uploaded file should be a pdf, png, jpg, jpeg, or gif.",
+      ]);
+    } else {
+      setImage(file);
+    }
+
+    setEmptyFile("");
   };
 
   const reset = () => {
@@ -127,7 +179,9 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
                 <p className="pic_recommend">
                   We recommend an image of at least 512x512 for the server
                 </p>
-                <h5 className="upload_image_btn">Upload Image</h5>
+                <label className="upload_image_btn" htmlFor="upload">
+                  Upload Image
+                </label>
               </div>
               <div className="edit_server_name">
                 <label htmlFor="server_name">SERVER NAME</label>
@@ -141,6 +195,13 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
                 ></input>
               </div>
             </div>
+            {errors.length > 0 && (
+              <div className="errors_edit">
+                {errors.map((error, ind) => (
+                  <div key={ind || error}>{error}</div>
+                ))}
+              </div>
+            )}
             {requireSave && (
               <div className="require_save_container">
                 <div className="require_save_message">
@@ -156,7 +217,10 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
                   <h5 className="reset" onClick={reset}>
                     Reset
                   </h5>
-                  <h5 className="save" onClick={handleSubmit}>
+                  <h5
+                    className={activeSave ? "save active_save" : "save"}
+                    onClick={activeSave ? handleSubmit : () => validate}
+                  >
                     Save Changes
                   </h5>
                 </div>

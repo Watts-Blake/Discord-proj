@@ -9,7 +9,6 @@ const CreateServer = ({ setShowModal }) => {
   const [showCreateAbout, setShowCreateAbout] = useState(false);
   const [showCreateFinal, setShowCreatFinal] = useState(false);
   const [name, setName] = useState("");
-  const [valid, setValid] = useState(false);
   const [activeCreate, setActiveCreate] = useState(false);
   const [errors, setErrors] = useState([]);
   const [emptyFile, setEmptyFile] = useState("");
@@ -50,31 +49,32 @@ const CreateServer = ({ setShowModal }) => {
     } else {
       setActiveCreate(false);
     }
-    if (errors.length > 1) setErrors([]);
   }, [name, serverImage, errors]);
 
-  useEffect(() => {
-    if (valid) setErrors([]);
-  }, [valid]);
-
   const validate = () => {
-    let valid = true;
+    let errors = [];
+    let valid = 0;
     if (name.length < 1) {
-      valid = false;
+      valid = -1;
       errors.push("You must include a Server Name.");
       setActiveCreate(false);
     } else {
-      valid = true;
+      valid = 1;
     }
-    if (name.length > 20) {
-      valid = false;
-      errors.push("Your Server Name must be less than 20 characters.");
+    if (name.length > 15) {
+      valid = -1;
+      errors.push("Your Server Name must be 15 or less characters.");
       setActiveCreate(false);
     } else {
-      valid = true;
+      valid = 1;
     }
 
-    if (valid) return true;
+    if (valid > 0) {
+      return true;
+    } else {
+      setErrors(errors);
+      return false;
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -101,12 +101,11 @@ const CreateServer = ({ setShowModal }) => {
 
     if (file && !fileTypes.includes(`${file.type.split("/")[1]}`)) {
       setServerImage(baseImage);
-      errors.push(
-        "Please Upload a new file, or click create to use our default icon. Uploaded file should be a pdf, png, jpg, jpeg, or gif."
-      );
+      setErrors([
+        "Please Upload a new file, or continue creating to use our default icon. Uploaded file should be a pdf, png, jpg, jpeg, or gif.",
+      ]);
     } else {
       setServerImage(file);
-      setValid(true);
     }
 
     setEmptyFile("");

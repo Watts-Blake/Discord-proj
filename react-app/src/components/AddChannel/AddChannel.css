@@ -119,3 +119,14 @@
   padding: 6px 8px;
   border-radius: 3px;
 }
+
+.errors_create_chan {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: red;
+  text-align: center;
+  width: 400px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
