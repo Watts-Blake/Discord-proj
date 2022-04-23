@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 const UserSettings = ({ setShowModal }) => {
   const dispatch = useDispatch();
   const handleLogout = async (e) => {
+    setShowModal(false);
     await dispatch(logout());
   };
 

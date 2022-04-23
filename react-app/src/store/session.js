@@ -86,6 +86,8 @@ export const signUp = (formData) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
+    dispatch(setUserServers(data.serverMember));
+    dispatch(setUserDms(data.dmChannelMember));
     dispatch(setUser(data));
     return null;
   } else if (response.status < 500) {

@@ -57,7 +57,6 @@ const CreateServer = ({ setShowModal }) => {
     if (valid) setErrors([]);
   }, [valid]);
 
-  useEffect(() => {});
   const validate = () => {
     let valid = true;
     if (name.length < 1) {

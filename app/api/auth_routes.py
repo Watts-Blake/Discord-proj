@@ -67,24 +67,24 @@ def sign_up():
     repeat_password = request.form['repeat_password']
 
 
+    url = "https://www.svgrepo.com/show/331368/discord-v2.svg"
     if email:
         errors.append('Email address is already in use.')
     if username:
         errors.append('Username is already in use.')
     if password != repeat_password:
         errors.append('Passwords do not match.')
-    if len(errors):
-        return {'errors': errors}, 401
-
-    url = "https://www.svgrepo.com/show/331368/discord-v2.svg"
-
     if "image" in request.files:
         image = request.files["image"]
         if not allowed_file(image.filename):
-            return {"errors": "file type not permitted"}, 400
+         errors.append("file type not permitted.")
         image.filename = get_unique_filename(image.filename)
         upload = upload_file_to_s3(image)
         url = upload["url"]
+    if len(errors):
+        return {'errors': errors}, 401
+
+
 
     user = User(
         username=request.form['username'],
