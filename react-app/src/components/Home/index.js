@@ -33,6 +33,49 @@ const Home = () => {
           </Link>
         </div>
       </div>
+      <div className="home_footer">
+        <div className="produced">
+          <h2 className="no_margin">Blake Watts</h2>
+          <div className="links">
+            <a
+              href="https://github.com/Watts-Blake/Discord-proj"
+              className="github"
+            >
+              <img src="/svgs/github.svg" alt="github" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/blake-watts-b91428123/"
+              className="linkedin"
+            >
+              <img src="/svgs/LinkedIn.svg" alt="linkedin" />
+            </a>
+          </div>
+        </div>
+
+        <div className="technologies">
+          <img className="tech python" src="/svgs/python.svg" alt="react" />
+          <img className="tech js" src="/svgs/java.svg" alt="react" />
+          <img className="tech" src="/svgs/react.svg" alt="react" />
+          <img className="tech flask" src="/svgs/flask.svg" alt="react" />
+          <img className="tech aws" src="/svgs/aws.svg" alt="react" />
+          <img className="tech socket" src="/svgs/socket.svg" alt="react" />
+        </div>
+        <div className="actual_footer">
+          <Link
+            to="/"
+            exact={true}
+            activeClassName="active"
+            className="home_link"
+          >
+            <img src="/svgs/gray-disc-home.svg" alt="home" />
+            <h3>Diss-cord</h3>
+          </Link>
+
+          <Link to="/login" className="launch_btn small">
+            Open Diss-cord
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };

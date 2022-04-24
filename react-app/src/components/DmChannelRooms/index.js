@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { Redirect } from "react-router-dom";
+import AboutLinks from "../AboutLinks";
 
 import { checkMember } from "../../utils";
 
@@ -59,7 +60,9 @@ const DmChannelRooms = () => {
           </div>
 
           {channelLoaded && (
-            <div className="channel_header">{user.username}'s </div>
+            <div className="channel_header">
+              <p>{user.username}'s</p>{" "}
+            </div>
           )}
         </div>
         <div className="one_channel_container">

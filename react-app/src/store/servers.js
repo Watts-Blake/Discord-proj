@@ -1,6 +1,7 @@
 import { csrfFetch } from "./csrf";
 
 import { setChannels } from "./channels";
+// import { setCurrentChannel } from "./channels";
 
 //---------------------------------------actions------------------------------
 
@@ -44,6 +45,7 @@ export const joinUserServer = (serverId, userId) => async (dispatch) => {
 
   const data = await res.json();
   dispatch(addUserServer(data.server));
+  return data.server;
 };
 export const leaveUserServer = (serverId, membershipId) => async (dispatch) => {
   const res = await csrfFetch(
@@ -65,6 +67,11 @@ export const postUserServer = (formData) => async (dispatch) => {
   const newServer = await res.json();
 
   dispatch(addUserServer(newServer));
+  // dispatch(setCurrentServer(newServer));
+  // dispatch(setChannels(newServer.channels));
+  // dispatch(setCurrentChannel(newServer.channels[newServer.firstChannelId]));
+  // console.log("hereeeeeeeeeeeeeeeeee", newServer);
+  return newServer;
 };
 
 const UPDATE_USER_SERVERS = "servers/UpdateServers";

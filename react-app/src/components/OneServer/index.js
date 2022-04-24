@@ -165,7 +165,7 @@ const OneServer = () => {
               </div>
             ) : (
               dmRoomsView && (
-                <div className="channel_header">{user.username}'s </div>
+                <div className="channel_header">{user.username}'s</div>
               )
             ))}
         </div>

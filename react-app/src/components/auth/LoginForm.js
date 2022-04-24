@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { login } from "../../store/session";
+import AboutLinks from "../AboutLinks";
 import "./Login.css";
 import { Link } from "react-router-dom";
 
@@ -51,6 +52,15 @@ const LoginForm = () => {
           src="/svgs/logg-page.svg"
           alt="logpage"
         />
+        <Link
+          to="/"
+          exact={true}
+          activeClassName="active"
+          className="home_link"
+        >
+          <img src="/svgs/gray-disc-home.svg" alt="home" />
+          <h3>Diss-cord</h3>
+        </Link>
         <form className="login_form" onSubmit={onLogin}>
           <div className="login_header">
             <h1 className="login_title">Welcome back!</h1>
@@ -98,6 +108,7 @@ const LoginForm = () => {
             </button>
           </div>
         </form>
+        <AboutLinks />
       </div>
     )
   );
