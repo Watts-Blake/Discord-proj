@@ -4,7 +4,10 @@ import { fileTypes } from "../../utils";
 import { useSelector } from "react-redux";
 import { postUserServer } from "../../store/servers";
 import { useDispatch } from "react-redux";
+// import { useHistory } from "react-router-dom";
+
 const CreateServer = ({ setShowModal }) => {
+  // let history = useHistory();
   const [showHomeCreate, setShowHomeCreate] = useState(true);
   const [showCreateAbout, setShowCreateAbout] = useState(false);
   const [showCreateFinal, setShowCreatFinal] = useState(false);

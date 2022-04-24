@@ -122,7 +122,7 @@ nav {
   bottom: 350px;
   background-color: #0d1117;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
 }
 
@@ -132,11 +132,63 @@ nav {
 .produced {
   margin-top: 20px;
   margin-left: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 .technologies {
-  margin-top: 20px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.tech {
+  height: 50px;
+  margin-right: 20px;
+}
+.tech.js {
+  height: 44px;
+  margin-bottom: 10px;
+}
+.tech.flask {
+  height: 80px;
+}
+.tech.python {
+  height: 30px;
+}
+.tech.aws {
+  height: 30px;
+  margin-top: 10px;
 }
 .links {
-  margin-top: 20px;
   margin-right: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.actual_footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 20px;
+  margin-bottom: 60px;
+  height: 40px;
+  align-items: center;
+  border-top: 2px solid #5865f2;
+  padding-top: 20px;
+}
+
+.launch_btn.small {
+  font-size: 12px;
+  width: 100px;
+  padding: 0 0;
+  margin: 0 0;
+  height: 40px;
+  background-color: #5865f2;
 }
