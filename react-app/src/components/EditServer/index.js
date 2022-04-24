@@ -69,6 +69,7 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
 
   const handleSubmit = async () => {
     if (validate()) {
+      setErrors([]);
       const formData = new FormData();
       formData.append("image", image);
       formData.append("name", name);
