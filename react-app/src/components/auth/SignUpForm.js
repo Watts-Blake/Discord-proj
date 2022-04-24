@@ -6,6 +6,8 @@ import "./Signup.css";
 import { Link } from "react-router-dom";
 import { fileTypes } from "../../utils";
 
+import AboutLinks from "../AboutLinks";
+
 const SignUpForm = () => {
   const [errors, setErrors] = useState([]);
   const [username, setUsername] = useState("");
@@ -153,6 +155,10 @@ const SignUpForm = () => {
         src="/svgs/logg-page.svg"
         alt="logpage"
       />
+      <Link to="/" exact={true} activeClassName="active" className="home_link">
+        <img src="/svgs/gray-disc-home.svg" alt="home" />
+        <h3>Diss-cord</h3>
+      </Link>
       <div className="sign_form">
         <h1 className="sign_title">Create an account</h1>
         <label htmlFor="upload">
@@ -239,6 +245,7 @@ const SignUpForm = () => {
           Sign Up
         </div>
       </div>
+      <AboutLinks />
     </div>
   );
 };

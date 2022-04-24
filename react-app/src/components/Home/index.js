@@ -1,6 +1,7 @@
 import "./Home.css";
 import NavBar from "../NavBar";
 import { Link } from "react-router-dom";
+import AboutLinks from "../AboutLinks";
 
 const Home = () => {
   return (
@@ -31,6 +32,18 @@ const Home = () => {
           <Link to="/login" className="launch_btn">
             Open Diss-cord in your browser
           </Link>
+        </div>
+      </div>
+      <div className="home_footer">
+        <div className="produced">
+          <h2 className="no_margin">Produced by</h2>
+        </div>
+
+        <div className="technologies">
+          <h2 className="no_margin">Technologies Used</h2>
+        </div>
+        <div className="links">
+          <AboutLinks />
         </div>
       </div>
     </div>

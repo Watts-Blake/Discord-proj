@@ -48,6 +48,25 @@ const LeftNavBar = ({ userServers, user }) => {
             ></img>
           </div>
         </NavLink>
+        <a href="https://github.com/Watts-Blake/Discord-proj">
+          <div className="icon_container">
+            <img
+              className="left_side_icon"
+              src="/svgs/github.svg"
+              alt="github"
+            />
+          </div>{" "}
+        </a>
+        <a href="https://www.linkedin.com/in/blake-watts-b91428123/">
+          {" "}
+          <div className="icon_container">
+            <img
+              className="left_side_icon"
+              src="/svgs/LinkedIn.svg"
+              alt="linkedin"
+            />
+          </div>
+        </a>
       </div>
     )
   );

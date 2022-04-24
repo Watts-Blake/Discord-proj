@@ -1,6 +1,7 @@
 .home {
   height: 100%;
   width: 100%;
+  background-color: #ffffff;
 }
 
 nav {
@@ -111,4 +112,31 @@ nav {
   margin-right: -1006px;
   bottom: -1px;
   z-index: 2;
+}
+
+.home_footer {
+  height: 32vh;
+  width: 100vw;
+  z-index: 30;
+  position: relative;
+  bottom: 350px;
+  background-color: #0d1117;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.no_margin {
+  margin-top: 0;
+}
+.produced {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.technologies {
+  margin-top: 20px;
+}
+.links {
+  margin-top: 20px;
+  margin-right: 20px;
 }
