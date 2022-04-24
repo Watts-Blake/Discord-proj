@@ -132,11 +132,15 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
         <div className="edit_options">
           {name ? <h5>{name.toUpperCase()}</h5> : <h5>Server Settings</h5>}
           <h4 onClick={() => setSelected("Overview")}>Overview</h4>
-          <div className="user_management">
+          {/* <div className="user_management">
             <h3>USER MANAGEMENT</h3>
             <h4>Members</h4>
-          </div>
-          <div className="delete" onClick={handleDelete}>
+          </div> */}
+          <div
+            className="delete"
+            onClick={handleDelete}
+            style={{ cursor: "pointer", gap: "10px" }}
+          >
             <h3>Delete Server</h3>
             <img src="/svgs/trash.svg" alt="trash" />
           </div>
@@ -149,7 +153,11 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
               Server Overview
             </h3>
             <div className="overview">
-              <label htmlFor="upload" className="server_picture_container">
+              <label
+                htmlFor="upload"
+                className="server_picture_container"
+                style={{ cursor: "pointer" }}
+              >
                 <img
                   src={
                     image === server.picture
@@ -180,7 +188,11 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
                 <p className="pic_recommend">
                   We recommend an image of at least 512x512 for the server
                 </p>
-                <label className="upload_image_btn" htmlFor="upload">
+                <label
+                  className="upload_image_btn"
+                  htmlFor="upload"
+                  style={{ cursor: "pointer" }}
+                >
                   Upload Image
                 </label>
               </div>
@@ -215,12 +227,19 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
                   <h4>you have unsaved changes!</h4>
                 </div>
                 <div className="save_reset_btns">
-                  <h5 className="reset" onClick={reset}>
+                  <h5
+                    className="reset"
+                    onClick={reset}
+                    style={{ cursor: "pointer" }}
+                  >
                     Reset
                   </h5>
                   <h5
                     className={activeSave ? "save active_save" : "save"}
                     onClick={activeSave ? handleSubmit : () => validate}
+                    style={
+                      activeSave ? { cursor: "pointer" } : { cursor: "default" }
+                    }
                   >
                     Save Changes
                   </h5>
@@ -230,7 +249,11 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
           </div>
         )}
       </div>
-      <div onClick={checkChanges} className="esc_x_container">
+      <div
+        onClick={checkChanges}
+        className="esc_x_container"
+        style={{ cursor: "pointer" }}
+      >
         <img className="esc_x" src="/svgs/actual-x.svg" alt="x" />
         <h5 className="esc">ESC</h5>
       </div>

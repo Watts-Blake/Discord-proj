@@ -11,12 +11,14 @@ const CreateChannelModal = () => {
 
   return (
     <>
-      <img
-        className="channels_plus"
-        src="/svgs/grey-plus.svg"
-        alt="add"
-        onClick={() => setShowModal(true)}
-      />
+      <button>
+        <img
+          className="channels_plus"
+          src="/svgs/grey-plus.svg"
+          alt="add"
+          onClick={() => setShowModal(true)}
+        />
+      </button>
       {showModal && (
         <Modal className="modal" onClose={() => setShowModal(false)}>
           <CreateChannel setShowModal={setShowModal}></CreateChannel>

@@ -16,6 +16,7 @@
   position: relative;
   top: 30px;
   left: 300px;
+  cursor: pointer;
 }
 
 .inputs_container {
@@ -112,12 +113,14 @@
   background-color: #5865f2;
   padding: 6px 8px;
   border-radius: 3px;
+  cursor: pointer;
 }
 .create_channel_btn_unactive {
   background-color: #5865f26c;
   color: #ffffff55;
   padding: 6px 8px;
   border-radius: 3px;
+  cursor: default;
 }
 
 .errors_create_chan {

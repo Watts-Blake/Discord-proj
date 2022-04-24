@@ -21,14 +21,15 @@ const ServerOptions = ({
       <div className="server_opts" id="server_opts">
         {serversObj.currentServer.owner.id === user.id ? (
           <>
-            <div className="sing_server_opt" id="server_opts_inv">
+            {/* <div className="sing_server_opt" id="server_opts_inv">
               <h4 id="server_opts_inv_title">Invite People</h4>
               <img id="server_opts_add_img" src="/svgs/addMemb.svg" alt="add" />
-            </div>
+            </div> */}
             <div
               onClick={() => setShowModal(true)}
               className="sing_server_opt"
               id="server_opts_edit"
+              style={{ cursor: "pointer" }}
             >
               <h4 id="server_opts_edit_title">Server Settings</h4>
               <img

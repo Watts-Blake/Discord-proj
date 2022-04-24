@@ -161,6 +161,9 @@ const EditChannel = ({ user, setShowModal }) => {
                   <h5
                     className={activeEdit ? "save active_save" : "save"}
                     onClick={activeEdit ? handleSubmit : () => validate}
+                    style={
+                      activeEdit ? { cursor: "pointer" } : { cursor: "default" }
+                    }
                   >
                     Save Changes
                   </h5>

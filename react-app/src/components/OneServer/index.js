@@ -139,6 +139,7 @@ const OneServer = () => {
                   className="sever_opt_button"
                   id="open_server_opts"
                   onClick={() => setShowServerOptions(true)}
+                  style={{ cursor: "pointer" }}
                 />
               )}
               {showServerOptions && (
@@ -147,6 +148,7 @@ const OneServer = () => {
                   alt="x"
                   className="sever_opt_button"
                   onClick={() => setShowServerOptions(false)}
+                  style={{ cursor: "pointer" }}
                 />
               )}
             </div>
