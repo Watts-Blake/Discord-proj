@@ -103,7 +103,8 @@ const Channels = () => {
             </div>
             {((ownerId === user.id && currentChannelId * 1 === channel.id) ||
               (ownerId === user.id && hoverId === channel.id)) &&
-              channel.name !== "General" && (
+              channel.name !== "General" &&
+              !channelsObj.currentChannel.dmChannel && (
                 <div className="channel_right">
                   {/* <img src="/svgs/addMemb.svg" alt="add" /> */}
                   <EditChannelModal channel={channel} user={user} />
