@@ -1,5 +1,4 @@
 import "./AboutLinks.css";
-import { Link } from "react-router-dom";
 
 const AboutLinks = () => {
   return (
