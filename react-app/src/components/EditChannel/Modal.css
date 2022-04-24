@@ -61,6 +61,7 @@
   border: 2px solid #575a61;
   padding: 6px 6px;
   border-radius: 100%;
+  cursor: pointer;
 }
 .esc {
   margin: 0 10px;

@@ -60,9 +60,10 @@ const Channels = () => {
       <div className="channels_header">
         {!dmRoomsView && <h4>TEXT CHANNELS</h4>}
         {dmRoomsView && <h4>DIRECT MESSAGES</h4>}
-        {user.id === currentServer?.owner?.id && (
-          <CreateChannelModal user={user} />
-        )}
+        {user.id === currentServer?.owner?.id &&
+          !channelsObj.currentChannel.dmChannel && (
+            <CreateChannelModal user={user} />
+          )}
       </div>
 
       {channels?.map((channel) => (

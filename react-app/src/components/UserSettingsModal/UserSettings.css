@@ -17,8 +17,13 @@
   justify-content: space-between;
   margin: 0 10px;
   align-items: center;
+  cursor: pointer;
 }
 
 .logout_img {
   height: 24px;
+}
+
+.logged_user_right {
+  cursor: pointer;
 }

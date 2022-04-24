@@ -109,7 +109,9 @@
   margin-right: 10px;
   color: rgba(255, 255, 255, 0.907);
   padding: 4px 8px;
+  cursor: default;
 }
 .create_btn.active_btn {
   background-color: #5865f2;
+  cursor: pointer;
 }

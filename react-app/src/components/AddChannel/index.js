@@ -153,7 +153,9 @@ const CreateChannel = ({ setShowModal }) => {
       )}
       <div className="add_chan_btns_container">
         <div className="add_chan_btns">
-          <h5 onClick={() => setShowModal(false)}>Cancel</h5>
+          <h5 style={{ cursor: "pointer" }} onClick={() => setShowModal(false)}>
+            Cancel
+          </h5>
 
           <h5
             className={

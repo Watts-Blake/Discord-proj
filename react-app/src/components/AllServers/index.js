@@ -50,11 +50,19 @@ const AllServers = () => {
   return (
     loaded && (
       <div className="all_servers_container">
-        <img
-          className="all_servers_header_pic"
-          src="/svgs/all-servers-pic.svg"
-          alt="all servers"
-        />
+        <div className="all_servers_header">
+          <img
+            className="all_servers_header_pic"
+            src="/svgs/all-servers-pic.svg"
+            alt="all servers"
+          />
+          <div className="header_text">
+            <h1>Find your community on Diss-cord</h1>
+            <h4>
+              From gaming, to music, to learning, there's a place for you.
+            </h4>
+          </div>
+        </div>
 
         <h2 className="featured">Featured Servers</h2>
         {servers.length ? (
