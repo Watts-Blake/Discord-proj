@@ -15,6 +15,8 @@ const EditChannel = ({ user, setShowModal }) => {
   const channel = useSelector((state) => state.channels.currentChannel);
   const [selected, setSelected] = useState("Overview");
   const [name, setName] = useState(channel.name);
+  const [errors, setErrors] = useState([]);
+  const [activeEdit, setActiveEdit] = useState(false);
 
   const [requireSave, setRequireSave] = useState(false);
 
@@ -26,11 +28,55 @@ const EditChannel = ({ user, setShowModal }) => {
     }
   }, [name, channel.name]);
 
+  useEffect(() => {
+    if (name.length > 0) {
+      setActiveEdit(true);
+    } else {
+      setActiveEdit(false);
+    }
+  }, [name, errors]);
+  const validate = () => {
+    let errors = [];
+    let valid = 0;
+    if (name.length < 1) {
+      valid = -1;
+      errors.push("You must include a Channel Name.");
+      setActiveEdit(false);
+    } else {
+      valid = 1;
+    }
+    let nameArr = name.split("-");
+
+    for (let i = 0; i < nameArr.length; i++) {
+      let ind = nameArr[i];
+      if (ind.length > 15) {
+        valid = -1;
+        setActiveEdit(false);
+        errors.push(
+          "Each word in your channel name must be 15 or less characters."
+        );
+        setErrors(errors);
+        return false;
+      } else {
+        valid = 1;
+      }
+    }
+
+    if (valid > 0) {
+      return true;
+    } else {
+      setErrors(errors);
+      return false;
+    }
+  };
+
   const handleSubmit = async () => {
-    console.log(channel.name);
-    await dispatch(
-      putChannel({ id: channel.id, name: name, serverId: channel.serverId })
-    ).then(() => setRequireSave(false));
+    if (validate()) {
+      setErrors([]);
+      await dispatch(
+        putChannel({ id: channel.id, name: name, serverId: channel.serverId })
+      ).then(() => setRequireSave(false));
+    }
   };
 
   const handleDelete = async () => {
@@ -90,6 +136,13 @@ const EditChannel = ({ user, setShowModal }) => {
                 ></input>
               </div>
             </div>
+            {errors.length > 0 && (
+              <div className="errors_create_chan">
+                {errors.map((error, ind) => (
+                  <div key={ind || error}>{error}</div>
+                ))}
+              </div>
+            )}
             {requireSave && (
               <div className="require_save_container">
                 <div className="require_save_message">
@@ -105,7 +158,10 @@ const EditChannel = ({ user, setShowModal }) => {
                   <h5 className="reset" onClick={reset}>
                     Reset
                   </h5>
-                  <h5 className="save" onClick={handleSubmit}>
+                  <h5
+                    className={activeEdit ? "save active_save" : "save"}
+                    onClick={activeEdit ? handleSubmit : () => validate}
+                  >
                     Save Changes
                   </h5>
                 </div>
