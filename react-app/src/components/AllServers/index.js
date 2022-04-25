@@ -10,7 +10,6 @@ import { useContext } from "react";
 import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 import { useHistory } from "react-router-dom";
 const AllServers = () => {
-  console.log("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   const dispatch = useDispatch();
   const { setDmRoomsView } = useContext(DmRoomViewContext);
   const [loaded, setLoaded] = useState(false);
@@ -32,7 +31,6 @@ const AllServers = () => {
   };
 
   useEffect(() => {
-    console.log("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     dispatch(getAllServers())
       .then((servers) => setServers(filterServers(servers, userServers)))
       .then(() => setLoaded(true));

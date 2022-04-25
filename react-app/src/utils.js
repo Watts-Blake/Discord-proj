@@ -26,7 +26,6 @@ export const checkMember = async (serverId, channelId, userId) => {
     const channelMembersObj = await grabChannelMembers(channelId);
     const channelMemberssArr = Object.values(channelMembersObj?.channelMembers);
     if (channelMemberssArr.find((members) => members.user_id === userId)) {
-      console.log("here", channelMemberssArr[1].user_id);
       return true;
     } else {
       return false;

@@ -34,7 +34,7 @@ const DmChannelRooms = () => {
         .then(() => setPrevRoom(dmRoomId))
         .catch((error) => console.log(error.message));
     }
-    console.log("hereeeeeee", checkMember(false, channelId, user.id));
+
     if (!checkMember(false, channelId, user.id) && isActive) {
       return <Redirect to="404/wampus" />;
     }

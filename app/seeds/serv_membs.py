@@ -11,13 +11,7 @@ def seed_server_members():
         elif i >= 14 and i < 19:
             member=ServerMember(server_id=3, user_id=i )
             db.session.add(member)
-    demo1 = ServerMember(server_id=1, user_id=19)
-    demo2 = ServerMember(server_id=2, user_id=19)
-    demo3 = ServerMember(server_id=3, user_id=19)
 
-    db.session.add(demo1)
-    db.session.add(demo2)
-    db.session.add(demo3)
     db.session.commit()
 
 def undo_server_members():

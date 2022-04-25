@@ -12,7 +12,7 @@ def seed_channels():
     db.session.commit()
 
 def seed_dm_channels():
-    channels = [{'dm_channel':True,'owner_id': 19},{'dm_channel':True,'owner_id': 19},{ 'dm_channel':True,'owner_id': 19},{'dm_channel':True,'owner_id': 2},{'dm_channel':True,'owner_id': 2},{ 'dm_channel':True,'owner_id': 2},{ 'dm_channel':True,'owner_id': 3},{ 'dm_channel':True,'owner_id': 3},{ 'dm_channel':True,'owner_id': 3}]
+    channels = [{'dm_channel':True,'owner_id': 2}]
     for channel in channels:
         new_channel = Channel(owner_id=channel['owner_id'], dm_channel=channel['dm_channel'])
         db.session.add(new_channel)
@@ -20,7 +20,7 @@ def seed_dm_channels():
     db.session.commit()
 
 def seed_channel_members():
-    channel_members = [{'channel_id': 10, 'user_id': 2}, {'channel_id': 10, 'user_id': 19}, {'channel_id': 12, 'user_id': 2}, {'channel_id': 12, 'user_id': 19},{'channel_id': 12, 'user_id': 3}, {'channel_id': 16, 'user_id': 3}, {'channel_id': 16, 'user_id': 19}]
+    channel_members = [{'channel_id': 10, 'user_id': 2}, {'channel_id': 10, 'user_id': 19}]
 
     for member in channel_members:
         new_member = ChannelMember(channel_id=member['channel_id'], user_id=member['user_id'])
@@ -58,6 +58,8 @@ def seed_channel_messages():
 
         message = ChannelMessage(channel_id=i, sender_id=18, content='test')
         db.session.add(message)
+    message_from_me = ChannelMessage(channel_id=10, sender_id=2, content="Hello, Thank you for visiting Diss-cord, an on going discord clone project, if you have any questions, feel free to message me here. If you'd like to know more about the project or myself feel free to click the github, or linked icons within the left navbar.")
+    db.session.add(message_from_me)
     db.session.commit()
 
 def undo_channel_messages():

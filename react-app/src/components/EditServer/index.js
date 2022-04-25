@@ -2,17 +2,19 @@ import "./Modal.css";
 import { fileTypes } from "../../utils";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+// eslint-disable-next-line
 import { deleteServer, getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { putCurrentServer } from "../../store/servers";
-import { grabFirstServerId, grabFirstChannelId } from "../../utils";
+// import { grabFirstServerId, grabFirstChannelId } from "../../utils";
 
 const EditServer = ({ serversObj, user, setShowModal }) => {
   const dispatch = useDispatch();
   let history = useHistory();
 
   const server = serversObj.currentServer;
+  const currentChannel = useSelector((state) => state.channels.currentChannel);
 
   const [selected, setSelected] = useState("Overview");
   const [name, setName] = useState(server.name);
@@ -44,19 +46,20 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
   const validate = () => {
     let errors = [];
     let valid = 0;
-    if (name.length < 1) {
-      valid = -1;
+    if (name.trim().length < 1) {
+      valid -= 1;
       errors.push("You must include a Server Name.");
       setActiveSave(false);
+      setName("");
     } else {
-      valid = 1;
+      valid += 1;
     }
     if (name.length > 15) {
-      valid = -1;
+      valid -= 1;
       errors.push("Your Server Name must be 15 or less characters.");
       setActiveSave(false);
     } else {
-      valid = 1;
+      valid += 1;
     }
 
     if (valid > 0) {
@@ -76,24 +79,33 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
       await dispatch(putCurrentServer(server.id, formData)).then((picture) =>
         setImage(picture)
       );
+      if (currentChannel.id === server.firstChannelId) {
+        await dispatch(getOneChannel(server.firstChannelId));
+      }
     }
   };
 
   const handleDelete = async () => {
-    await dispatch(deleteServer(server.id)).then(() => setShowModal(false));
+    await dispatch(deleteServer(server.id))
+      .then(() =>
+        history.push(
+          `/channels/@me/${Object.values(user.dmChannelMember)[0].id}`
+        )
+      )
+      .then(() => setShowModal(false));
 
-    if (
-      grabFirstServerId(user.serverMember) &&
-      grabFirstChannelId(user.serverMember)
-    ) {
-      let firstServerId = grabFirstServerId(user.serverMember);
-      let firsChannelId = grabFirstChannelId(user.serverMember);
+    // if (
+    //   grabFirstServerId(user.serverMember) &&
+    //   grabFirstChannelId(user.serverMember)
+    // ) {
+    //   let firstServerId = grabFirstServerId(user.serverMember);
+    //   let firsChannelId = grabFirstChannelId(user.serverMember);
 
-      history.push(`/channels/${firstServerId}/${firsChannelId}`);
-      await dispatch(getOneServer(firstServerId)).then(() =>
-        dispatch(getOneChannel(firsChannelId))
-      );
-    }
+    //   history.push(`/channels/${firstServerId}/${firsChannelId}`);
+    //   await dispatch(getOneServer(firstServerId)).then(() =>
+    //     dispatch(getOneChannel(firsChannelId))
+    //   );
+    // }
   };
 
   const checkChanges = () => {

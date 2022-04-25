@@ -106,7 +106,7 @@ def sign_up():
 
     db.session.commit()
 
-    new_message = ChannelMessage(channel_id=new_channel.id, sender_id=2, content='Hello, Thank you for visiting Diss-cord, a on going project clone of Discord')
+    new_message = ChannelMessage(channel_id=new_channel.id, sender_id=2, content="Hello, Thank you for visiting Diss-cord, an on going discord clone project, if you have any questions, feel free to message me here. If you'd like to know more about the project or myself feel free to click the github, or linked icons within the left navbar.")
     db.session.add(new_message)
     db.session.commit()
 

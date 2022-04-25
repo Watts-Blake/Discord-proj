@@ -9,7 +9,6 @@ const ChatInput = ({ sendMessage }) => {
   const userId = useSelector((state) => state.session.user.id);
   const [chatContent, setChatContent] = useState("");
   // const [image, setImage] = useState("");
-  console.log(chatContent);
 
   const handleSubmit = (e) => {
     e.preventDefault();
