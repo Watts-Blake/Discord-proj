@@ -15,8 +15,8 @@ def seed():
     seed_servers()
     seed_server_members()
     seed_channels()
-    seed_channel_messages()
     seed_dm_channels()
+    seed_channel_messages()
     seed_channel_members()
     # Add other seed functions here
 

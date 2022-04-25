@@ -18,7 +18,7 @@ def get_all_or_post_to_servers():
         return {'servers':{server.id: server.to_resource_dict() for server in servers}}
 #---------------------------------------------------------create new server
     if request.method == 'POST':
-        # print('right here you fucking wombat', request.files['image'])
+        # print('right here you friggin wombat', request.files['image'])
         url = "https://www.svgrepo.com/show/331368/discord-v2.svg"
 
         if "image" in request.files:
@@ -54,6 +54,12 @@ def get_one__put_delete_server(server_id):
         return server.to_dict()
 
     if request.method == 'PUT':
+        server_general_channel = Channel.query.get(server.channels[0].id)
+        general_channel_welcome_message = ChannelMessage.query.filter(ChannelMessage.channel_id == server_general_channel.id).filter(ChannelMessage.sender_id == 1 ).first()
+        name = request.form['name']
+        general_channel_welcome_message.content = f'Welcome to {name}\'s Server'
+        db.session.commit()
+
         url = server.server_picture
 
         if "image" in request.files:
@@ -76,15 +82,15 @@ def get_one__put_delete_server(server_id):
 
 @servers_routes.route('/<int:server_id>/members', methods=['GET', 'POST'])
 def get_all_or_post_to_server_members(server_id):
-    print('beforeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+
     server_general_channel = Channel.query.filter(Channel.server_id == server_id).filter(Channel.name == 'General').first()
 
-    print('after first query',server_general_channel.to_dict())
+
 
     if request.method == 'GET':
-        print('before second querrrrrry')
+
         server_members= ServerMember.query.filter(ServerMember.server_id == server_id).all()
-        print('after second querrrrrry', server_members)
+
 
         return {'serverMembers': {member.id:member.to_dict() for member in server_members}}
     if request.method == 'POST':
@@ -136,6 +142,11 @@ def get_one__put_delete_channel(server_id, channel_id):
         return channel.to_dict()
 
     if request.method == 'PUT':
+        name = request.json['name']
+        diss_cord_bot_message = ChannelMessage.query.filter(ChannelMessage.channel_id == channel_id).filter(ChannelMessage.sender_id == 1).first()
+        diss_cord_bot_message.content = f'Welcome to {channel.server.name}\'s Channel {name}'
+        db.session.commit()
+
 
         channel.name = request.json['name']
         db.session.commit()

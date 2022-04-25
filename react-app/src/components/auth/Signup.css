@@ -66,4 +66,5 @@
 .active.submit_sign_btn {
   color: rgb(255, 255, 255);
   background-color: #5865f2;
+  cursor: pointer;
 }

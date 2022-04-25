@@ -16,10 +16,14 @@ channel_routes = Blueprint('channels', __name__, url_prefix='channels')
 def get_one_put_delete_channel(channel_id):
     channel = Channel.query.get(channel_id)
     if request.method == 'GET':
-        print('hereeeeeeeeee', channel.to_dict())
+
         return channel.to_dict()
 
     if request.method == 'PUT':
+        name = request.json['name']
+        diss_cord_bot_message = ChannelMessage.query.filter(ChannelMessage.channel_id == channel_id).filter(ChannelMessage.sender_id == 1).first()
+        diss_cord_bot_message.content = f'Welcome to {channel.server.name}\'s Channel {name}'
+        db.session.commit()
 
         channel.name = request.json['name']
         db.session.commit()
@@ -82,7 +86,7 @@ def put_delete_message(message_id):
 
 @channel_routes.route('/<int:channel_id>/members', methods=['GET', 'POST'])
 def get_all_or_post_to_channel_members(channel_id):
-    print('beforeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+
     server_general_channel = Channel.query.get(channel_id)
 
     print('after first query',server_general_channel.to_dict())

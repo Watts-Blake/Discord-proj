@@ -20,7 +20,6 @@ const Channels = () => {
   // const [showServerOptions, setShowServerOptions] = useState(false)
   const user = useSelector((state) => state.session.user);
   const currentServer = useSelector((state) => state.servers.currentServer);
-  console.log(currentServer);
   const channelsObj = useSelector((state) => state.channels);
   let url = useLocation();
   const dispatch = useDispatch();

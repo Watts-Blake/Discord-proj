@@ -22,7 +22,7 @@ export const setAllServers = (servers) => {
 export const getAllServers = () => async (dispatch) => {
   const res = await fetch("/api/servers/");
   const servers = await res.json();
-  console.log("from thunk", servers);
+
   dispatch(setAllServers(servers.servers));
   return servers.servers;
 };
@@ -67,10 +67,6 @@ export const postUserServer = (formData) => async (dispatch) => {
   const newServer = await res.json();
 
   dispatch(addUserServer(newServer));
-  // dispatch(setCurrentServer(newServer));
-  // dispatch(setChannels(newServer.channels));
-  // dispatch(setCurrentChannel(newServer.channels[newServer.firstChannelId]));
-  // console.log("hereeeeeeeeeeeeeeeeee", newServer);
   return newServer;
 };
 
@@ -126,6 +122,7 @@ export const putCurrentServer = (serverId, formData) => async (dispatch) => {
 
   dispatch(updateCurrentServer(updatedServer));
   dispatch(updateUserServers(updatedServer));
+  dispatch(setChannels(updatedServer.channels));
 
   return updatedServer.picture;
 };

@@ -26,7 +26,6 @@ const SignUpForm = () => {
     setImage(file);
 
     if (file && !fileTypes.includes(`${file.type.split("/")[1]}`)) {
-      console.log("innnnnnnnnnnnnn");
       setImage(baseImage);
       setErrors([
         "Please Upload a new file, or continue to signup and use our default picture. Uploaded file should be a pdf, png, jpg, jpeg, or gif.",
@@ -42,47 +41,47 @@ const SignUpForm = () => {
     setErrors([]);
     let errors = [];
     let valid = 0;
-    if (username.length < 1) {
-      valid = -1;
+    if (username.trim().length < 1) {
+      valid -= 1;
       errors.push("You must include a username.");
-      console.log(errors);
+
       setActiveSignup(false);
     } else {
-      valid = 1;
+      valid += 0;
     }
     if (username.length > 20) {
-      valid = -1;
+      valid -= 1;
       errors.push("Your username must be less than 20 characters.");
-      console.log(errors);
+
       setUsername("");
       setActiveSignup(false);
     } else {
-      if (valid > 0) valid = 1;
+      valid += 0;
     }
     // eslint-disable-next-line
     let reg = // eslint-disable-next-line
       /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     if (!email.toLowerCase().match(reg)) {
-      valid = -1;
+      valid -= 1;
       setEmail("");
       errors.push("Invalid email.");
-      console.log(errors);
+
       setActiveSignup(false);
     } else {
-      if (valid > 0) valid = 1;
+      valid += 0;
     }
     if (password !== repeatPassword) {
-      valid = -1;
+      valid -= 1;
       setPassword("");
       setRepeatPassword("");
       errors.push("Passwords do not match.");
-      console.log(errors);
+
       setActiveSignup(false);
     } else {
-      if (valid > 0) valid = 1;
+      valid += 0;
     }
 
-    if (valid > 0) {
+    if (valid === 0) {
       return true;
     } else {
       setErrors(errors);
@@ -140,7 +139,6 @@ const SignUpForm = () => {
   }, [username, email, password, repeatPassword, image, errors, emptyFile]);
 
   if (user) {
-    console.log(Object.values(user.dmChannelMember)[0].id);
     return (
       <Redirect
         to={`/channels/@me/${Object.values(user.dmChannelMember)[0].id}`}
@@ -167,6 +165,7 @@ const SignUpForm = () => {
               className="default_server_pic"
               src={image}
               alt="server pic"
+              style={{ cursor: "pointer" }}
             ></img>
           )}
           {image !== baseImage && (

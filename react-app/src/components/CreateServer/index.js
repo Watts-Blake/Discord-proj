@@ -29,9 +29,7 @@ const CreateServer = ({ setShowModal }) => {
   };
 
   const handleTransition = (transition) => {
-    console.log(transition);
     if (transition === 1) {
-      console.log("innnnnnn");
       setShowCreateAbout(false);
       setShowCreatFinal(true);
     }
@@ -57,19 +55,20 @@ const CreateServer = ({ setShowModal }) => {
   const validate = () => {
     let errors = [];
     let valid = 0;
-    if (name.length < 1) {
-      valid = -1;
+    if (name.trim().length < 1) {
+      valid -= 1;
       errors.push("You must include a Server Name.");
       setActiveCreate(false);
+      setName("");
     } else {
-      valid = 1;
+      valid += 1;
     }
     if (name.length > 15) {
-      valid = -1;
+      valid -= 1;
       errors.push("Your Server Name must be 15 or less characters.");
       setActiveCreate(false);
     } else {
-      valid = 1;
+      valid += 1;
     }
 
     if (valid > 0) {
@@ -206,7 +205,7 @@ const CreateServer = ({ setShowModal }) => {
           </label>
           {errors.length > 0 &&
             errors.map((error) => (
-              <p className="error" id={error}>
+              <p className="error" id={error} key={error}>
                 {error}
               </p>
             ))}

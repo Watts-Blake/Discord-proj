@@ -20,7 +20,7 @@
 }
 .header_text {
   position: relative;
-  z-index: 20;
+  z-index: 1;
   text-align: center;
   top: -280px;
 }

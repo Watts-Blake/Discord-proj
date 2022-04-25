@@ -12,7 +12,7 @@ const LeftNavBar = ({ userServers, user }) => {
   const dispatch = useDispatch();
   const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
   const userDmRooms = useSelector((state) => state.channels.userDmChannels);
-  console.log(userDmRooms);
+
   const handleHomeClick = async (channelId) => {
     await dispatch(getOneChannel(channelId)).then(() => setDmRoomsView(true));
   };
