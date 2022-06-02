@@ -39,8 +39,8 @@ const Messages = ({ messages }) => {
             <h4 className="username">{message.senderUsername}</h4>
             <p>{message.content}</p>
           </div>
-          {hover === message.id && (
-            <div>
+          {hover === message.id && message.senderId !== 1 && (
+            <div className="message_more">
               <img src="/svgs/dot-dot.svg" alt="more" className="delete"></img>
               {(user.id === message.senderId ||
                 user.id === server.owner.id) && (
