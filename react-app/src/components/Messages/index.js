@@ -1,10 +1,15 @@
 import "./Messages.css";
 
-import { useRef, useEffect } from "react";
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 const Messages = ({ messages }) => {
   const [hover, setHover] = useState(false);
+
+  const user = useSelector((state) => state.session.user);
+  const server = useSelector((state) => state.servers.currentServer);
+  console.log(messages[0], user, server);
+
   let messagesEnd = useRef(null);
   useEffect(() => {
     let isActive = true;
@@ -35,7 +40,13 @@ const Messages = ({ messages }) => {
             <p>{message.content}</p>
           </div>
           {hover === message.id && (
-            <img src="/svgs/dot-dot.svg" alt="more" className="delete"></img>
+            <div>
+              <img src="/svgs/dot-dot.svg" alt="more" className="delete"></img>
+              {(user.id === message.senderId ||
+                user.id === server.owner.id) && (
+                <img src="/svgs/pencil.svg" alt="edit" className="edit" />
+              )}
+            </div>
           )}
         </div>
       ))}
