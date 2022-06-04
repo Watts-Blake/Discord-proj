@@ -1,10 +1,12 @@
 import "./Messages.css";
+import MessageOptions from "../MessageOptions";
 
 import { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 const Messages = ({ messages }) => {
   const [hover, setHover] = useState(false);
+  const [options, setOptions] = useState(null);
 
   const user = useSelector((state) => state.session.user);
   const server = useSelector((state) => state.servers.currentServer);
@@ -18,7 +20,11 @@ const Messages = ({ messages }) => {
       isActive = false;
     };
   }, [messages]);
-
+  console.log(options);
+  const handleMouseLeave = () => {
+    setHover(false);
+    setOptions(false);
+  };
   return (
     <div className="messages">
       {messages?.map((message) => (
@@ -26,7 +32,7 @@ const Messages = ({ messages }) => {
           className={hover === message.id ? "curr_message" : "message"}
           key={message.id}
           onMouseOver={() => setHover(message.id)}
-          onMouseLeave={() => setHover(false)}
+          onMouseLeave={handleMouseLeave}
         >
           <div className="message_user">
             <img
@@ -41,12 +47,19 @@ const Messages = ({ messages }) => {
           </div>
           {hover === message.id && message.senderId !== 1 && (
             <div className="message_more">
-              <img src="/svgs/dot-dot.svg" alt="more" className="delete"></img>
-              {(user.id === message.senderId ||
-                user.id === server.owner.id) && (
-                <img src="/svgs/pencil.svg" alt="edit" className="edit" />
-              )}
+              <button
+                onClick={() => (options ? setOptions(false) : setOptions(true))}
+              >
+                <img
+                  src="/svgs/dot-dot.svg"
+                  alt="more"
+                  className="delete"
+                ></img>
+              </button>
             </div>
+          )}
+          {options && message.id === hover && (
+            <MessageOptions message={message} user={user} server={server} />
           )}
         </div>
       ))}
