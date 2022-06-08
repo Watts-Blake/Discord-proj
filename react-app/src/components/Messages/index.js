@@ -2,14 +2,15 @@ import "./Messages.css";
 import MessageOptions from "../MessageOptions";
 
 import { useRef, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-const Messages = ({ messages }) => {
+const Messages = ({ messages, handleDeleteMessage }) => {
   const [hover, setHover] = useState(false);
   const [options, setOptions] = useState(null);
 
   const user = useSelector((state) => state.session.user);
   const server = useSelector((state) => state.servers.currentServer);
+  const channel = useSelector((state) => state.channels.currentChannel);
   console.log(messages[0], user, server);
 
   let messagesEnd = useRef(null);
@@ -59,7 +60,13 @@ const Messages = ({ messages }) => {
             </div>
           )}
           {options && message.id === hover && (
-            <MessageOptions message={message} user={user} server={server} />
+            <MessageOptions
+              handleDeleteMessage={handleDeleteMessage}
+              message={message}
+              user={user}
+              server={server}
+              channel={channel}
+            />
           )}
         </div>
       ))}

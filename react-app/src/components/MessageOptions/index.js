@@ -2,7 +2,7 @@ import "./MessageOptions.css";
 
 import { useState, useEffect } from "react";
 
-const MessageOptions = ({ message, user, server }) => {
+const MessageOptions = ({ message, user, server, handleDeleteMessage }) => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -17,7 +17,9 @@ const MessageOptions = ({ message, user, server }) => {
             <button>
               <img src="/svgs/pencil.svg" alt="edit" className="edit" />
             </button>
-            <button>
+            <button
+              onClick={() => handleDeleteMessage(message.channelId, message.id)}
+            >
               <img src="/svgs/trash.svg" alt="delete" />
             </button>
           </>

@@ -220,6 +220,10 @@ const channelsReducer = (
 
     case REMOVE_CHANNEL_MESSAGE: {
       delete newState.currentChannel.messages[action.messageId];
+      console.log(
+        "hereeeeeeeeeeeeeeeeeeeeeee",
+        newState.currentChannel.messages
+      );
       return newState;
     }
     default:

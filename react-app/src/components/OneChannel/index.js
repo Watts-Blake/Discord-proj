@@ -4,6 +4,7 @@ import ChatInput from "../ChatInput";
 import { postMessage } from "../../store/channels";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
+import { deleteChannelMessage } from "../../store/channels";
 import { io } from "socket.io-client";
 let socket;
 
@@ -62,10 +63,25 @@ const OneChannel = ({ channelsObj }) => {
       socket.send({ message, room: socketRoom })
     );
   };
+  const handleDeleteMessage = (channelId, messageId) => {
+    dispatch(deleteChannelMessage(channelId, messageId));
+    let deletedMessage = messages.find((message) => message.id === messageId);
+    console.log(
+      "filtered messages",
+      messages.filter((message) => message !== deletedMessage)
+    );
+    console.log("pleaseeeeeeeee", deletedMessage);
+    setMessages(messages.filter((message) => message !== deletedMessage));
+  };
 
   return (
     <>
-      {currentChannel?.messages && <Messages messages={messages} />}
+      {currentChannel?.messages && (
+        <Messages
+          messages={messages}
+          handleDeleteMessage={handleDeleteMessage}
+        />
+      )}
 
       <ChatInput sendMessage={sendMessage} className="chat_input" />
     </>
