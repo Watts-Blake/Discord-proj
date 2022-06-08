@@ -20,6 +20,7 @@ const ChatInput = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!chatContent) return;
     let formData = new FormData();
     formData.append("content", chatContent);
     formData.append("senderId", userId);
