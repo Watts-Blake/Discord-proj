@@ -70,7 +70,7 @@ const OneChannel = ({ channelsObj }) => {
       putChannelMessage(channelId, messageId, formData)
     );
     let newMessages = [...messages];
-    newMessages[messageToUpdate] = updatedMessage;
+    newMessages[newMessages.indexOf(messageToUpdate)] = updatedMessage;
     setMessages(newMessages);
   };
 
