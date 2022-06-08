@@ -22,7 +22,6 @@ const Messages = ({ messages, handleDeleteMessage, handleUpdateMessage }) => {
       isActive = false;
     };
   }, [messages]);
-  console.log(options);
   const handleMouseLeave = () => {
     setHover(false);
     setOptions(false);
