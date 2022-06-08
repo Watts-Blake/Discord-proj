@@ -117,7 +117,7 @@ export const updateChannelMessage = (message) => {
   return { type: UPDATE_CHANNEL_MESSAGE, message };
 };
 
-export const putMessage =
+export const putChannelMessage =
   (channelId, messageId, formData) => async (dispatch) => {
     const res = await fetch(
       `/api/channels/${channelId}/messages/${messageId}`,

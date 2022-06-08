@@ -5,9 +5,9 @@ import { useSelector } from "react-redux";
 
 import "draft-js/dist/Draft.css";
 
-const ChatInput = ({ sendMessage }) => {
+const ChatInput = ({ sendMessage, handleUpdateMessage, content }) => {
   const userId = useSelector((state) => state.session.user.id);
-  const [chatContent, setChatContent] = useState("");
+  const [chatContent, setChatContent] = useState(content ? content : "");
   // const [image, setImage] = useState("");
 
   const handleSubmit = (e) => {
