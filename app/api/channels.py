@@ -57,7 +57,7 @@ def post_channel_message(channel_id):
     return new_message.to_dict()
 
 @channel_routes.route('/<int:channel_id>/messages/<int:message_id>', methods=['PUT', 'DELETE'])
-def put_delete_message(message_id):
+def put_delete_message(channel_id, message_id):
     message = ChannelMessage.query.get(message_id)
 
 
@@ -75,11 +75,12 @@ def put_delete_message(message_id):
 
         message.content = request.form['content']
         message.picture = url
-        message.pinned = request.form
+        # message.pinned = request.form['pinned']
         db.session.commit()
         return message.to_dict()
 
     if request.method == 'DELETE':
+        print('right friggin here', message)
         db.session.delete(message)
         db.session.commit()
         return {'messageId': message.id}

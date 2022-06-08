@@ -4,6 +4,7 @@ import ChatInput from "../ChatInput";
 import { postMessage } from "../../store/channels";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
+import { deleteChannelMessage, putChannelMessage } from "../../store/channels";
 import { io } from "socket.io-client";
 let socket;
 
@@ -63,9 +64,31 @@ const OneChannel = ({ channelsObj }) => {
     );
   };
 
+  const handleUpdateMessage = async (messageId, formData) => {
+    let messageToUpdate = messages.find((message) => message.id === messageId);
+    let updatedMessage = await dispatch(
+      putChannelMessage(channelId, messageId, formData)
+    );
+    let newMessages = [...messages];
+    newMessages[newMessages.indexOf(messageToUpdate)] = updatedMessage;
+    setMessages(newMessages);
+  };
+
+  const handleDeleteMessage = async (channelId, messageId) => {
+    await dispatch(deleteChannelMessage(channelId, messageId));
+    let deletedMessage = messages.find((message) => message.id === messageId);
+    setMessages(messages.filter((message) => message !== deletedMessage));
+  };
+
   return (
     <>
-      {currentChannel?.messages && <Messages messages={messages} />}
+      {currentChannel?.messages && (
+        <Messages
+          messages={messages}
+          handleDeleteMessage={handleDeleteMessage}
+          handleUpdateMessage={handleUpdateMessage}
+        />
+      )}
 
       <ChatInput sendMessage={sendMessage} className="chat_input" />
     </>

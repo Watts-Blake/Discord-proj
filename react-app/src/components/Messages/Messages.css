@@ -17,6 +17,15 @@
   margin: 0 10px;
   gap: 15px;
 }
+
+.curr_message {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: fit-content;
+  margin: 0 10px;
+  gap: 15px;
+}
 .username {
   color: #7e63e0;
 }
