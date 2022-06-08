@@ -66,11 +66,6 @@ const OneChannel = ({ channelsObj }) => {
   const handleDeleteMessage = (channelId, messageId) => {
     dispatch(deleteChannelMessage(channelId, messageId));
     let deletedMessage = messages.find((message) => message.id === messageId);
-    console.log(
-      "filtered messages",
-      messages.filter((message) => message !== deletedMessage)
-    );
-    console.log("pleaseeeeeeeee", deletedMessage);
     setMessages(messages.filter((message) => message !== deletedMessage));
   };
 

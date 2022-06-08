@@ -12,13 +12,15 @@ const MessageOptions = ({ message, user, server, handleDeleteMessage }) => {
   return (
     loaded && (
       <div>
-        {(user.id === message.senderId || user.id === server.owner.id) && (
+        {(user?.id === message?.senderId || user?.id === server?.owner?.id) && (
           <>
             <button>
               <img src="/svgs/pencil.svg" alt="edit" className="edit" />
             </button>
             <button
-              onClick={() => handleDeleteMessage(message.channelId, message.id)}
+              onClick={() =>
+                handleDeleteMessage(message?.channelId, message?.id)
+              }
             >
               <img src="/svgs/trash.svg" alt="delete" />
             </button>
