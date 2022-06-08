@@ -18,11 +18,14 @@ const MessageOptions = ({
   return (
     loaded && (
       <div>
+        {/* add when pinning implementation complete */}
         {/* <button>
           <img src="/svgs/pinned.svg" alt="pin" className="edit" />
         </button> */}
+        {/* user for these options must be server owner or message sender */}
         {(user?.id === message?.senderId || user?.id === server?.owner?.id) && (
           <>
+            {/* user for edit must be message sender */}
             {user?.id === message?.senderId && (
               <button onClick={() => setShowEditMessage(message.id)}>
                 <img src="/svgs/pencil.svg" alt="edit" className="edit" />

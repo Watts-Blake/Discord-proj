@@ -64,7 +64,7 @@ const OneChannel = ({ channelsObj }) => {
     );
   };
 
-  const handleUpdateMessage = async (channelId, messageId, formData) => {
+  const handleUpdateMessage = async (messageId, formData) => {
     let messageToUpdate = messages.find((message) => message.id === messageId);
     let updatedMessage = await dispatch(
       putChannelMessage(channelId, messageId, formData)

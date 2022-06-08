@@ -5,9 +5,17 @@ import { useSelector } from "react-redux";
 
 import "draft-js/dist/Draft.css";
 
-const ChatInput = ({ sendMessage, handleUpdateMessage, content }) => {
+const ChatInput = ({
+  sendMessage,
+  handleUpdateMessage,
+  messageToEdit,
+  setShowEditMessage,
+}) => {
   const userId = useSelector((state) => state.session.user.id);
-  const [chatContent, setChatContent] = useState(content ? content : "");
+  //if messageToEdit true, set default value of chat content to message.content
+  const [chatContent, setChatContent] = useState(
+    messageToEdit ? messageToEdit.content : ""
+  );
   // const [image, setImage] = useState("");
 
   const handleSubmit = (e) => {
@@ -16,7 +24,13 @@ const ChatInput = ({ sendMessage, handleUpdateMessage, content }) => {
     formData.append("content", chatContent);
     formData.append("senderId", userId);
     // if (image) formData.append("image", image);
-    sendMessage(formData);
+    if (messageToEdit) {
+      handleUpdateMessage(messageToEdit.id, formData);
+      setShowEditMessage(false);
+    } else {
+      sendMessage(formData);
+    }
+
     setChatContent("");
   };
 

@@ -122,7 +122,7 @@ export const putChannelMessage =
     const res = await fetch(
       `/api/channels/${channelId}/messages/${messageId}`,
       {
-        method: "POST",
+        method: "PUT",
         body: formData,
       }
     );

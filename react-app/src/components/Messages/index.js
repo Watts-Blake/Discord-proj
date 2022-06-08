@@ -48,9 +48,10 @@ const Messages = ({ messages, handleDeleteMessage, handleUpdateMessage }) => {
             {showEditMessage !== message.id && <span>{message.content}</span>}
             {showEditMessage === message.id && (
               <ChatInput
-                content={message.content}
+                messageToEdit={message}
                 handleUpdateMessage={handleUpdateMessage}
-                editing={true}
+                setShowEditMessage={setShowEditMessage}
+                className="chat_input"
               />
             )}
           </div>
