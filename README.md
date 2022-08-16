@@ -45,7 +45,7 @@ Welcome to the **[Diss-cord Repo](https://github.com/Watts-Blake/Discord-proj)**
 2. Make sure you have [Docker](https://www.docker.com/products/docker-desktop/) installed on your computer.
 3. Clone the repository (only this branch)
    ```bash
-   git clone https://github.com/jonathancchsu/slack-clone-repo.git
+   git clone https://github.com/Watts-Blake/Discord-proj.git
    ```
 4. Open the repo in VS Code.
 5. Click "Open in Container" when VS Code prompts to open container in the bottom right hand corner.
