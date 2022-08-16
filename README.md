@@ -89,7 +89,7 @@ Welcome to the **[Diss-cord Repo](https://github.com/Watts-Blake/Discord-proj)**
 1. Clone this repository (only this branch)
 
    ```bash
-   git clone https://github.com/jonathancchsu/slack-clone-repo.git
+   git clone https://github.com/Watts-Blake/Discord-proj.git
    ```
 
 2. Install dependencies
