@@ -11,69 +11,32 @@ import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 
 const Channels = () => {
   const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
-  const { channelId, dmRoomId } = useParams();
+  const { channelId, serverId } = useParams();
 
   const [ownerId, setOwnerId] = useState();
-  const [currentChannelId, setCurrentChannelId] = useState(channelId);
   const [hoverId, setHoverId] = useState(null);
   const [channels, setChannels] = useState();
-  // const [showServerOptions, setShowServerOptions] = useState(false)
-  const user = useSelector((state) => state.session.user);
-  const currentServer = useSelector((state) => state.servers.currentServer);
-  const channelsObj = useSelector((state) => state.channels);
-  let url = useLocation();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    let isActive = true;
-    window.location.href.includes("@me") && isActive
-      ? setDmRoomsView(true)
-      : setDmRoomsView(false);
-    isActive && setCurrentChannelId(channelId || dmRoomId);
-    if (currentServer && isActive) {
-      setOwnerId(currentServer?.owner?.id);
-    }
-    dmRoomsView && isActive
-      ? setChannels(Object.values(channelsObj.userDmChannels))
-      : setChannels(Object.values(channelsObj.channels));
-    return () => (isActive = false);
-  }, [
-    dispatch,
-    currentServer,
-    setOwnerId,
-    channelsObj,
-    channelId,
-    channelsObj.userDmChannels,
-    dmRoomsView,
-    dmRoomId,
-    setDmRoomsView,
-  ]);
 
-  const handleChannelChange = async (channelId) => {
-    url.pathname.includes("@me") ? setDmRoomsView(true) : setDmRoomsView(false);
-    await dispatch(getOneChannel(channelId)).then(() =>
-      setCurrentChannelId(channelId)
-    );
-  };
+  const user = useSelector((state) => state.session.user);
+  const servers = useSelector((state) => state.servers.userServers);
+  useEffect(() => {
+    setChannels(Object.values(servers[serverId].channels));
+    //eslint-disable-next-line
+  }, [serverId]);
+
   return (
     <div className="channels">
       <div className="channels_header">
-        {!dmRoomsView && <h4>TEXT CHANNELS</h4>}
-        {dmRoomsView && <h4>DIRECT MESSAGES</h4>}
-        {user.id === currentServer?.owner?.id &&
-          !channelsObj.currentChannel.dmChannel && (
-            <CreateChannelModal user={user} />
-          )}
+        <h4>TEXT CHANNELS</h4>
+        {servers && user.id === servers[serverId]?.owner.id && (
+          <CreateChannelModal user={user} />
+        )}
       </div>
 
       {channels?.map((channel) => (
         <NavLink
           key={channel.id}
-          to={
-            dmRoomsView
-              ? `/channels/@me/${channel.id}`
-              : `/channels/${channel.serverId}/${channel.id}`
-          }
-          onClick={() => handleChannelChange(channel.id)}
+          to={`/channels/${channel.serverId}/${channel.id}`}
         >
           <div
             className="channel"
@@ -82,33 +45,27 @@ const Channels = () => {
           >
             <div className="channel_left">
               <img
-                className={`${dmRoomsView && "direct_message_icon"}`}
-                src={
-                  dmRoomsView
-                    ? Object.keys(channel?.members).length > 2
-                      ? "/svgs/group-message-ico.svg"
-                      : Object.values(channel.members)[0]?.profilePicture
-                    : "/svgs/pound.svg"
-                }
+                className="channel_name_pound"
+                src="/svgs/pound.svg"
                 alt="#"
               />{" "}
-              {dmRoomsView ? (
-                Object.values(channel.members).map((member) => (
-                  <p key={member.id}>{member.username}</p>
-                ))
-              ) : (
-                <p>{channel.name}</p>
-              )}
+              <p>{channel.name}</p>
             </div>
-            {((ownerId === user.id && currentChannelId * 1 === channel.id) ||
-              (ownerId === user.id && hoverId === channel.id)) &&
-              channel.name !== "General" &&
-              !channelsObj.currentChannel.dmChannel && (
-                <div className="channel_right">
-                  {/* <img src="/svgs/addMemb.svg" alt="add" /> */}
-                  <EditChannelModal channel={channel} user={user} />
-                </div>
-              )}
+            {/*    <div className="one_channel">
+            {channelLoaded && (
+              <OneChannel channelsObj={channelsObj} className="one_channel" />
+            )}
+          </div>
+
+          <div className="members_container">
+            {channelLoaded && (
+              <Members
+                serversObj={serversObj}
+                channelsObj={channelsObj}
+                className="members"
+              />
+            )}
+          </div> */}
           </div>
         </NavLink>
       ))}

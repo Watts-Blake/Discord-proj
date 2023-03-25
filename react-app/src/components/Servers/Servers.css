@@ -10,3 +10,22 @@
   width: 44px;
   border-radius: 100%;
 }
+
+.single_server {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 2px;
+  border-radius: 100%;
+  background-color: #2f3136;
+}
+
+.active_server {
+  background-color: #36393f;
+  border-radius: 4px;
+}
+
+.hover_server {
+  background-color: #36393f;
+  border-radius: 4px;
+}

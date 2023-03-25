@@ -30,10 +30,7 @@ const MainContent = ({ user }) => {
           <ProtectedRoute path="/channels/@me/:dmRoomId(\d+)" exact={true}>
             <DmChannels />
           </ProtectedRoute>
-          <ProtectedRoute
-            path="/channels/:serverId(\d+)/:channelId"
-            exact={true}
-          >
+          <ProtectedRoute path="/channels/:serverId(\d+)">
             <OneServer />
           </ProtectedRoute>
           <ProtectedRoute path="/channels/wampus/404" exact={true}>

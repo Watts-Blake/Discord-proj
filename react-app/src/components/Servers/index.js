@@ -12,7 +12,7 @@ import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 const Servers = ({ userServers }) => {
   const [loaded, setLoaded] = useState(false);
   const { setDmRoomsView } = useContext(DmRoomViewContext);
-
+  const [hover, setHover] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     setLoaded(true);
@@ -31,9 +31,17 @@ const Servers = ({ userServers }) => {
       <div className="server_container">
         {userServers?.map((server) => (
           <NavLink
-            to={`/channels/${server.id}/${server.firstChannelId}`}
+            to={`/channels/${server.id}`}
             onClick={() => handleServerClick(server.id, server.firstChannelId)}
             key={server.id}
+            className={
+              hover === server.id
+                ? `single_server hover_server`
+                : `single_server`
+            }
+            activeClassName="active_server"
+            onMouseEnter={() => setHover(server.id)}
+            onMouseLeave={() => setHover(false)}
           >
             <img
               className="left_side_server_icon"

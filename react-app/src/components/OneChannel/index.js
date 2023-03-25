@@ -2,23 +2,33 @@ import "./OneChannel.css";
 import Messages from "../Messages";
 import ChatInput from "../ChatInput";
 import { postMessage } from "../../store/channels";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { deleteChannelMessage, putChannelMessage } from "../../store/channels";
+import {
+  deleteChannelMessage,
+  putChannelMessage,
+  getOneChannel,
+} from "../../store/channels";
 import { io } from "socket.io-client";
 let socket;
 
-const OneChannel = ({ channelsObj }) => {
-  const currentChannel = channelsObj?.currentChannel;
-  const channelId = currentChannel?.id;
+const OneChannel = () => {
+  const { serverId, channelId } = useParams();
+  const [loaded, setLoaded] = useState(false);
   const [prevRoom, setPrevRoom] = useState(`channel${channelId}`);
   const [socketRoom, setSocketRoom] = useState();
   const [messages, setMessages] = useState([]);
 
+  const currentChannel = useSelector((state) => state.channels.currentChannel);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setLoaded(false);
+    dispatch(getOneChannel(channelId));
     setSocketRoom(`channel${channelId}`);
+    setLoaded(true);
+    //eslint-disable-next-line
   }, [channelId]);
 
   useEffect(() => {
@@ -81,17 +91,19 @@ const OneChannel = ({ channelsObj }) => {
   };
 
   return (
-    <>
-      {currentChannel?.messages && (
-        <Messages
-          messages={messages}
-          handleDeleteMessage={handleDeleteMessage}
-          handleUpdateMessage={handleUpdateMessage}
-        />
-      )}
+    loaded && (
+      <>
+        {currentChannel?.messages && (
+          <Messages
+            messages={messages}
+            handleDeleteMessage={handleDeleteMessage}
+            handleUpdateMessage={handleUpdateMessage}
+          />
+        )}
 
-      <ChatInput sendMessage={sendMessage} className="chat_input" />
-    </>
+        <ChatInput sendMessage={sendMessage} className="chat_input" />
+      </>
+    )
   );
 };
 

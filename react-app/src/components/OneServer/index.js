@@ -15,6 +15,7 @@ import { getOneChannel } from "../../store/channels";
 import ServerOptions from "../ServerOptions";
 import EditServerModal from "../EditServer/EditServerModal";
 import { checkMember } from "../../utils";
+import ProtectedRoute from "../auth/ProtectedRoute";
 
 import { useHistory } from "react-router-dom";
 
@@ -171,16 +172,8 @@ const OneServer = () => {
         </div>
         <div className="one_channel_container">
           <div className="channels_container">
-            {!dmRoomsView && (
-              <Channels channels={channelsObj} className="channels" />
-            )}
-            {dmRoomsView && (
-              <Channels
-                channels={channelsObj}
-                dmRoomsView={dmRoomsView}
-                className="channels"
-              />
-            )}
+            <Channels channels={channelsObj} className="channels" />
+
             <LoggedInUserTab user={user} />
             {showServerOptions && (
               <ServerOptions
@@ -193,21 +186,19 @@ const OneServer = () => {
             )}
           </div>
 
-          <div className="one_channel">
-            {channelLoaded && (
-              <OneChannel channelsObj={channelsObj} className="one_channel" />
-            )}
-          </div>
+          <ProtectedRoute path="/channels/:serverId(\d+)/:channelId(\d+)">
+            <div className="one_channel">
+              <OneChannel className="one_channel" />
+            </div>
 
-          <div className="members_container">
-            {channelLoaded && (
+            <div className="members_container">
               <Members
                 serversObj={serversObj}
                 channelsObj={channelsObj}
                 className="members"
               />
-            )}
-          </div>
+            </div>
+          </ProtectedRoute>
         </div>
         <EditServerModal
           showModal={showModal}
