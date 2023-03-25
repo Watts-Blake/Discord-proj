@@ -1,5 +1,6 @@
 import "./LeftNavBar.css";
 import Servers from "../Servers";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import CreateServerModal from "../CreateServer/CreateServerModal";
 
@@ -9,6 +10,7 @@ import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 import { getOneChannel } from "../../store/channels";
 
 const LeftNavBar = ({ userServers, user }) => {
+  const [hover, setHover] = useState(false);
   const dispatch = useDispatch();
   const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
   const userDmRooms = useSelector((state) => state.channels.userDmChannels);
@@ -39,11 +41,23 @@ const LeftNavBar = ({ userServers, user }) => {
           dmRoomsView={dmRoomsView}
         ></Servers>
         <CreateServerModal></CreateServerModal>
-        <NavLink to="/guild-discovery">
-          <div className="icon_container">
+        <NavLink
+          to="/guild-discovery"
+          onMouseEnter={() => setHover("guild")}
+          onMouseLeave={() => setHover(null)}
+        >
+          <div
+            className={
+              hover === "guild" ? "hover icon_container" : "icon_container"
+            }
+          >
             <img
               className="left_side_icon"
-              src="/svgs/svgexport-16.svg"
+              src={
+                hover === "guild"
+                  ? "/svgs/svgexport-16-white.svg"
+                  : "/svgs/svgexport-16.svg"
+              }
               alt="explore"
             ></img>
           </div>
