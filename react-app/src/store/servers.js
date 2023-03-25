@@ -146,7 +146,7 @@ const serversReducer = (
     userServers: { server: null },
     allServers: { server: null },
     currentServer: {
-      server: null,
+      channels: [],
       members: [],
     },
   },

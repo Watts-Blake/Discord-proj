@@ -37,21 +37,18 @@ const Channels = () => {
         <NavLink
           key={channel.id}
           to={`/channels/${channel.serverId}/${channel.id}`}
+          onMouseEnter={() => setHoverId(channel.id)}
+          onMouseLeave={() => setHoverId(null)}
+          activeClassName="active_channel"
+          className={
+            hoverId === channel.id ? "channel hover_channel" : "channel"
+          }
         >
-          <div
-            className="channel"
-            onMouseEnter={() => setHoverId(channel.id)}
-            onMouseLeave={() => setHoverId(null)}
-          >
-            <div className="channel_left">
-              <img
-                className="channel_name_pound"
-                src="/svgs/pound.svg"
-                alt="#"
-              />{" "}
-              <p>{channel.name}</p>
-            </div>
-            {/*    <div className="one_channel">
+          <div className="channel_left">
+            <img className="channel_name_pound" src="/svgs/pound.svg" alt="#" />{" "}
+            <p>{channel.name}</p>
+          </div>
+          {/*    <div className="one_channel">
             {channelLoaded && (
               <OneChannel channelsObj={channelsObj} className="one_channel" />
             )}
@@ -66,7 +63,6 @@ const Channels = () => {
               />
             )}
           </div> */}
-          </div>
         </NavLink>
       ))}
     </div>

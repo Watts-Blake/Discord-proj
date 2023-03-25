@@ -20,20 +20,27 @@ const OneServer = () => {
   const [loaded, setLoaded] = useState(false);
   const [validated, setValidated] = useState(true);
 
-  const { serverId, channelId } = useParams();
-  const [channelLoaded, setChannelLoaded] = useState(false);
+  const { serverId } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [showServerOptions, setShowServerOptions] = useState(false);
 
   const dispatch = useDispatch();
+  const history = useHistory();
   const currentServer = useSelector((state) => state.servers.currentServer);
   const user = useSelector((state) => state.session.user);
   const currentChannel = useSelector((state) => state.channels.currentChannel);
 
   useEffect(() => {
     setLoaded(false);
-    dispatch(getOneServer(serverId));
+    dispatch(getOneServer(serverId)).then((server) => {
+      console.log("server", server);
+      const serverGeneralChan = Object.values(server.channels).find(
+        (channel) => channel.name === "General"
+      );
+      history.push(`/channels/${server.id}/${serverGeneralChan?.id}`);
+    });
     setLoaded(true);
+    //eslint-disable-next-line
   }, [serverId, dispatch]);
 
   const handleCloseServerOpts = (e) => {
@@ -92,12 +99,11 @@ const OneServer = () => {
               <h2 className="server_options_name">{user.username}</h2>
             </div>
           )}
-          {channelLoaded && (
-            <div className="channel_header">
-              <img src="/svgs/pound.svg" alt="#" />
-              {currentChannel?.name}
-            </div>
-          )}
+
+          <div className="channel_header">
+            <img src="/svgs/pound.svg" alt="#" />
+            {currentChannel?.name}
+          </div>
         </div>
         <div className="one_channel_container">
           <div className="channels_container">
