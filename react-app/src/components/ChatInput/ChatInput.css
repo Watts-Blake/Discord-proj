@@ -1,7 +1,8 @@
 .chat_input {
   width: 92.5%;
   position: relative;
-  bottom: -2px;
+  bottom: 20px;
+
   height: auto;
   min-height: 30px;
   max-height: 40px;
