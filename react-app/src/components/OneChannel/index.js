@@ -3,7 +3,7 @@ import Messages from "../Messages";
 import ChatInput from "../ChatInput";
 import { postMessage } from "../../store/channels";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   deleteChannelMessage,
@@ -21,15 +21,29 @@ const OneChannel = () => {
   const [messages, setMessages] = useState([]);
 
   const currentChannel = useSelector((state) => state.channels.currentChannel);
-  const dispatch = useDispatch();
+  const serverChannels = useSelector((state) => state.channels.channels);
 
+  const dispatch = useDispatch();
+  const history = useHistory();
   useEffect(() => {
     setLoaded(false);
-    dispatch(getOneChannel(channelId));
-    setSocketRoom(`channel${channelId}`);
-    setLoaded(true);
+    if (channelId) {
+      dispatch(getOneChannel(channelId));
+      setSocketRoom(`channel${channelId}`);
+    } else {
+      const generalChannel = serverChannels.find(
+        (channel) => channel.name === "General"
+      );
+      dispatch(getOneChannel(generalChannel.id));
+      setSocketRoom(`channel${channelId}`);
+      history.push(`/channels/${serverId}/${generalChannel.id}`);
+    }
+
+    if (currentChannel) {
+      setLoaded(true);
+    }
     //eslint-disable-next-line
-  }, [channelId]);
+  }, [channelId, serverId]);
 
   useEffect(() => {
     let isActive = true;
@@ -90,8 +104,8 @@ const OneChannel = () => {
     setMessages(messages.filter((message) => message !== deletedMessage));
   };
 
-  return (
-    loaded && (
+  if (loaded) {
+    return (
       <>
         {currentChannel?.messages && (
           <Messages
@@ -103,8 +117,10 @@ const OneChannel = () => {
 
         <ChatInput sendMessage={sendMessage} className="chat_input" />
       </>
-    )
-  );
+    );
+  }
+
+  return <h1>loading...</h1>;
 };
 
 export default OneChannel;

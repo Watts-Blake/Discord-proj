@@ -106,6 +106,7 @@ export const getOneServer = (serverId) => async (dispatch) => {
   dispatch(setCurrentServer(server));
 
   dispatch(setChannels(server.channels));
+  return server;
 };
 
 const UPDATE_CURRENT_SERVER = "currentServer/UpdateServer";
@@ -146,6 +147,7 @@ const serversReducer = (
     allServers: { server: null },
     currentServer: {
       server: null,
+      members: [],
     },
   },
   action
