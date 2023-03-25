@@ -14,7 +14,7 @@ import { io } from "socket.io-client";
 let socket;
 
 const OneChannel = () => {
-  const { serverId, channelId } = useParams();
+  const { serverId, channelId, dmRoomId } = useParams();
   const [loaded, setLoaded] = useState(false);
   const [prevRoom, setPrevRoom] = useState(`channel${channelId}`);
   const [socketRoom, setSocketRoom] = useState();
@@ -27,7 +27,10 @@ const OneChannel = () => {
   const history = useHistory();
   useEffect(() => {
     setLoaded(false);
-    if (channelId) {
+    if (dmRoomId) {
+      dispatch(getOneChannel(dmRoomId));
+      setSocketRoom(`channel${channelId}`);
+    } else if (channelId) {
       dispatch(getOneChannel(channelId));
       setSocketRoom(`channel${channelId}`);
     } else {

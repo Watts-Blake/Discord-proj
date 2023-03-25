@@ -48,9 +48,8 @@
 .one_channel {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 
-  width: auto;
+  width: 100%;
   height: 100%;
 }
 
@@ -63,8 +62,10 @@
 
 .members_container {
   display: flex;
+  height: 100%;
+  right: -2px;
   background-color: #2f3136;
-  width: 100%;
+  max-width: 240px;
   margin-right: 0;
   padding-right: 0;
 }

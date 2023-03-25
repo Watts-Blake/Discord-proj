@@ -1,41 +1,33 @@
 import "../OneServer/OneServer.css";
-import Members from "../Members";
 import Channels from "../Channels";
 import OneChannel from "../OneChannel";
 import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { useParams, useLocation, Redirect } from "react-router-dom";
+import { useParams, Redirect } from "react-router-dom";
 import { checkMember } from "../../utils";
 import { getOneChannel } from "../../store/channels";
 
 const DmChannels = () => {
   const [loaded, setLoaded] = useState(false);
   const [validated, setValidated] = useState(true);
-  const { serverId, channelId, dmRoomId } = useParams();
+  const { dmRoomId } = useParams();
   const [channelLoaded, setChannelLoaded] = useState(false);
-  const [prevRoom, setPrevRoom] = useState();
 
   const dispatch = useDispatch();
-  const serversObj = useSelector((state) => state.servers);
   const user = useSelector((state) => state.session.user);
   const channelsObj = useSelector((state) => state.channels);
-  let url = useLocation();
 
   useEffect(() => {
     let isActive = true;
     setChannelLoaded(false);
-    if (dmRoomId && dmRoomId * 1 !== prevRoom && !prevRoom && isActive) {
-      setChannelLoaded(false);
-      dispatch(getOneChannel(dmRoomId))
-        .then(() => setPrevRoom(dmRoomId))
-        .catch((error) => console.log(error.message));
-    }
 
-    isActive &&
-      checkMember(false, dmRoomId, user.id).then((result) =>
-        setValidated(result)
-      );
+    setChannelLoaded(false);
+    dispatch(getOneChannel(dmRoomId));
+
+    checkMember(false, dmRoomId, user.id).then((result) =>
+      setValidated(result)
+    );
     if (!checkMember(false, dmRoomId, user.id) && isActive) {
     }
     setChannelLoaded(true);
@@ -44,15 +36,7 @@ const DmChannels = () => {
       isActive = false;
       setLoaded(null);
     };
-  }, [
-    dispatch,
-    dmRoomId,
-    channelId,
-    prevRoom,
-    serverId,
-    url.pathname,
-    user.id,
-  ]);
+  }, [dispatch, dmRoomId, user.id]);
 
   if (!validated) return <Redirect to="/channels/wampus/404" />;
   return (
@@ -69,23 +53,15 @@ const DmChannels = () => {
         </div>
         <div className="one_channel_container">
           <div className="channels_container">
-            <Channels channels={channelsObj} className="channels" />
-
+            <Channels className="channels" />
             <LoggedInUserTab user={user} />
           </div>
 
           <div className="one_channel">
             {channelLoaded && (
-              <OneChannel channelsObj={channelsObj} className="one_channel" />
-            )}
-          </div>
-
-          <div className="members_container">
-            {channelLoaded && (
-              <Members
-                serversObj={serversObj}
-                channelsObj={channelsObj}
-                className="members"
+              <OneChannel
+                dmRoom={channelsObj.currentChannel}
+                className="one_channel"
               />
             )}
           </div>

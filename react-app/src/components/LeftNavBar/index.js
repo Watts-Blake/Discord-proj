@@ -1,30 +1,18 @@
 import "./LeftNavBar.css";
 import Servers from "../Servers";
+import CreateServerModal from "../CreateServer/CreateServerModal";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import CreateServerModal from "../CreateServer/CreateServerModal";
-
-import { useSelector, useDispatch } from "react-redux";
-import { useContext } from "react";
-import { DmRoomViewContext } from "../../context/DmRoomViewContext";
-import { getOneChannel } from "../../store/channels";
 
 const LeftNavBar = ({ userServers, user }) => {
   const [hover, setHover] = useState(false);
-  const dispatch = useDispatch();
-  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
-  const userDmRooms = useSelector((state) => state.channels.userDmChannels);
 
-  const handleHomeClick = async (channelId) => {
-    await dispatch(getOneChannel(channelId)).then(() => setDmRoomsView(true));
-  };
   return (
     user && (
       <div className="left_side" id="left_nav">
         <NavLink
           className="home_dm_btn"
-          to={`/channels/@me/${Object.values(userDmRooms)[0].id}`}
-          onClick={() => handleHomeClick(Object.values(userDmRooms)[0].id)}
+          to={`/channels/@me`}
           onMouseEnter={() => setHover("home")}
           onMouseLeave={() => setHover(null)}
         >
@@ -41,11 +29,7 @@ const LeftNavBar = ({ userServers, user }) => {
           </div>
         </NavLink>
         <span className="home_seperator" />
-        <Servers
-          userServers={userServers}
-          setDmRoomsView={setDmRoomsView}
-          dmRoomsView={dmRoomsView}
-        ></Servers>
+        <Servers userServers={userServers}></Servers>
         <CreateServerModal></CreateServerModal>
         <NavLink
           to="/guild-discovery"
@@ -116,5 +100,3 @@ const LeftNavBar = ({ userServers, user }) => {
 };
 
 export default LeftNavBar;
-
-// #0177B5

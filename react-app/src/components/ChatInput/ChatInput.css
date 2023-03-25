@@ -1,11 +1,10 @@
 .chat_input {
   width: 92.5%;
-  flex-shrink: 0;
-  min-height: 40px;
-  height: fit-content;
-  max-height: 70px;
-  margin-top: 4px;
-  margin-bottom: 20px;
+  position: relative;
+  bottom: -2px;
+  height: auto;
+  min-height: 30px;
+  max-height: 40px;
   align-self: center;
   padding-left: 34px;
   display: flex;
