@@ -25,8 +25,14 @@ const LeftNavBar = ({ userServers, user }) => {
           className="home_dm_btn"
           to={`/channels/@me/${Object.values(userDmRooms)[0].id}`}
           onClick={() => handleHomeClick(Object.values(userDmRooms)[0].id)}
+          onMouseEnter={() => setHover("home")}
+          onMouseLeave={() => setHover(null)}
         >
-          <div className="icon_container">
+          <div
+            className={
+              hover === "home" ? "icon_container hover_home" : "icon_container"
+            }
+          >
             <img
               className="left_side_icon"
               src="/svgs/gray-disc-home.svg"
@@ -62,21 +68,44 @@ const LeftNavBar = ({ userServers, user }) => {
             ></img>
           </div>
         </NavLink>
-        <a href="https://github.com/Watts-Blake/Discord-proj">
-          <div className="icon_container">
+        <a
+          href="https://github.com/Watts-Blake/Discord-proj"
+          onMouseEnter={() => setHover("git")}
+          onMouseLeave={() => setHover(null)}
+        >
+          <div
+            className={
+              hover === "git" ? "icon_container hover_social" : "icon_container"
+            }
+          >
             <img
               className="left_side_icon"
-              src="/svgs/github.svg"
+              src={
+                hover === "git" ? "/svgs/github-gray.svg" : "/svgs/github.svg"
+              }
               alt="github"
             />
-          </div>{" "}
+          </div>
         </a>
-        <a href="https://www.linkedin.com/in/blake-watts-b91428123/">
-          {" "}
-          <div className="icon_container">
+        <a
+          href="https://www.linkedin.com/in/blake-watts-b91428123/"
+          onMouseEnter={() => setHover("linked")}
+          onMouseLeave={() => setHover(null)}
+        >
+          <div
+            className={
+              hover === "linked"
+                ? "icon_container hover_social"
+                : "icon_container"
+            }
+          >
             <img
               className="left_side_icon"
-              src="/svgs/LinkedIn.svg"
+              src={
+                hover === "linked"
+                  ? "/svgs/LinkedIn-blue.svg"
+                  : "/svgs/LinkedIn.svg"
+              }
               alt="linkedin"
             />
           </div>
@@ -87,3 +116,5 @@ const LeftNavBar = ({ userServers, user }) => {
 };
 
 export default LeftNavBar;
+
+// #0177B5
