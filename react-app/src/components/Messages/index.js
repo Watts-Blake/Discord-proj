@@ -1,6 +1,6 @@
 import "./Messages.css";
 import MessageOptions from "../MessageOptions";
-
+import Message from "../Message";
 import { useRef, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ChatInput from "../ChatInput";
@@ -22,62 +22,16 @@ const Messages = ({ messages, handleDeleteMessage, handleUpdateMessage }) => {
       isActive = false;
     };
   }, [messages]);
-  const handleMouseLeave = () => {
-    setHover(false);
-    setOptions(false);
-  };
+
   return (
     <div className="messages">
       {messages?.map((message) => (
-        <div
-          className={hover === message.id ? "curr_message" : "message"}
+        <Message
+          message={message}
+          handleDeleteMessage={handleDeleteMessage}
+          handleUpdateMessage={handleUpdateMessage}
           key={message.id}
-          onMouseOver={() => setHover(message.id)}
-          onMouseLeave={handleMouseLeave}
-        >
-          <div className="message_user">
-            <img
-              className="message_pfp"
-              src={message.senderProfilePicture}
-              alt="pfp"
-            />
-          </div>
-          <div className="message_content">
-            <h4 className="username">{message.senderUsername}</h4>
-            {showEditMessage !== message.id && <span>{message.content}</span>}
-            {showEditMessage === message.id && (
-              <ChatInput
-                messageToEdit={message}
-                handleUpdateMessage={handleUpdateMessage}
-                setShowEditMessage={setShowEditMessage}
-                className="chat_input"
-              />
-            )}
-          </div>
-          {hover === message.id && message.senderId !== 1 && (
-            <div className="message_more">
-              <button
-                onClick={() => (options ? setOptions(false) : setOptions(true))}
-              >
-                <img
-                  src="/svgs/dot-dot.svg"
-                  alt="more"
-                  className="delete"
-                ></img>
-              </button>
-            </div>
-          )}
-          {options && message.id === hover && (
-            <MessageOptions
-              handleDeleteMessage={handleDeleteMessage}
-              message={message}
-              user={user}
-              server={server}
-              channel={channel}
-              setShowEditMessage={setShowEditMessage}
-            />
-          )}
-        </div>
+        />
       ))}
       <div ref={messagesEnd}></div>
     </div>

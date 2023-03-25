@@ -1,19 +1,13 @@
 import "./Channels.css";
 import { NavLink } from "react-router-dom";
 import CreateChannelModal from "../AddChannel/AddChannelModal";
-import { getOneChannel } from "../../store/channels";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import EditChannelModal from "../EditChannel/EditChannelModal";
-import { useContext } from "react";
-import { DmRoomViewContext } from "../../context/DmRoomViewContext";
 
 const Channels = () => {
-  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
-  const { channelId, serverId } = useParams();
+  const { serverId } = useParams();
 
-  const [ownerId, setOwnerId] = useState();
   const [hoverId, setHoverId] = useState(null);
   const [channels, setChannels] = useState();
 
@@ -48,21 +42,6 @@ const Channels = () => {
             <img className="channel_name_pound" src="/svgs/pound.svg" alt="#" />{" "}
             <p>{channel.name}</p>
           </div>
-          {/*    <div className="one_channel">
-            {channelLoaded && (
-              <OneChannel channelsObj={channelsObj} className="one_channel" />
-            )}
-          </div>
-
-          <div className="members_container">
-            {channelLoaded && (
-              <Members
-                serversObj={serversObj}
-                channelsObj={channelsObj}
-                className="members"
-              />
-            )}
-          </div> */}
         </NavLink>
       ))}
     </div>

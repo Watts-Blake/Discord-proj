@@ -2,33 +2,17 @@
   height: 45px;
   width: 45px;
   border-radius: 100%;
+  object-fit: cover;
 }
 
 .messages {
   max-height: 84vh;
   overflow-y: auto;
-  width: 100%;
-}
-.message {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: fit-content;
-  margin: 0 10px;
-  gap: 15px;
+  width: auto;
+  width: 60vw;
+  /* border: 2px solid red; */
 }
 
-.curr_message {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: fit-content;
-  margin: 0 10px;
-  gap: 15px;
-}
-.username {
-  color: #7e63e0;
-}
 .message_user {
   display: flex;
   flex-direction: row;
