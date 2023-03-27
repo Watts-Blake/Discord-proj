@@ -9,10 +9,10 @@ const MainContent = ({ user }) => {
   return (
     <>
       <Switch>
-        <ProtectedRoute path="/channels/@me">
+        <ProtectedRoute path="/channels/@me/:dmRoomId">
           <LoggedHome />
         </ProtectedRoute>
-        <ProtectedRoute path="/channels/:serverId(\d+)">
+        <ProtectedRoute path="/channels/:serverId(\d+)/:channelId">
           <OneServer />
         </ProtectedRoute>
         <ProtectedRoute path="/channels/wampus/404" exact={true}>

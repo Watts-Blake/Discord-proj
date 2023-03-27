@@ -20,7 +20,7 @@ const OneServer = () => {
   const [loaded, setLoaded] = useState(false);
   const [validated, setValidated] = useState(true);
 
-  const { serverId } = useParams();
+  const { serverId, channelId } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [showServerOptions, setShowServerOptions] = useState(false);
 
@@ -33,15 +33,18 @@ const OneServer = () => {
   useEffect(() => {
     setLoaded(false);
     dispatch(getOneServer(serverId)).then((server) => {
-      console.log("server", server);
-      const serverGeneralChan = Object.values(server.channels).find(
-        (channel) => channel.name === "General"
-      );
-      history.push(`/channels/${server.id}/${serverGeneralChan?.id}`);
+      if (channelId === "null") {
+        const serverGeneralChan = Object.values(server.channels).find(
+          (channel) => channel.name === "General"
+        );
+        history.push(`/channels/${server.id}/${serverGeneralChan?.id}`);
+      } else {
+        history.push(`/channels/${server.id}/${channelId}`);
+      }
     });
     setLoaded(true);
     //eslint-disable-next-line
-  }, [serverId, dispatch]);
+  }, [serverId, dispatch, channelId]);
 
   const handleCloseServerOpts = (e) => {
     if (!showServerOptions) return;
@@ -121,7 +124,7 @@ const OneServer = () => {
             )}
           </div>
 
-          <ProtectedRoute path="/channels/:serverId(\d+)/:channelId(\d+)">
+          <ProtectedRoute path="/channels/:serverId(\d+)/:channelId">
             <div className="one_channel">
               <OneChannel className="one_channel" />
             </div>

@@ -12,7 +12,7 @@ const LeftNavBar = ({ userServers, user }) => {
       <div className="left_side" id="left_nav">
         <NavLink
           className="home_dm_btn"
-          to={`/channels/@me`}
+          to={`/channels/@me/null`}
           onMouseEnter={() => setHover("home")}
           onMouseLeave={() => setHover(null)}
         >

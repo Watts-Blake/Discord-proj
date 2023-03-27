@@ -3,7 +3,7 @@ import Messages from "../Messages";
 import ChatInput from "../ChatInput";
 import { postMessage } from "../../store/channels";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   deleteChannelMessage,
@@ -69,9 +69,9 @@ const OneChannel = () => {
     };
   }, []);
 
-  const leaveRoom = (oldRoom) => {
-    socket.emit("leave_room", { room: oldRoom });
-  };
+  // const leaveRoom = (oldRoom) => {
+  //   socket.emit("leave_room", { room: oldRoom });
+  // };
 
   const joinRoom = (newRoom) => {
     socket.emit("join_room", { room: newRoom });
@@ -79,7 +79,7 @@ const OneChannel = () => {
 
   useEffect(() => {
     let isActive = true;
-    isActive && leaveRoom(prevRoom);
+    // isActive && leaveRoom(prevRoom);
     isActive && joinRoom(socketRoom);
     isActive && setPrevRoom(socketRoom);
     return () => (isActive = false);
