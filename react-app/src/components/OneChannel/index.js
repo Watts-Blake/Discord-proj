@@ -52,12 +52,9 @@ const OneChannel = () => {
         setSocketRoom(`channel${channelId}`);
         history.push(`/channels/${serverId}/${generalChannel?.id}`);
       }
-
-      if (currentChannel) {
-        setLoaded(true);
-      }
     }
 
+    setLoaded(true);
     return () => {
       isActive = false;
     };

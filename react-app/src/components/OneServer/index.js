@@ -5,7 +5,7 @@ import OneChannel from "../OneChannel";
 import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { useParams, Redirect, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 import { leaveUserServer } from "../../store/servers";
 import { clearCurrentServer } from "../../store/servers";
@@ -18,7 +18,6 @@ import ProtectedRoute from "../auth/ProtectedRoute";
 
 const OneServer = () => {
   const [loaded, setLoaded] = useState(false);
-  const [validated, setValidated] = useState(true);
   const [member, setMember] = useState(false);
   const { serverId, channelId } = useParams();
   const [showModal, setShowModal] = useState(false);
@@ -32,23 +31,24 @@ const OneServer = () => {
 
   useEffect(() => {
     let isActive = true;
-
-    if (serverId && serverId !== "null" && isActive) {
-      setLoaded(false);
-      dispatch(getOneServer(serverId))
-        .then((server) => {
-          if (channelId && channelId === "null") {
-            const serverGeneralChan = Object.values(server.channels).find(
-              (channel) => channel.name === "General"
-            );
-            history.push(`/channels/${server.id}/${serverGeneralChan?.id}`);
-            return () => (isActive = false);
-          } else {
-            history.push(`/channels/${server.id}/${channelId}`);
-            return () => (isActive = false);
-          }
-        })
-        .then(() => setLoaded(true));
+    if (isActive) {
+      if (serverId && serverId !== "null") {
+        setLoaded(false);
+        dispatch(getOneServer(serverId))
+          .then((server) => {
+            if (channelId && channelId === "null") {
+              const serverGeneralChan = Object.values(server.channels).find(
+                (channel) => channel.name === "General"
+              );
+              history.push(`/channels/${server.id}/${serverGeneralChan?.id}`);
+              return () => (isActive = false);
+            } else {
+              history.push(`/channels/${server.id}/${channelId}`);
+              return () => (isActive = false);
+            }
+          })
+          .then(() => setLoaded(true));
+      }
     }
 
     return () => (isActive = false);
@@ -64,14 +64,16 @@ const OneServer = () => {
           (member) => member.userId === user.id
         );
         if (currentServer.members) setLoaded(true);
-        if (member) setMember(member);
+        if (member) {
+          setMember(member);
+        }
       }
     }
 
     return () => {
       isActive = false;
     };
-  }, [currentServer, user?.id]);
+  }, [currentServer, user?.id, history]);
 
   const handleCloseServerOpts = (e) => {
     if (!showServerOptions) return;
@@ -91,7 +93,7 @@ const OneServer = () => {
       .then(() => dispatch(clearCurrentServer()))
       .then(() => dispatch(clearCurrentChannel()));
   };
-  if (!validated) return <Redirect to="/channels/wampus/404" />;
+
   return (
     loaded && (
       <div
