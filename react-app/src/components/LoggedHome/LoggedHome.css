@@ -72,3 +72,8 @@
   /* margin: 0 10px; */
   border: 2px solid red;
 }
+
+.logged_home_messages {
+  display: flex;
+  flex-direction: column;
+}
