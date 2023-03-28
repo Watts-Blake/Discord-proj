@@ -1,7 +1,7 @@
 .chat_input {
   width: 92.5%;
   position: relative;
-  bottom: 20px;
+  bottom: 10px;
 
   height: auto;
   min-height: 30px;
@@ -18,7 +18,7 @@
 
 .chat_input.dm_room {
   position: absolute;
-  bottom: 20px;
+  bottom: 10px;
   left: 320px;
 }
 

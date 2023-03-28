@@ -1,5 +1,5 @@
 .logged_home_container {
-  border: 2px solid red;
+  /* border: 2px solid red; */
   width: 100%;
   height: auto;
   display: flex;
@@ -24,7 +24,7 @@
   height: 100%;
   width: 100%;
   margin: 0 0 0 10px;
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 .logged_home_header_left {
   min-width: 240px;
@@ -41,28 +41,49 @@
   width: auto;
   height: 100%;
 
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 
 .dm_search {
   height: 20px;
   border-radius: 4px;
-  border: 2px solid red;
+  /* border: 2px solid red; */
   width: 90%;
+  background-color: #1c1d1f;
+  padding-left: 6px;
+  border-style: none;
+  outline: none;
+  color: inherit;
+  border-radius: 5px;
+  margin: 18px 10px 10px 10px;
 }
 .logged_home_left_nav_container {
-  border: 2px solid red;
-
+  /* border: 2px solid red; */
+  background-color: #2f3136;
   width: 240px;
   display: flex;
   flex-direction: column;
 }
+.new_dm_button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 10px;
+}
+
+.dm_title {
+  color: #ffffffb8;
+  font-family: "Ginto Nord", "Whitney", "Helvetica Neue", "Helvetica", "Arial",
+    sans-serif;
+  font-size: 16px;
+}
+
 .direct_message_rooms {
   display: flex;
   flex-direction: column;
   margin: 0;
   width: 240px;
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 .direct_message_room {
   display: flex;
@@ -70,7 +91,14 @@
   align-items: center;
   justify-content: space-between;
   /* margin: 0 10px; */
-  border: 2px solid red;
+  /* border: 2px solid red; */
+}
+
+.dm_room_icon {
+  height: 45px;
+  width: 45px;
+  border-radius: 100%;
+  object-fit: cover;
 }
 
 .logged_home_messages {

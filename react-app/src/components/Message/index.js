@@ -13,6 +13,8 @@ const Message = ({ message, handleDeleteMessage, handleUpdateMessage }) => {
   const server = useSelector((state) => state.servers.currentServer);
   const channel = useSelector((state) => state.channels.currentChannel);
 
+  // console.log("message id to edit", showEditMessage);
+
   const handleMouseLeave = () => {
     setHover(false);
     setOptions(false);
@@ -35,7 +37,7 @@ const Message = ({ message, handleDeleteMessage, handleUpdateMessage }) => {
       <div className="message_content">
         <h4 className="username">{message.senderUsername}</h4>
         {showEditMessage !== message.id && <span>{message.content}</span>}
-        {showEditMessage === message.id && (
+        {showEditMessage === +message.id && (
           <ChatInput
             messageToEdit={message}
             handleUpdateMessage={handleUpdateMessage}

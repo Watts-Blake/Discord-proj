@@ -11,7 +11,6 @@ import {
   getOneChannel,
 } from "../../store/channels";
 import { io } from "socket.io-client";
-import { getOneServer } from "../../store/servers";
 let socket;
 
 const OneChannel = () => {
@@ -31,7 +30,7 @@ const OneChannel = () => {
     setLoaded(false);
     if (dmRoomId) {
       dispatch(getOneChannel(dmRoomId));
-      setSocketRoom(`channel${channelId}`);
+      setSocketRoom(`channel${dmRoomId}`);
     } else if (
       channelId &&
       channelId !== "null" &&
@@ -48,7 +47,7 @@ const OneChannel = () => {
         (channel) => channel.name === "General"
       );
       setSocketRoom(`channel${channelId}`);
-      history.push(`/channels/${serverId}/${generalChannel.id}`);
+      history.push(`/channels/${serverId}/${generalChannel?.id}`);
     }
 
     if (currentChannel) {
@@ -95,15 +94,15 @@ const OneChannel = () => {
   }, [prevRoom, socketRoom]);
 
   const sendMessage = async (formData) => {
-    await dispatch(postMessage(channelId, formData)).then((message) =>
-      socket.send({ message, room: socketRoom })
-    );
+    await dispatch(
+      postMessage(channelId ? channelId : dmRoomId, formData)
+    ).then((message) => socket.send({ message, room: socketRoom }));
   };
 
   const handleUpdateMessage = async (messageId, formData) => {
     let messageToUpdate = messages.find((message) => message.id === messageId);
     let updatedMessage = await dispatch(
-      putChannelMessage(channelId, messageId, formData)
+      putChannelMessage(channelId ? channelId : dmRoomId, messageId, formData)
     );
     let newMessages = [...messages];
     newMessages[newMessages.indexOf(messageToUpdate)] = updatedMessage;

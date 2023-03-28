@@ -37,8 +37,10 @@ const ChatInput = ({
 
   return (
     <form
-      id={dmRoomId ? "dm_room_chat" : null}
-      className={dmRoomId ? "dm_room chat_input" : "chat_input"}
+      id={dmRoomId && !messageToEdit ? "dm_room_chat" : null}
+      className={
+        dmRoomId && !messageToEdit ? "dm_room chat_input" : "chat_input"
+      }
       onSubmit={handleSubmit}
     >
       <input
