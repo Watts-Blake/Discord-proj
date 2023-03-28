@@ -34,8 +34,24 @@ const Message = ({ message, handleDeleteMessage, handleUpdateMessage }) => {
           alt="pfp"
         />
       </div>
+
       <div className="message_content">
-        <h4 className="username">{message.senderUsername}</h4>
+        <div className="message_header">
+          <h4 className="username">{message.senderUsername}</h4>
+          {hover === message.id && message.senderId !== 1 && (
+            <div className="message_more">
+              <button
+                onClick={() => (options ? setOptions(false) : setOptions(true))}
+              >
+                <img
+                  src="/svgs/dot-dot.svg"
+                  alt="more"
+                  className="delete"
+                ></img>
+              </button>
+            </div>
+          )}
+        </div>
         {showEditMessage !== message.id && <span>{message.content}</span>}
         {showEditMessage === +message.id && (
           <ChatInput
@@ -46,15 +62,7 @@ const Message = ({ message, handleDeleteMessage, handleUpdateMessage }) => {
           />
         )}
       </div>
-      {hover === message.id && message.senderId !== 1 && (
-        <div className="message_more">
-          <button
-            onClick={() => (options ? setOptions(false) : setOptions(true))}
-          >
-            <img src="/svgs/dot-dot.svg" alt="more" className="delete"></img>
-          </button>
-        </div>
-      )}
+
       {options && message.id === hover && (
         <MessageOptions
           handleDeleteMessage={handleDeleteMessage}

@@ -40,7 +40,7 @@ const Channels = () => {
         >
           <div className="channel_left">
             <img className="channel_name_pound" src="/svgs/pound.svg" alt="#" />{" "}
-            <p>{channel.name}</p>
+            <span className="channel_name">{channel.name}</span>
           </div>
         </NavLink>
       ))}

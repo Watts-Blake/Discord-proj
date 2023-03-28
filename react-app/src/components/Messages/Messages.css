@@ -12,6 +12,10 @@
 
   min-width: 60vw;
   /* border: 2px solid red; */
+  /* display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-x: auto; */
 }
 
 .message_user {
@@ -24,9 +28,9 @@
   gap: 10px;
 }
 
-.message_content {
+/* .message_content {
   margin: 0 10px 10px 10px;
-}
+} */
 
 .messages::-webkit-scrollbar {
   width: 8px;

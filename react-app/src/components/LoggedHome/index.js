@@ -82,16 +82,21 @@ const LoggedHome = () => {
           </div>
           <nav className="direct_message_rooms">
             {dmRooms.map((room) => (
-              <NavLink to={`/channels/@me/${room.id}`}>
+              <NavLink
+                to={`/channels/@me/${room.id}`}
+                className="direct_message_room"
+                activeClassName="active_direct_message_room"
+              >
                 <img
                   src={getMessageRoomImg(room.members)}
                   alt="icon "
                   className="dm_room_icon"
                 />
-                <span>{roomeMemberTitle(room.members)}</span>
+                <span className="dm_room_members">
+                  {roomeMemberTitle(room.members)}
+                </span>
               </NavLink>
             ))}
-            <div className="direct_message_room"></div>
           </nav>
           <LoggedUserTab />
         </div>

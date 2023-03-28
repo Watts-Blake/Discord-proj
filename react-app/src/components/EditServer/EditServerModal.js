@@ -3,14 +3,14 @@ import "./Modal.css";
 import { Modal } from "../../context/Modal";
 import EditServer from ".";
 
-const EditServerModal = ({ serversObj, user, showModal, setShowModal }) => {
+const EditServerModal = ({ currentServer, user, showModal, setShowModal }) => {
   return (
     <>
       {showModal && (
         <Modal className="modal" onClose={() => setShowModal(false)}>
           <EditServer
             setShowModal={setShowModal}
-            serversObj={serversObj}
+            server={currentServer}
             user={user}
           ></EditServer>
         </Modal>

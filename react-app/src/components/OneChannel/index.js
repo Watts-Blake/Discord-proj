@@ -27,34 +27,42 @@ const OneChannel = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   useEffect(() => {
-    setLoaded(false);
-    if (dmRoomId) {
-      dispatch(getOneChannel(dmRoomId));
-      setSocketRoom(`channel${dmRoomId}`);
-    } else if (
-      channelId &&
-      channelId !== "null" &&
-      parseInt(channelId) !== parseInt(currentChannel.id)
-    ) {
-      dispatch(getOneChannel(channelId));
-      setSocketRoom(`channel${channelId}`);
-    } else if (
-      serverId !== "null" &&
-      serverChannels &&
-      serverId !== currentServer.id
-    ) {
-      const generalChannel = Object.values(serverChannels).find(
-        (channel) => channel.name === "General"
-      );
-      setSocketRoom(`channel${channelId}`);
-      history.push(`/channels/${serverId}/${generalChannel?.id}`);
+    let isActive = true;
+
+    if (isActive) {
+      setLoaded(false);
+      if (dmRoomId) {
+        dispatch(getOneChannel(dmRoomId));
+        setSocketRoom(`channel${dmRoomId}`);
+      } else if (
+        channelId &&
+        channelId !== "null" &&
+        parseInt(channelId) !== parseInt(currentChannel?.id)
+      ) {
+        dispatch(getOneChannel(channelId));
+        setSocketRoom(`channel${channelId}`);
+      } else if (
+        serverId !== "null" &&
+        serverChannels &&
+        serverId !== currentServer.id
+      ) {
+        const generalChannel = Object.values(serverChannels).find(
+          (channel) => channel.name === "General"
+        );
+        setSocketRoom(`channel${channelId}`);
+        history.push(`/channels/${serverId}/${generalChannel?.id}`);
+      }
+
+      if (currentChannel) {
+        setLoaded(true);
+      }
     }
 
-    if (currentChannel) {
-      setLoaded(true);
-    }
+    return () => {
+      isActive = false;
+    };
     // eslint-disable-next-line
-  }, [dmRoomId, channelId]);
+  }, [dmRoomId, channelId, dispatch]);
 
   useEffect(() => {
     let isActive = true;

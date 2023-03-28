@@ -2,13 +2,15 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 0 10px;
 }
 
 .channels {
   display: flex;
   flex-direction: column;
+  gap: 4px;
   width: 240px;
+  justify-content: center;
+  align-items: center;
 }
 
 .channel {
@@ -16,13 +18,23 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 0 10px;
+  width: 90%;
+  padding: 4px;
+  text-overflow: clip;
 }
 
 .channel_left {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 5px;
+}
+.channel_name_pound {
+  height: min-content;
+}
+
+.channel_name {
+  text-overflow: ellipsis;
 }
 
 .channel_right {

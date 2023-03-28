@@ -7,13 +7,13 @@ import { deleteServer, getOneServer } from "../../store/servers";
 import { getOneChannel } from "../../store/channels";
 import { useDispatch, useSelector } from "react-redux";
 import { putCurrentServer } from "../../store/servers";
+import { clearCurrentChannel } from "../../store/channels";
+import { clearCurrentServer } from "../../store/servers";
 // import { grabFirstServerId, grabFirstChannelId } from "../../utils";
 
-const EditServer = ({ serversObj, user, setShowModal }) => {
+const EditServer = ({ server, user, setShowModal }) => {
   const dispatch = useDispatch();
   let history = useHistory();
-
-  const server = serversObj.currentServer;
   const currentChannel = useSelector((state) => state.channels.currentChannel);
 
   const [selected, setSelected] = useState("Overview");
@@ -87,12 +87,10 @@ const EditServer = ({ serversObj, user, setShowModal }) => {
 
   const handleDelete = async () => {
     await dispatch(deleteServer(server.id))
-      .then(() =>
-        history.push(
-          `/channels/@me/${Object.values(user.dmChannelMember)[0].id}`
-        )
-      )
-      .then(() => setShowModal(false));
+      .then(() => history.push(`/channels/@me/null`))
+      .then(() => setShowModal(false))
+      .then(() => dispatch(clearCurrentChannel()))
+      .then(() => dispatch(clearCurrentServer()));
 
     // if (
     //   grabFirstServerId(user.serverMember) &&

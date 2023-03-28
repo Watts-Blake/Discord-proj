@@ -5,12 +5,20 @@
   align-items: center;
 
   width: auto;
-  height: auto;
-  margin: 0 10px;
+  max-width: 66vw;
+  height: fit-content;
+  margin: 4px 10px;
   gap: 15px;
   overflow-wrap: break-word;
   overflow: hidden;
   padding: 2px 2px;
+  /* margin-bottom: 2px; */
+}
+
+.message_header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .curr_message {
@@ -25,6 +33,7 @@
   min-width: 300px;
   width: 100%;
   max-width: 60vw;
+  padding-bottom: 8px;
   /* border: 2px solid red; */
 }
 
@@ -32,5 +41,9 @@
   width: auto;
   height: min-content;
   width: min-content;
-  margin-right: 10px;
+  position: relative;
+  height: 100%;
+  top: 0px;
+  right: 0px;
+  /* margin-right: 10px; */
 }

@@ -4,8 +4,8 @@ import Channels from "../Channels";
 import OneChannel from "../OneChannel";
 import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect, useContext } from "react";
-import { useParams, useLocation, Redirect, useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, Redirect, useHistory } from "react-router-dom";
 
 import { leaveUserServer } from "../../store/servers";
 import { clearCurrentServer } from "../../store/servers";
@@ -13,13 +13,13 @@ import { clearCurrentChannel } from "../../store/channels";
 import { getOneServer } from "../../store/servers";
 import ServerOptions from "../ServerOptions";
 import EditServerModal from "../EditServer/EditServerModal";
-import { checkMember } from "../../utils";
+// import { checkMember } from "../../utils";
 import ProtectedRoute from "../auth/ProtectedRoute";
 
 const OneServer = () => {
   const [loaded, setLoaded] = useState(false);
   const [validated, setValidated] = useState(true);
-
+  const [member, setMember] = useState(false);
   const { serverId, channelId } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [showServerOptions, setShowServerOptions] = useState(false);
@@ -31,24 +31,47 @@ const OneServer = () => {
   const currentChannel = useSelector((state) => state.channels.currentChannel);
 
   useEffect(() => {
-    setLoaded(false);
+    let isActive = true;
 
-    if (serverId && serverId !== "null") {
-      dispatch(getOneServer(serverId)).then((server) => {
-        if (channelId && channelId === "null") {
-          const serverGeneralChan = Object.values(server.channels).find(
-            (channel) => channel.name === "General"
-          );
-          history.push(`/channels/${server.id}/${serverGeneralChan?.id}`);
-        } else {
-          history.push(`/channels/${server.id}/${channelId}`);
-        }
-      });
-      setLoaded(true);
+    if (serverId && serverId !== "null" && isActive) {
+      setLoaded(false);
+      dispatch(getOneServer(serverId))
+        .then((server) => {
+          if (channelId && channelId === "null") {
+            const serverGeneralChan = Object.values(server.channels).find(
+              (channel) => channel.name === "General"
+            );
+            history.push(`/channels/${server.id}/${serverGeneralChan?.id}`);
+            return () => (isActive = false);
+          } else {
+            history.push(`/channels/${server.id}/${channelId}`);
+            return () => (isActive = false);
+          }
+        })
+        .then(() => setLoaded(true));
     }
 
-    //eslint-disable-next-line
+    return () => (isActive = false);
+    // eslint-disable-next-line
   }, [serverId, dispatch]);
+
+  useEffect(() => {
+    let isActive = true;
+    if (isActive) {
+      setLoaded(false);
+      if (currentServer) {
+        const member = Object.values(currentServer?.members).find(
+          (member) => member.userId === user.id
+        );
+        if (currentServer.members) setLoaded(true);
+        if (member) setMember(member);
+      }
+    }
+
+    return () => {
+      isActive = false;
+    };
+  }, [currentServer, user?.id]);
 
   const handleCloseServerOpts = (e) => {
     if (!showServerOptions) return;
@@ -63,11 +86,11 @@ const OneServer = () => {
     });
   };
 
-  // const handleLeave = async () => {
-  //   await dispatch(leaveUserServer(currentServer.id, member.id))
-  //     .then(() => dispatch(clearCurrentServer()))
-  //     .then(() => dispatch(clearCurrentChannel()));
-  // };
+  const handleLeave = async () => {
+    await dispatch(leaveUserServer(currentServer.id, member.id))
+      .then(() => dispatch(clearCurrentServer()))
+      .then(() => dispatch(clearCurrentChannel()));
+  };
   if (!validated) return <Redirect to="/channels/wampus/404" />;
   return (
     loaded && (
@@ -114,16 +137,14 @@ const OneServer = () => {
         </div>
         <div className="one_channel_container">
           <div className="channels_container">
-            <Channels channels={currentServer.channels} className="channels" />
+            <Channels channels={currentServer?.channels} className="channels" />
 
             <LoggedInUserTab user={user} />
             {showServerOptions && (
               <ServerOptions
                 setShowModal={setShowModal}
-                // serversObj={serversObj}
-                // user={user}
-                // handleLeave={handleLeave}
-                // member={member}
+                handleLeave={handleLeave}
+                member={member}
               />
             )}
           </div>
@@ -136,7 +157,7 @@ const OneServer = () => {
             <div className="members_container">
               <Members
                 // serversObj={serversObj}
-                channelsObj={currentServer.channels}
+                channelsObj={currentServer?.channels}
                 className="members"
               />
             </div>
@@ -145,7 +166,7 @@ const OneServer = () => {
         <EditServerModal
           showModal={showModal}
           setShowModal={setShowModal}
-          // serversObj={serversObj}
+          currentServer={currentServer}
           user={user}
         />
       </div>
