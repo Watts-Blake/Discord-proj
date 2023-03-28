@@ -32,19 +32,23 @@ const OneServer = () => {
 
   useEffect(() => {
     setLoaded(false);
-    dispatch(getOneServer(serverId)).then((server) => {
-      if (channelId === "null") {
-        const serverGeneralChan = Object.values(server.channels).find(
-          (channel) => channel.name === "General"
-        );
-        history.push(`/channels/${server.id}/${serverGeneralChan?.id}`);
-      } else {
-        history.push(`/channels/${server.id}/${channelId}`);
-      }
-    });
-    setLoaded(true);
+
+    if (serverId && serverId !== "null") {
+      dispatch(getOneServer(serverId)).then((server) => {
+        if (channelId && channelId === "null") {
+          const serverGeneralChan = Object.values(server.channels).find(
+            (channel) => channel.name === "General"
+          );
+          history.push(`/channels/${server.id}/${serverGeneralChan?.id}`);
+        } else {
+          history.push(`/channels/${server.id}/${channelId}`);
+        }
+      });
+      setLoaded(true);
+    }
+
     //eslint-disable-next-line
-  }, [serverId, dispatch, channelId]);
+  }, [serverId, dispatch]);
 
   const handleCloseServerOpts = (e) => {
     if (!showServerOptions) return;

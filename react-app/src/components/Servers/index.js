@@ -1,11 +1,17 @@
 import "./Servers.css";
 import { useState } from "react";
 import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 const Servers = ({ userServers }) => {
   const [loaded, setLoaded] = useState(false);
   const [hover, setHover] = useState(false);
+
+  const { pathname } = useLocation();
+  const matchingPath = (id) => {
+    const res = pathname.split("/")[2] * 1 === id;
+    return res;
+  };
 
   useEffect(() => {
     setLoaded(true);
@@ -21,6 +27,8 @@ const Servers = ({ userServers }) => {
             className={
               hover === server.id
                 ? `single_server hover_server`
+                : matchingPath(server.id)
+                ? `active_server single_server`
                 : `single_server`
             }
             activeClassName="active_server"

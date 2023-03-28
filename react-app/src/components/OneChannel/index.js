@@ -3,7 +3,7 @@ import Messages from "../Messages";
 import ChatInput from "../ChatInput";
 import { postMessage } from "../../store/channels";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   deleteChannelMessage,
@@ -11,6 +11,7 @@ import {
   getOneChannel,
 } from "../../store/channels";
 import { io } from "socket.io-client";
+import { getOneServer } from "../../store/servers";
 let socket;
 
 const OneChannel = () => {
@@ -20,6 +21,7 @@ const OneChannel = () => {
   const [socketRoom, setSocketRoom] = useState();
   const [messages, setMessages] = useState([]);
 
+  const currentServer = useSelector((state) => state.servers.currentServer);
   const currentChannel = useSelector((state) => state.channels.currentChannel);
   const serverChannels = useSelector((state) => state.channels.channels);
 
@@ -30,14 +32,21 @@ const OneChannel = () => {
     if (dmRoomId) {
       dispatch(getOneChannel(dmRoomId));
       setSocketRoom(`channel${channelId}`);
-    } else if (channelId) {
+    } else if (
+      channelId &&
+      channelId !== "null" &&
+      parseInt(channelId) !== parseInt(currentChannel.id)
+    ) {
       dispatch(getOneChannel(channelId));
       setSocketRoom(`channel${channelId}`);
-    } else {
-      const generalChannel = serverChannels.find(
+    } else if (
+      serverId !== "null" &&
+      serverChannels &&
+      serverId !== currentServer.id
+    ) {
+      const generalChannel = Object.values(serverChannels).find(
         (channel) => channel.name === "General"
       );
-      dispatch(getOneChannel(generalChannel.id));
       setSocketRoom(`channel${channelId}`);
       history.push(`/channels/${serverId}/${generalChannel.id}`);
     }
@@ -45,8 +54,8 @@ const OneChannel = () => {
     if (currentChannel) {
       setLoaded(true);
     }
-    //eslint-disable-next-line
-  }, [channelId, serverId]);
+    // eslint-disable-next-line
+  }, [dmRoomId, channelId]);
 
   useEffect(() => {
     let isActive = true;

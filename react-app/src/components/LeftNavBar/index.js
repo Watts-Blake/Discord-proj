@@ -2,23 +2,28 @@ import "./LeftNavBar.css";
 import Servers from "../Servers";
 import CreateServerModal from "../CreateServer/CreateServerModal";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 const LeftNavBar = ({ userServers, user }) => {
   const [hover, setHover] = useState(false);
+
+  const { pathname } = useLocation();
+  const homePath = pathname.split("/")[2] === "@me";
 
   return (
     user && (
       <div className="left_side" id="left_nav">
         <NavLink
-          className="home_dm_btn"
+          className={homePath ? "home_dm_btn hover_home" : "home_dm_btn"}
           to={`/channels/@me/null`}
           onMouseEnter={() => setHover("home")}
           onMouseLeave={() => setHover(null)}
         >
           <div
             className={
-              hover === "home" ? "icon_container hover_home" : "icon_container"
+              hover === "home" || homePath
+                ? "icon_container hover_home"
+                : "icon_container"
             }
           >
             <img
