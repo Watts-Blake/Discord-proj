@@ -37,6 +37,7 @@ def undo_channels():
     db.session.commit()
 
 def seed_channel_messages():
+    # i === channels
     for i in range(1, 10):
         channel = Channel.query.get(i)
         if channel.name == 'General':
@@ -45,19 +46,23 @@ def seed_channel_messages():
         else:
             message = ChannelMessage(channel_id=i, sender_id=1, content=f'Welcome to {channel.server.name}\'s Channel {channel.name}')
             db.session.add(message)
+        #  x === users
         for x in range(2, 19):
+                # users 2-3 channels 1-3
             if x < 9 and i < 4:
                 message = ChannelMessage(channel_id=i, sender_id=x, content='test')
                 db.session.add(message)
-            elif (x >= 9 and x < 14) and i < 7 and i > 3:
+                # users 9 - 13 channels 4-6
+            elif (x >= 9 and x < 14) and i <= 6 and i > 3:
                 message = ChannelMessage(channel_id=i, sender_id=x, content='test')
                 db.session.add(message)
-            elif (x >= 13 and x < 19) and i <= 9 and i > 6:
+                # users 13 - 18  channels 7-9
+            elif (x > 13 and x < 19) and i <= 9 and i > 6:
                 message = ChannelMessage(channel_id=i, sender_id=x, content='test')
                 db.session.add(message)
 
-        message = ChannelMessage(channel_id=i, sender_id=18, content='test')
-        db.session.add(message)
+        # message = ChannelMessage(channel_id=i, sender_id=18, content='test')
+        # db.session.add(message)
     message_from_me = ChannelMessage(channel_id=10, sender_id=2, content="Hello, Thank you for visiting Diss-cord, an on going discord clone project, if you have any questions, feel free to message me here. If you'd like to know more about the project or myself feel free to click the github, or linked icons within the left navbar.")
     db.session.add(message_from_me)
     db.session.commit()

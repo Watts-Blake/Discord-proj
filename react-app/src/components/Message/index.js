@@ -13,8 +13,6 @@ const Message = ({ message, handleDeleteMessage, handleUpdateMessage }) => {
   const server = useSelector((state) => state.servers.currentServer);
   const channel = useSelector((state) => state.channels.currentChannel);
 
-  // console.log("message id to edit", showEditMessage);
-
   const handleMouseLeave = () => {
     setHover(false);
     setOptions(false);
