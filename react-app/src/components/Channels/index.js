@@ -14,7 +14,7 @@ const Channels = () => {
     Object.values(state.channels.channels)
   );
   const server = useSelector((state) => state.servers.currentServer);
-  console.log("right here line 17", server);
+
   return (
     <div className="channels">
       <div className="channels_header">
