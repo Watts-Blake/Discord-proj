@@ -110,6 +110,11 @@
   padding: 4px 8px;
 }
 
+.join_server_button:hover {
+  background-color: #3aa65d;
+  color: white;
+}
+
 .joined_all_msg {
   margin-left: 30px;
   width: fit-content;
