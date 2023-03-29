@@ -1,30 +1,31 @@
 import "./LeftNavBar.css";
 import Servers from "../Servers";
-import { NavLink } from "react-router-dom";
 import CreateServerModal from "../CreateServer/CreateServerModal";
-
-import { useSelector, useDispatch } from "react-redux";
-import { useContext } from "react";
-import { DmRoomViewContext } from "../../context/DmRoomViewContext";
-import { getOneChannel } from "../../store/channels";
+import { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 
 const LeftNavBar = ({ userServers, user }) => {
-  const dispatch = useDispatch();
-  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
-  const userDmRooms = useSelector((state) => state.channels.userDmChannels);
+  const [hover, setHover] = useState(false);
 
-  const handleHomeClick = async (channelId) => {
-    await dispatch(getOneChannel(channelId)).then(() => setDmRoomsView(true));
-  };
+  const { pathname } = useLocation();
+  const homePath = pathname.split("/")[2] === "@me";
+
   return (
     user && (
       <div className="left_side" id="left_nav">
         <NavLink
-          className="home_dm_btn"
-          to={`/channels/@me/${Object.values(userDmRooms)[0].id}`}
-          onClick={() => handleHomeClick(Object.values(userDmRooms)[0].id)}
+          className={homePath ? "home_dm_btn hover_home" : "home_dm_btn"}
+          to={`/channels/@me/null`}
+          onMouseEnter={() => setHover("home")}
+          onMouseLeave={() => setHover(null)}
         >
-          <div className="icon_container">
+          <div
+            className={
+              hover === "home" || homePath
+                ? "icon_container hover_home"
+                : "icon_container"
+            }
+          >
             <img
               className="left_side_icon"
               src="/svgs/gray-disc-home.svg"
@@ -33,36 +34,67 @@ const LeftNavBar = ({ userServers, user }) => {
           </div>
         </NavLink>
         <span className="home_seperator" />
-        <Servers
-          userServers={userServers}
-          setDmRoomsView={setDmRoomsView}
-          dmRoomsView={dmRoomsView}
-        ></Servers>
+        <Servers userServers={userServers}></Servers>
         <CreateServerModal></CreateServerModal>
-        <NavLink to="/guild-discovery">
-          <div className="icon_container">
+        <NavLink
+          to="/guild-discovery"
+          onMouseEnter={() => setHover("guild")}
+          onMouseLeave={() => setHover(null)}
+        >
+          <div
+            className={
+              hover === "guild" ? "hover icon_container" : "icon_container"
+            }
+          >
             <img
               className="left_side_icon"
-              src="/svgs/svgexport-16.svg"
+              src={
+                hover === "guild"
+                  ? "/svgs/svgexport-16-white.svg"
+                  : "/svgs/svgexport-16.svg"
+              }
               alt="explore"
             ></img>
           </div>
         </NavLink>
-        <a href="https://github.com/Watts-Blake/Discord-proj">
-          <div className="icon_container">
+        <a
+          href="https://github.com/Watts-Blake/Discord-proj"
+          onMouseEnter={() => setHover("git")}
+          onMouseLeave={() => setHover(null)}
+        >
+          <div
+            className={
+              hover === "git" ? "icon_container hover_social" : "icon_container"
+            }
+          >
             <img
               className="left_side_icon"
-              src="/svgs/github.svg"
+              src={
+                hover === "git" ? "/svgs/github-gray.svg" : "/svgs/github.svg"
+              }
               alt="github"
             />
-          </div>{" "}
+          </div>
         </a>
-        <a href="https://www.linkedin.com/in/blake-watts-b91428123/">
-          {" "}
-          <div className="icon_container">
+        <a
+          href="https://www.linkedin.com/in/blake-watts-b91428123/"
+          onMouseEnter={() => setHover("linked")}
+          onMouseLeave={() => setHover(null)}
+        >
+          <div
+            className={
+              hover === "linked"
+                ? "icon_container hover_social"
+                : "icon_container"
+            }
+          >
             <img
               className="left_side_icon"
-              src="/svgs/LinkedIn.svg"
+              src={
+                hover === "linked"
+                  ? "/svgs/LinkedIn-blue.svg"
+                  : "/svgs/LinkedIn.svg"
+              }
               alt="linkedin"
             />
           </div>

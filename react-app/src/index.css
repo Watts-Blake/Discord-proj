@@ -11,6 +11,7 @@ body {
 
 #root {
   overflow: hidden;
+  height: 100%;
 }
 
 .logged_app {
@@ -27,9 +28,9 @@ a {
   text-decoration: inherit;
 }
 #left_nav {
-  width: 72px;
+  width: auto;
+  padding: 4px 10px;
   height: 100%;
-  margin-bottom: -300px;
 }
 
 button,

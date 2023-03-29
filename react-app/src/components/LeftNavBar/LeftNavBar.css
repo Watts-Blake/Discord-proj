@@ -2,17 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   width: 72px;
 
   background-color: #1c1d1f;
   gap: 10px;
 }
 
-/* .left_nav {
-  width: 72px;
-  display: flex; */
-/* } */
 .icon_container {
   width: 44px;
   height: 44px;
@@ -23,11 +18,24 @@
   justify-content: center;
 }
 
+.hover {
+  background-color: #3ba55d;
+  border-radius: 8px;
+}
+
+.hover_social {
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
 .left_side_icon {
   height: 28px;
   width: 28px;
   border-radius: 100%;
 }
+
+/* background-color: #36393f;
+border-radius: 4px; */
 
 .home_dm_btn {
   margin-top: 10px;
@@ -37,4 +45,9 @@
   width: 60%;
   height: 2px;
   background-color: #373a3f;
+}
+
+.hover_home {
+  background-color: #5865f2;
+  border-radius: 8px;
 }

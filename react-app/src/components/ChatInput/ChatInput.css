@@ -1,11 +1,11 @@
 .chat_input {
   width: 92.5%;
-  flex-shrink: 0;
-  min-height: 40px;
-  height: fit-content;
-  max-height: 70px;
-  margin-top: 4px;
-  margin-bottom: 20px;
+  position: relative;
+  bottom: 10px;
+
+  height: auto;
+  min-height: 30px;
+  max-height: 40px;
   align-self: center;
   padding-left: 34px;
   display: flex;
@@ -14,6 +14,103 @@
   background-color: #40444b;
   border-radius: 5px;
   overflow: auto;
+}
+
+.chat_input.dm_room {
+  position: absolute;
+  bottom: 10px;
+  left: 320px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  #dm_room_chat {
+    width: 30vw;
+    position: absolute;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .chat_input.dm_room {
+    width: 66vw;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .chat_input.dm_room {
+    width: 60vw;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .chat_input.dm_room {
+    width: 64vw;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1150px) {
+  .chat_input.dm_room {
+    width: 68vw;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .chat_input.dm_room {
+    width: 69vw;
+  }
+}
+@media only screen and (min-width: 1300px) {
+  .chat_input.dm_room {
+    width: 71vw;
+  }
+}
+@media only screen and (min-width: 1400px) {
+  .chat_input.dm_room {
+    width: 74vw;
+  }
+}
+@media only screen and (min-width: 1500px) {
+  .chat_input.dm_room {
+    width: 76vw;
+  }
+}
+@media only screen and (min-width: 1600px) {
+  .chat_input.dm_room {
+    width: 78vw;
+  }
+}
+@media only screen and (min-width: 1700px) {
+  .chat_input.dm_room {
+    width: 79vw;
+  }
+}
+@media only screen and (min-width: 1800px) {
+  .chat_input.dm_room {
+    width: 80vw;
+  }
+}
+@media only screen and (min-width: 1900px) {
+  .chat_input.dm_room {
+    width: 81vw;
+  }
+}
+@media only screen and (min-width: 2000px) {
+  .chat_input.dm_room {
+    width: 82vw;
+  }
+}
+@media only screen and (min-width: 2100px) {
+  .chat_input.dm_room {
+    width: 83vw;
+  }
+}
+@media only screen and (min-width: 2200px) {
+  .chat_input.dm_room {
+    width: 84vw;
+  }
 }
 
 .chat_form_input {

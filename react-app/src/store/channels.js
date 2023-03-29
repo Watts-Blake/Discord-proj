@@ -153,10 +153,10 @@ export const deleteChannelMessage =
 //--------------------------------------reducer
 const channelsReducer = (
   state = {
-    channels: {},
-    currentChannel: { channel: null, pins: {} },
-    userDmChannels: {},
-    dmCurrentChannel: {},
+    channels: [],
+    currentChannel: { pins: [], members: [] },
+    userDmChannels: [],
+    dmCurrentChannel: [],
   },
   action
 ) => {

@@ -1,25 +1,23 @@
 import "./ServerOptions.css";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import { NavLink } from "react-router-dom";
 
-const ServerOptions = ({
-  serversObj,
-  user,
-  setShowModal,
-  handleLeave,
-  member,
-}) => {
+const ServerOptions = ({ setShowModal, handleLeave, member }) => {
   const [loaded, setLoaded] = useState(false);
-
+  const currentServer = useSelector((state) => state.servers.currentServer);
+  const user = useSelector((state) => state.session.user);
   useEffect(() => {
+    setLoaded(false);
+
     setLoaded(true);
-  }, []);
+  }, [currentServer, user]);
 
   return (
     loaded && (
       <div className="server_opts" id="server_opts">
-        {serversObj.currentServer.owner.id === user.id ? (
+        {currentServer.owner.id === user.id ? (
           <>
             {/* <div className="sing_server_opt" id="server_opts_inv">
               <h4 id="server_opts_inv_title">Invite People</h4>

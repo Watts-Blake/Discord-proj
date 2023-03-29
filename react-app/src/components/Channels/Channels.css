@@ -2,13 +2,15 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 0 10px;
 }
 
 .channels {
   display: flex;
   flex-direction: column;
+  gap: 4px;
   width: 240px;
+  justify-content: center;
+  align-items: center;
 }
 
 .channel {
@@ -16,13 +18,23 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 0 10px;
+  width: 90%;
+  padding: 4px;
+  text-overflow: clip;
 }
 
 .channel_left {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 5px;
+}
+.channel_name_pound {
+  height: min-content;
+}
+
+.channel_name {
+  text-overflow: ellipsis;
 }
 
 .channel_right {
@@ -35,4 +47,15 @@
 .direct_message_icon {
   height: 40px;
   border-radius: 100%;
+}
+
+.hover_channel {
+  background-color: #36393f;
+  color: white;
+  border-radius: 4px;
+}
+.active_channel {
+  background-color: #535558;
+  color: white;
+  border-radius: 4px;
 }

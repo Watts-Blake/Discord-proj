@@ -2,7 +2,7 @@ import "./ChatInput.css";
 import { useState } from "react";
 import React from "react";
 import { useSelector } from "react-redux";
-
+import { useParams } from "react-router-dom";
 import "draft-js/dist/Draft.css";
 
 const ChatInput = ({
@@ -17,7 +17,7 @@ const ChatInput = ({
     messageToEdit ? messageToEdit.content : ""
   );
   // const [image, setImage] = useState("");
-
+  const { dmRoomId } = useParams();
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!chatContent) return;
@@ -36,7 +36,13 @@ const ChatInput = ({
   };
 
   return (
-    <form className="chat_input" onSubmit={handleSubmit}>
+    <form
+      id={dmRoomId && !messageToEdit ? "dm_room_chat" : null}
+      className={
+        dmRoomId && !messageToEdit ? "dm_room chat_input" : "chat_input"
+      }
+      onSubmit={handleSubmit}
+    >
       <input
         className="chat_form_input"
         placeholder="Send a message!"

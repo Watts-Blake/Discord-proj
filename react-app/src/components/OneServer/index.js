@@ -4,99 +4,76 @@ import Channels from "../Channels";
 import OneChannel from "../OneChannel";
 import LoggedInUserTab from "../LoggedInUserTab";
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect, useContext } from "react";
-import { useParams, useLocation, Redirect } from "react-router-dom";
-import { DmRoomViewContext } from "../../context/DmRoomViewContext";
+import { useState, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
+
 import { leaveUserServer } from "../../store/servers";
 import { clearCurrentServer } from "../../store/servers";
 import { clearCurrentChannel } from "../../store/channels";
 import { getOneServer } from "../../store/servers";
-import { getOneChannel } from "../../store/channels";
 import ServerOptions from "../ServerOptions";
 import EditServerModal from "../EditServer/EditServerModal";
-import { checkMember } from "../../utils";
-
-import { useHistory } from "react-router-dom";
+// import { checkMember } from "../../utils";
+import ProtectedRoute from "../auth/ProtectedRoute";
 
 const OneServer = () => {
   const [loaded, setLoaded] = useState(false);
-  const [validated, setValidated] = useState(true);
-  const { dmRoomsView, setDmRoomsView } = useContext(DmRoomViewContext);
-  const { serverId, channelId, dmRoomId } = useParams();
-  const [channelLoaded, setChannelLoaded] = useState(false);
-  const [prevRoom, setPrevRoom] = useState();
-  const [prevServerId, setPrevServerId] = useState();
+  const [member, setMember] = useState(false);
+  const { serverId, channelId } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [showServerOptions, setShowServerOptions] = useState(false);
 
   const dispatch = useDispatch();
-  const serversObj = useSelector((state) => state.servers);
+  const history = useHistory();
+  const currentServer = useSelector((state) => state.servers.currentServer);
   const user = useSelector((state) => state.session.user);
-  const channelsObj = useSelector((state) => state.channels);
-  const currentChannel = channelsObj.currentChannel;
-  let url = useLocation();
-  const currentServer = serversObj?.currentServer;
-  const membersObj = currentServer?.members;
-
-  let history = useHistory();
-  const [member, setMember] = useState(false);
-  useEffect(() => {
-    let membersArr;
-    if (membersObj) membersArr = Object.values(membersObj);
-    if (membersArr)
-      setMember(membersArr.find((member) => member.userId === user.id));
-    checkMember(serverId, false, user.id).then((result) =>
-      setValidated(result)
-    );
-    setLoaded(true);
-  }, [membersObj, user.id, history, serverId]);
+  const currentChannel = useSelector((state) => state.channels.currentChannel);
 
   useEffect(() => {
     let isActive = true;
-    setChannelLoaded(false);
-    if (window.location.href.includes("@me") && isActive) {
-      if (dmRoomId && dmRoomId * 1 !== prevRoom && !prevRoom && isActive) {
-        setChannelLoaded(false);
-        dispatch(getOneChannel(dmRoomId))
-          .then(() => setPrevRoom(dmRoomId))
-          .catch((error) => console.log(error.message));
-      }
-    } else {
-      if (
-        isActive &&
-        (serverId || channelId) &&
-        serverId * 1 !== prevServerId &&
-        !prevServerId
-      ) {
-        setChannelLoaded(false);
+    if (isActive) {
+      if (serverId && serverId !== "null") {
+        setLoaded(false);
         dispatch(getOneServer(serverId))
-          .then(() => setPrevServerId(serverId))
-          .then(() => setPrevRoom(channelId))
-          .catch((error) => console.log(error.message));
+          .then((server) => {
+            if (channelId && channelId === "null") {
+              const serverGeneralChan = Object.values(server.channels).find(
+                (channel) => channel.name === "General"
+              );
+              history.push(`/channels/${server.id}/${serverGeneralChan?.id}`);
+              return () => (isActive = false);
+            } else {
+              history.push(`/channels/${server.id}/${channelId}`);
+              return () => (isActive = false);
+            }
+          })
+          .then(() => setLoaded(true));
+      }
+    }
 
-        if (channelId * 1 !== prevRoom && !prevRoom && isActive) {
-          setChannelLoaded(false);
-          dispatch(getOneChannel(channelId)).catch((error) =>
-            console.log(error.message)
-          );
+    return () => (isActive = false);
+    // eslint-disable-next-line
+  }, [serverId, dispatch]);
+
+  useEffect(() => {
+    let isActive = true;
+    if (isActive) {
+      setLoaded(false);
+      if (currentServer) {
+        const member = Object.values(currentServer?.members).find(
+          (member) => member.userId === user.id
+        );
+        if (currentServer.members) setLoaded(true);
+        if (member) {
+          setMember(member);
         }
       }
     }
-    setChannelLoaded(true);
-    setLoaded(true);
+
     return () => {
       isActive = false;
-      setLoaded(null);
     };
-  }, [
-    dispatch,
-    dmRoomId,
-    channelId,
-    prevRoom,
-    prevServerId,
-    serverId,
-    url.pathname,
-  ]);
+  }, [currentServer, user?.id, history]);
 
   const handleCloseServerOpts = (e) => {
     if (!showServerOptions) return;
@@ -114,10 +91,9 @@ const OneServer = () => {
   const handleLeave = async () => {
     await dispatch(leaveUserServer(currentServer.id, member.id))
       .then(() => dispatch(clearCurrentServer()))
-      .then(() => dispatch(clearCurrentChannel()))
-      .then(() => setDmRoomsView(false));
+      .then(() => dispatch(clearCurrentChannel()));
   };
-  if (!validated) return <Redirect to="/channels/wampus/404" />;
+
   return (
     loaded && (
       <div
@@ -128,9 +104,7 @@ const OneServer = () => {
         <div className="header">
           {currentChannel?.serverId ? (
             <div className="server_options">
-              <h2 className="server_options_name">
-                {serversObj.currentServer?.name}
-              </h2>
+              <h2 className="server_options_name">{currentServer?.name}</h2>
 
               {!showServerOptions && (
                 <img
@@ -157,62 +131,44 @@ const OneServer = () => {
               <h2 className="server_options_name">{user.username}</h2>
             </div>
           )}
-          {channelLoaded &&
-            (!dmRoomsView ? (
-              <div className="channel_header">
-                <img src="/svgs/pound.svg" alt="#" />
-                {channelsObj.currentChannel?.name}
-              </div>
-            ) : (
-              dmRoomsView && (
-                <div className="channel_header">{user.username}'s</div>
-              )
-            ))}
+
+          <div className="channel_header">
+            <img src="/svgs/pound.svg" alt="#" />
+            {currentChannel?.name}
+          </div>
         </div>
         <div className="one_channel_container">
           <div className="channels_container">
-            {!dmRoomsView && (
-              <Channels channels={channelsObj} className="channels" />
-            )}
-            {dmRoomsView && (
-              <Channels
-                channels={channelsObj}
-                dmRoomsView={dmRoomsView}
-                className="channels"
-              />
-            )}
+            <Channels channels={currentServer?.channels} className="channels" />
+
             <LoggedInUserTab user={user} />
             {showServerOptions && (
               <ServerOptions
                 setShowModal={setShowModal}
-                serversObj={serversObj}
-                user={user}
                 handleLeave={handleLeave}
                 member={member}
               />
             )}
           </div>
 
-          <div className="one_channel">
-            {channelLoaded && (
-              <OneChannel channelsObj={channelsObj} className="one_channel" />
-            )}
-          </div>
+          <ProtectedRoute path="/channels/:serverId(\d+)/:channelId">
+            <div className="one_channel">
+              <OneChannel className="one_channel" />
+            </div>
 
-          <div className="members_container">
-            {channelLoaded && (
+            <div className="members_container">
               <Members
-                serversObj={serversObj}
-                channelsObj={channelsObj}
+                // serversObj={serversObj}
+                channelsObj={currentServer?.channels}
                 className="members"
               />
-            )}
-          </div>
+            </div>
+          </ProtectedRoute>
         </div>
         <EditServerModal
           showModal={showModal}
           setShowModal={setShowModal}
-          serversObj={serversObj}
+          currentServer={currentServer}
           user={user}
         />
       </div>
