@@ -80,16 +80,9 @@ const EditChannel = ({ user, setShowModal }) => {
   };
 
   const handleDelete = async () => {
-    await dispatch(deleteChannel(channel.serverId, channel.id)).then(() =>
-      setShowModal(false)
-    );
-
-    if (grabFirstChannelId(user.serverMember)) {
-      let firsChannelId = grabFirstChannelId(user.serverMember);
-
-      history.push(`/channels/${channel.serverId}/${firsChannelId}`);
-      await dispatch(getOneChannel(firsChannelId));
-    }
+    await dispatch(deleteChannel(channel.serverId, channel.id))
+      .then(() => setShowModal(false))
+      .then(() => history.push(`/channels/${channel.serverId}/null`));
   };
 
   const checkChanges = () => {

@@ -37,6 +37,7 @@ const OneChannel = () => {
       } else if (
         channelId &&
         channelId !== "null" &&
+        channelId !== "undefined" &&
         parseInt(channelId) !== parseInt(currentChannel?.id)
       ) {
         dispatch(getOneChannel(channelId));

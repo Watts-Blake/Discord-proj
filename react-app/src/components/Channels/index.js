@@ -2,34 +2,31 @@ import "./Channels.css";
 import { NavLink } from "react-router-dom";
 import CreateChannelModal from "../AddChannel/AddChannelModal";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 
 const Channels = () => {
-  const { serverId } = useParams();
-
   const [hoverId, setHoverId] = useState(null);
-  const [channels, setChannels] = useState();
+  // const [channels, setChannels] = useState();
 
   const user = useSelector((state) => state.session.user);
-  const servers = useSelector((state) => state.servers.userServers);
-  useEffect(() => {
-    setChannels(Object.values(servers[serverId].channels));
-    //eslint-disable-next-line
-  }, [serverId]);
+  const channels = useSelector((state) =>
+    Object.values(state.channels.channels)
+  );
+  const server = useSelector((state) => state.servers.currentServer);
 
   return (
     <div className="channels">
       <div className="channels_header">
-        <h4>TEXT CHANNELS</h4>
-        {servers && user.id === servers[serverId]?.owner.id && (
+        <h4 className="channels_header_txt">TEXT CHANNELS</h4>
+        {server && user.id === server?.owner?.id && (
           <CreateChannelModal user={user} />
         )}
       </div>
 
       {channels?.map((channel) => (
         <NavLink
-          key={channel.id}
+          key={channel.id * 4}
           to={`/channels/${channel.serverId}/${channel.id}`}
           onMouseEnter={() => setHoverId(channel.id)}
           onMouseLeave={() => setHoverId(null)}

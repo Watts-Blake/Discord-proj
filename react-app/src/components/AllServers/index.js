@@ -4,14 +4,11 @@ import { getAllServers } from "../../store/servers";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { joinUserServer } from "../../store/servers";
-import { getOneServer } from "../../store/servers";
-import { getOneChannel } from "../../store/channels";
-import { useContext } from "react";
-import { DmRoomViewContext } from "../../context/DmRoomViewContext";
+
 import { useHistory } from "react-router-dom";
 const AllServers = () => {
   const dispatch = useDispatch();
-  const { setDmRoomsView } = useContext(DmRoomViewContext);
+
   const [loaded, setLoaded] = useState(false);
   const [servers, setServers] = useState("");
   const user = useSelector((state) => state.session.user);
@@ -38,11 +35,9 @@ const AllServers = () => {
 
   const handleJoin = async (e, serverId, channelId) => {
     e.preventDefault();
-    await dispatch(joinUserServer(serverId, user.id))
-      .then(() => dispatch(getOneServer(serverId)))
-      .then(() => dispatch(getOneChannel(channelId)))
-      .then(() => setDmRoomsView(false))
-      .then(() => history.push(`/channels/${serverId}/${channelId}`));
+    await dispatch(joinUserServer(serverId, user.id)).then(() =>
+      history.push(`/channels/${serverId}/${channelId}`)
+    );
   };
 
   return (
