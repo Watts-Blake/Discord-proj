@@ -1,6 +1,7 @@
 import "./Channels.css";
 import { NavLink } from "react-router-dom";
 import CreateChannelModal from "../AddChannel/AddChannelModal";
+import EditChannelModal from "../EditChannel/EditChannelModal";
 import { useSelector } from "react-redux";
 
 import { useState } from "react";
@@ -36,9 +37,14 @@ const Channels = () => {
           }
         >
           <div className="channel_left">
-            <img className="channel_name_pound" src="/svgs/pound.svg" alt="#" />{" "}
-            <span className="channel_name">{channel.name}</span>
+            <img className="channel_name_pound" src="/svgs/pound.svg" alt="#" />
+            <span className="channel_name_channels">{channel.name}</span>
           </div>
+          {hoverId === channel.id &&
+            server.owner.id === user.id &&
+            channel.name !== "General" && (
+              <EditChannelModal channel={channel} user={user} />
+            )}
         </NavLink>
       ))}
     </div>

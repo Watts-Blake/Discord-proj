@@ -80,6 +80,7 @@ const LoggedHome = () => {
           <nav className="direct_message_rooms">
             {dmRooms.map((room) => (
               <NavLink
+                key={room.id}
                 to={`/channels/@me/${room.id}`}
                 className="direct_message_room"
                 activeClassName="active_direct_message_room"

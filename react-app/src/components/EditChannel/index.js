@@ -80,9 +80,9 @@ const EditChannel = ({ user, setShowModal }) => {
   };
 
   const handleDelete = async () => {
-    await dispatch(deleteChannel(channel.serverId, channel.id))
-      .then(() => setShowModal(false))
-      .then(() => history.push(`/channels/${channel.serverId}/null`));
+    await dispatch(deleteChannel(channel.serverId, channel.id)).then(() =>
+      history.push(`/channels/${channel.serverId}/null`)
+    );
   };
 
   const checkChanges = () => {
