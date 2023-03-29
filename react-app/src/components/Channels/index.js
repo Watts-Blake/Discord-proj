@@ -18,7 +18,7 @@ const Channels = () => {
   return (
     <div className="channels">
       <div className="channels_header">
-        <h4>TEXT CHANNELS</h4>
+        <h4 className="channels_header_txt">TEXT CHANNELS</h4>
         {server && user.id === server?.owner?.id && (
           <CreateChannelModal user={user} />
         )}
