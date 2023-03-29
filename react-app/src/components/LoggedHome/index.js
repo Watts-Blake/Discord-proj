@@ -14,7 +14,6 @@ const LoggedHome = () => {
   const dmRooms = useSelector((state) =>
     Object.values(state.channels.userDmChannels)
   );
-  console.log("dmroooms --------------------->", dmRooms);
 
   useEffect(() => {
     setLoaded(false);
@@ -29,7 +28,6 @@ const LoggedHome = () => {
   const roomeMemberTitle = (obj) => {
     const userNameArr = [];
     for (let key in obj) {
-      console.log("right here", obj[key]);
       if (obj[key].username !== user.username) {
         userNameArr.push(obj[key].username);
       }
@@ -40,7 +38,6 @@ const LoggedHome = () => {
   const getMessageRoomImg = (membersObj) => {
     const imgSrcArr = [];
     for (let key in membersObj) {
-      //  console.log("right here", membersObj[key]);
       if (membersObj[key].username !== user.username) {
         imgSrcArr.push(membersObj[key].profilePicture);
       }
