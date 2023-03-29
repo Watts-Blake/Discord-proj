@@ -60,6 +60,7 @@ const OneServer = () => {
     if (isActive) {
       setLoaded(false);
       if (currentServer) {
+        // console.log("right hereeeee", currentServer);
         const member = Object.values(currentServer?.members).find(
           (member) => member.userId === user.id
         );

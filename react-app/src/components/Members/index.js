@@ -20,7 +20,7 @@ const Members = () => {
     return (
       <div className="members_list">
         {Object.values(currentServerMembers)?.map((member) => (
-          <div className="member" key={member.id}>
+          <div className="member" key={member.id * 2}>
             <img
               className="member_photo"
               src={`${member.profilePicture}`}

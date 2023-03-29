@@ -140,33 +140,23 @@ export const removeMember = (serverId, memberId) => {
 };
 
 //---------------------------------------------------------------------------- reducer
-
-const serversReducer = (
-  state = {
-    userServers: { server: null },
-    allServers: { server: null },
-    currentServer: {
-      channels: [],
-      members: [],
-    },
+const initialState = {
+  userServers: { server: null },
+  allServers: { server: null },
+  currentServer: {
+    channels: { 0: 0 },
+    members: { 0: 0 },
   },
-  action
-) => {
+};
+const serversReducer = (state = initialState, action) => {
   let newState = { ...state };
   switch (action.type) {
     case CLEAR_ALL_SERVERS: {
-      newState = {
-        userServers: { server: null },
-        allServers: { server: null },
-        currentServer: {
-          server: null,
-        },
-      };
-      return newState;
+      return initialState;
     }
 
     case CLEAR_CURRENT_SERVER: {
-      newState.currentServer = null;
+      newState.currentServer = initialState.currentServer;
       return newState;
     }
     case SET_ALL_SERVERS: {
