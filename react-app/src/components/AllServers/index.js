@@ -11,6 +11,7 @@ const AllServers = () => {
 
   const [loaded, setLoaded] = useState(false);
   const [servers, setServers] = useState("");
+  const [hover, setHover] = useState(false);
   const user = useSelector((state) => state.session.user);
   const userServers = useSelector((state) => state.servers.userServers);
   let history = useHistory();
@@ -84,12 +85,18 @@ const AllServers = () => {
                       onClick={(e) =>
                         handleJoin(e, server.id, server.firstChannelId)
                       }
+                      onMouseEnter={() => setHover(server.id)}
+                      onMouseLeave={() => setHover(null)}
                     >
                       <div className="join_server_button">
                         <p>Join Server</p>
                         <img
                           className="join_server"
-                          src="/svgs/joinServer.svg"
+                          src={
+                            hover === server.id
+                              ? "/svgs/joinServer-gray.svg"
+                              : "/svgs/joinServer.svg"
+                          }
                           alt="join"
                         />
                       </div>

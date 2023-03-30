@@ -9,6 +9,7 @@ const LeftNavBar = ({ userServers, user }) => {
 
   const { pathname } = useLocation();
   const homePath = pathname.split("/")[2] === "@me";
+  const guildDisco = pathname.split("/")[1] === "guild-discovery";
 
   return (
     user && (
@@ -43,13 +44,15 @@ const LeftNavBar = ({ userServers, user }) => {
         >
           <div
             className={
-              hover === "guild" ? "hover icon_container" : "icon_container"
+              hover === "guild" || guildDisco
+                ? "hover icon_container"
+                : "icon_container"
             }
           >
             <img
               className="left_side_icon"
               src={
-                hover === "guild"
+                hover === "guild" || guildDisco
                   ? "/svgs/svgexport-16-white.svg"
                   : "/svgs/svgexport-16.svg"
               }
