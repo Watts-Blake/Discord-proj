@@ -2,12 +2,8 @@ import "./Modal.css";
 
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-// import { deleteServer, getOneServer } from "../../store/servers";
 import { deleteChannel, putChannel } from "../../store/channels";
-import { getOneChannel } from "../../store/channels";
 import { useDispatch, useSelector } from "react-redux";
-// import { putCurrentServer } from "../../store/servers";
-import { grabFirstChannelId } from "../../utils";
 
 const EditChannel = ({ user, setShowModal }) => {
   const dispatch = useDispatch();
@@ -80,9 +76,9 @@ const EditChannel = ({ user, setShowModal }) => {
   };
 
   const handleDelete = async () => {
-    await dispatch(deleteChannel(channel.serverId, channel.id))
-      .then(() => setShowModal(false))
-      .then(() => history.push(`/channels/${channel.serverId}/null`));
+    await dispatch(deleteChannel(channel.serverId, channel.id)).then(() =>
+      history.push(`/channels/${channel.serverId}/null`)
+    );
   };
 
   const checkChanges = () => {
@@ -102,8 +98,17 @@ const EditChannel = ({ user, setShowModal }) => {
     <div className="edit_channel_modal">
       <div className="container_for_options">
         <div className="edit_options">
-          {name ? <h5>{name.toUpperCase()}</h5> : <h5>Channel Settings</h5>}
-          <h4 onClick={() => setSelected("Overview")}>Overview</h4>
+          {name ? (
+            <h5 className="channe_edit_name">{name.toUpperCase()}</h5>
+          ) : (
+            <h5>Channel Settings</h5>
+          )}
+          <h4
+            className="channel_edit_overview_left"
+            onClick={() => setSelected("Overview")}
+          >
+            Overview
+          </h4>
           <div className="delete" onClick={handleDelete}>
             <h3>Delete Channel</h3>
             <img src="/svgs/trash.svg" alt="trash" />

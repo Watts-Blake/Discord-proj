@@ -19,11 +19,28 @@
 
   height: 100%;
 }
+.channel_edit_name {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.channel_edit_overview_left {
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
 .delete {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.delete:hover {
+  background-color: #535558;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .info {
@@ -124,8 +141,15 @@
   align-items: center;
 }
 
+.reset:hover {
+  color: red;
+}
+
 .save {
   background-color: #2e7d46;
   border-radius: 5px;
   padding: 5px 12px;
+}
+.save.active_save:hover {
+  background-color: #33c45e;
 }
