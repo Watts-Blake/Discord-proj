@@ -1,13 +1,12 @@
 # from crypt import methods
 from crypt import methods
 from tkinter.messagebox import NO
-from flask import Blueprint, render_template, redirect, url_for, request
-# from flask_login import login_required
-# from sqlalchemy.orm import Session
-from app.models import User, Server, ServerMember, Channel, ChannelMessage, db, ChannelMember
-from flask_login import current_user, login_user, logout_user, login_required
+from flask import Blueprint, request
+
+from app.models import User, Channel, ChannelMessage, db, ChannelMember
+from flask_login import current_user
 from app.aws import upload_file_to_s3, allowed_file, get_unique_filename
-import json
+
 
 channel_routes = Blueprint('channels', __name__, url_prefix='channels')
 
@@ -16,7 +15,7 @@ channel_routes = Blueprint('channels', __name__, url_prefix='channels')
 def get_one_put_delete_channel(channel_id):
     channel = Channel.query.get(channel_id)
     if request.method == 'GET':
-
+        # print('start, line 19 ----------------------------->', current_user.id, '<------------------- end')
         return channel.to_dict()
 
     if request.method == 'PUT':
@@ -47,7 +46,7 @@ def post_channel_message(channel_id):
 
     new_message = ChannelMessage(
         channel_id=channel_id,
-        sender_id = request.form['senderId'],
+        sender_id = current_user.id,
         content = request.form['content'],
         picture = url
 
@@ -80,7 +79,7 @@ def put_delete_message(channel_id, message_id):
         return message.to_dict()
 
     if request.method == 'DELETE':
-        print('right friggin here', message)
+        # print('right friggin here', message)
         db.session.delete(message)
         db.session.commit()
         return {'messageId': message.id}

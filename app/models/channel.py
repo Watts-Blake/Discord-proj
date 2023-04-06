@@ -92,3 +92,14 @@ class ChannelMessage(db.Model):
             'createdAt': self.created_at,
              'updatedAt': self.updated_at
         }
+    def to_socket_dict(self):
+        return {
+            'id': self.id,
+            'serverId': self.channel.server_id,
+            'channelId': self.channel_id,
+            'senderId': self.sender_id,
+            'senderUsername':self.sender.username,
+            'senderProfilePicture':self.sender.profile_picture,
+            'content': self.content,
+            'pinned': self.pinned,
+        }
