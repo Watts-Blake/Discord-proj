@@ -32,7 +32,10 @@ const ChatInput = ({
     formData.append("senderId", userId);
     // if (image) formData.append("image", image);
     if (messageToEdit) {
-      handleUpdateMessage(messageToEdit.id, formData);
+      handleUpdateMessage({
+        message_id: messageToEdit.id,
+        content: messageToSend.content,
+      });
       setShowEditMessage(false);
     } else {
       // sendMessage(formData);

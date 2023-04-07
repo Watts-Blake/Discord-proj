@@ -1,9 +1,7 @@
 from flask_socketio import SocketIO, emit, join_room, leave_room, send
 from crypt import methods
 from tkinter.messagebox import NO
-from flask import Blueprint, render_template, redirect, url_for, request
-# from flask_login import login_required
-# from sqlalchemy.orm import Session
+
 from app.models import User, Server, ServerMember, Channel, ChannelMessage, db, ChannelMember
 from flask_login import current_user, login_user, logout_user, login_required
 from app.aws import upload_file_to_s3, allowed_file, get_unique_filename
@@ -54,11 +52,6 @@ def leave(data):
     print('leaving hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', data)
     leave_room(data['room'])
 
-# @socketio.on('get_messages')
-# def on_chat_sent(data):
-#     # data = req['message']
-#     print('data issssss hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', data)
-#     send({'message': data['message']}, room=data['room'])
 
 @socketio.on('send_message')
 def on_chat_sent(data):
@@ -75,5 +68,18 @@ def on_chat_sent(data):
     sent_message = new_message.to_socket_dict()
     sent_message['createdAt'] = f"{new_message.to_dict()['createdAt']}"
     sent_message['updatedAt'] = f"{new_message.to_dict()['updatedAt']}"
-    # print('data issssss hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', sent_message['createdAt'])
     emit('send_message',{'message': sent_message}, room=data['room'])
+
+@socketio.on('update_message')
+def on_chat_sent(data):
+    print('------------------------------->', data)
+    updated_message = ChannelMessage.query.get(data['message']['message_id'])
+    updated_message.content = data['message']['content']
+
+    db.session.add(updated_message)
+    db.session.commit()
+    sent_updated_message = updated_message.to_socket_dict()
+    sent_updated_message['createdAt'] = f"{updated_message.to_dict()['createdAt']}"
+    sent_updated_message['updatedAt'] = f"{updated_message.to_dict()['updatedAt']}"
+    # print('data issssss hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', sent_message['createdAt'])
+    emit('update_message',{'message': sent_updated_message}, room=data['room'])

@@ -15,7 +15,6 @@ channel_routes = Blueprint('channels', __name__, url_prefix='channels')
 def get_one_put_delete_channel(channel_id):
     channel = Channel.query.get(channel_id)
     if request.method == 'GET':
-        # print('start, line 19 ----------------------------->', current_user.id, '<------------------- end')
         return channel.to_dict()
 
     if request.method == 'PUT':

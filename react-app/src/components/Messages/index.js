@@ -1,6 +1,6 @@
 import "./Messages.css";
 import Message from "../Message";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 const Messages = ({ messages, handleDeleteMessage, handleUpdateMessage }) => {
   let messagesEnd = useRef(null);
@@ -14,7 +14,7 @@ const Messages = ({ messages, handleDeleteMessage, handleUpdateMessage }) => {
 
   return (
     <div className="messages">
-      {messages?.map((message) => (
+      {Object.values(messages).map((message) => (
         <Message
           message={message}
           handleDeleteMessage={handleDeleteMessage}

@@ -11,7 +11,7 @@ import {
   getOneChannel,
 } from "../../store/channels";
 import { io } from "socket.io-client";
-let socket = io();
+let socket;
 
 const OneChannel = () => {
   const { serverId, channelId, dmRoomId } = useParams();
@@ -23,10 +23,10 @@ const OneChannel = () => {
   const currentServer = useSelector((state) => state.servers.currentServer);
   const currentChannel = useSelector((state) => state.channels.currentChannel);
   const serverChannels = useSelector((state) => state.channels.channels);
-
+  console.log("messages", messages);
   const dispatch = useDispatch();
   const history = useHistory();
-  socket.connect();
+
   useEffect(() => {
     let isActive = true;
 
@@ -67,23 +67,41 @@ const OneChannel = () => {
     let isActive = true;
     const channelMessagesObj = currentChannel?.messages;
 
-    if (channelMessagesObj && isActive)
-      setMessages(Object.values(channelMessagesObj));
+    if (channelMessagesObj && isActive) setMessages(channelMessagesObj);
 
     return () => (isActive = false);
     // socket.emit("get_messages");
   }, [currentChannel]);
 
   useEffect(() => {
-    const allMessages = (data) => {
-      setMessages((prevMessages) => [...prevMessages, data.message]);
+    socket = io();
+    const sendMessage = (data) => {
+      setMessages((prevMessages) => {
+        const newMessages = { ...prevMessages };
+        newMessages[data.message.id] = data.message;
+        return newMessages;
+      });
     };
 
-    socket.on("send_message", allMessages);
+    const updateMessage = (data) => {
+      setMessages((prevMessages) => {
+        const newMessages = { ...prevMessages };
 
-    setLoaded(true);
+        prevMessages[data.message.id].content = data.message.content;
+        prevMessages[data.message.id].updatedAt = data.message.updatedAt;
+
+        return newMessages;
+      });
+    };
+
+    socket.on("send_message", sendMessage);
+
+    socket.on("update_message", updateMessage);
+
+    // setLoaded(true);
     return () => {
       socket.off("send_message");
+      socket.off("update_message");
     };
   }, []);
 
@@ -104,28 +122,17 @@ const OneChannel = () => {
   }, [prevRoom, socketRoom]);
 
   const sendMessage = (formData) => {
-    // await dispatch(
-    //   postMessage(channelId ? channelId : dmRoomId, formData)
-    // ).then((message) => socket.send({ message, room: socketRoom }));
-    // setLoaded(false);
-    socket.timeout(5000).emit(
-      "send_message",
-      {
-        message: { ...formData, channel_id: channelId || dmRoomId },
-        room: socketRoom,
-      }
-      // () => setLoaded(true)
-    );
+    socket.timeout(5000).emit("send_message", {
+      message: { ...formData, channel_id: channelId || dmRoomId },
+      room: socketRoom,
+    });
   };
 
-  const handleUpdateMessage = async (messageId, formData) => {
-    let messageToUpdate = messages.find((message) => message.id === messageId);
-    let updatedMessage = await dispatch(
-      putChannelMessage(channelId ? channelId : dmRoomId, messageId, formData)
-    );
-    let newMessages = [...messages];
-    newMessages[newMessages.indexOf(messageToUpdate)] = updatedMessage;
-    setMessages(newMessages);
+  const handleUpdateMessage = (message) => {
+    socket.emit("update_message", {
+      message: { ...message, channel_id: channelId || dmRoomId },
+      room: socketRoom,
+    });
   };
 
   const handleDeleteMessage = async (channelId, messageId) => {
