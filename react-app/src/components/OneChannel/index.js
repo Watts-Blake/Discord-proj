@@ -6,6 +6,8 @@ import { useParams, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getOneChannel } from "../../store/channels";
 import { io } from "socket.io-client";
+
+import { sendMessage } from "../../store/channels";
 let socket;
 
 const OneChannel = () => {

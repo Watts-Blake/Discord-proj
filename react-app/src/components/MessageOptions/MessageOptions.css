@@ -1,0 +1,15 @@
+.message_options {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  height: 20px;
+  background-color: #49494a;
+  border-radius: 4px;
+  padding: 4px 10px;
+  margin-top: -2px;
+  box-shadow: 0 4px 2px -2px #393939;
+}
+
+.message_options:hover {
+  box-shadow: 0 4px 2px -2px #1f1f1f;
+}

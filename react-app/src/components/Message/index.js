@@ -72,20 +72,34 @@ const Message = ({ message, handleDeleteMessage, handleUpdateMessage }) => {
               </p>
             </div>
           </div>
+          <div className="message_header_right">
+            {options && message.id === hover && (
+              <MessageOptions
+                handleDeleteMessage={handleDeleteMessage}
+                message={message}
+                user={user}
+                server={server}
+                channel={channel}
+                setShowEditMessage={setShowEditMessage}
+              />
+            )}
 
-          {hover === message.id && message.senderId !== 1 && (
-            <div className="message_more">
-              <button
-                onClick={() => (options ? setOptions(false) : setOptions(true))}
-              >
-                <img
-                  src="/svgs/dot-dot.svg"
-                  alt="more"
-                  className="delete"
-                ></img>
-              </button>
-            </div>
-          )}
+            {hover === message.id && message.senderId !== 1 && (
+              <div className="message_more">
+                <button
+                  onClick={() =>
+                    options ? setOptions(false) : setOptions(true)
+                  }
+                >
+                  <img
+                    src="/svgs/dot-dot.svg"
+                    alt="more"
+                    className="delete"
+                  ></img>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
         {showEditMessage !== message.id && (
           <div className="message_content_message_container">
@@ -104,17 +118,6 @@ const Message = ({ message, handleDeleteMessage, handleUpdateMessage }) => {
           />
         )}
       </div>
-
-      {options && message.id === hover && (
-        <MessageOptions
-          handleDeleteMessage={handleDeleteMessage}
-          message={message}
-          user={user}
-          server={server}
-          channel={channel}
-          setShowEditMessage={setShowEditMessage}
-        />
-      )}
     </div>
   );
 };

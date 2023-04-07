@@ -17,7 +17,7 @@ const MessageOptions = ({
 
   return (
     loaded && (
-      <div>
+      <div className="message_options">
         {/* add when pinning implementation complete */}
         {/* <button>
           <img src="/svgs/pinned.svg" alt="pin" className="edit" />
