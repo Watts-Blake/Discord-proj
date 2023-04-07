@@ -83,3 +83,13 @@ def on_chat_sent(data):
     sent_updated_message['updatedAt'] = f"{updated_message.to_dict()['updatedAt']}"
     # print('data issssss hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', sent_message['createdAt'])
     emit('update_message',{'message': sent_updated_message}, room=data['room'])
+
+@socketio.on('delete_message')
+def on_chat_sent(data):
+
+    message_to_delete = ChannelMessage.query.get(data['message_id'])
+
+    db.session.delete(message_to_delete)
+    db.session.commit()
+
+    emit('delete_message',{'messageId': message_to_delete.id}, room=data['room'])

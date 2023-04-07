@@ -94,14 +94,26 @@ const OneChannel = () => {
       });
     };
 
+    const deleteMessage = (data) => {
+      setMessages((prevMessages) => {
+        const newMessages = { ...prevMessages };
+        console.log("message data for delete", data);
+        delete newMessages[data.messageId];
+        return newMessages;
+      });
+    };
+
     socket.on("send_message", sendMessage);
 
     socket.on("update_message", updateMessage);
+
+    socket.on("delete_message", deleteMessage);
 
     // setLoaded(true);
     return () => {
       socket.off("send_message");
       socket.off("update_message");
+      socket.off("delete_message");
     };
   }, []);
 
@@ -136,9 +148,10 @@ const OneChannel = () => {
   };
 
   const handleDeleteMessage = async (channelId, messageId) => {
-    await dispatch(deleteChannelMessage(channelId, messageId));
-    let deletedMessage = messages.find((message) => message.id === messageId);
-    setMessages(messages.filter((message) => message !== deletedMessage));
+    socket.emit("delete_message", { message_id: messageId, room: socketRoom });
+    // await dispatch(deleteChannelMessage(channelId, messageId));
+    // let deletedMessage = messages.find((message) => message.id === messageId);
+    // setMessages(messages.filter((message) => message !== deletedMessage));
   };
 
   if (loaded) {
