@@ -105,9 +105,9 @@ const OneChannel = () => {
     };
   }, []);
 
-  // const leaveRoom = (oldRoom) => {
-  //   socket.emit("leave_room", { room: oldRoom });
-  // };
+  const leaveRoom = (oldRoom) => {
+    socket.emit("leave_room", { room: oldRoom });
+  };
 
   const joinRoom = (newRoom) => {
     socket.emit("join_room", { room: newRoom });
@@ -115,7 +115,7 @@ const OneChannel = () => {
 
   useEffect(() => {
     let isActive = true;
-    // isActive && leaveRoom(prevRoom);
+    isActive && leaveRoom(prevRoom);
     isActive && joinRoom(socketRoom);
     isActive && setPrevRoom(socketRoom);
     return () => (isActive = false);
