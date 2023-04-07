@@ -14,7 +14,7 @@ const Messages = ({ messages, handleDeleteMessage, handleUpdateMessage }) => {
 
   return (
     <div className="messages">
-      {messages?.map((message) => (
+      {Object.values(messages).map((message) => (
         <Message
           message={message}
           handleDeleteMessage={handleDeleteMessage}
