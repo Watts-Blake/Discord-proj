@@ -54,34 +54,6 @@ def post_channel_message(channel_id):
     db.session.commit()
     return new_message.to_dict()
 
-@channel_routes.route('/<int:channel_id>/messages/<int:message_id>', methods=['PUT', 'DELETE'])
-def put_delete_message(channel_id, message_id):
-    message = ChannelMessage.query.get(message_id)
-
-
-    if request.method == 'PUT':
-
-        url = message.picture
-        if "image" in request.files:
-            image = request.files["image"]
-            if not allowed_file(image.filename):
-                return {"errors": "file type not permitted"}, 400
-            if image != url:
-                image.filename = get_unique_filename(image.filename)
-                upload = upload_file_to_s3(image)
-                url = upload["url"]
-
-        message.content = request.form['content']
-        message.picture = url
-        # message.pinned = request.form['pinned']
-        db.session.commit()
-        return message.to_dict()
-
-    if request.method == 'DELETE':
-        # print('right friggin here', message)
-        db.session.delete(message)
-        db.session.commit()
-        return {'messageId': message.id}
 
 @channel_routes.route('/<int:channel_id>/members', methods=['GET', 'POST'])
 def get_all_or_post_to_channel_members(channel_id):
