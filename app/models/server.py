@@ -6,6 +6,12 @@ from alembic import op
 from sqlalchemy.orm import Session
 from .db import db
 
+def find_general_channel_id (channels):
+    print('----------------------------->', channels)
+    for channel in channels:
+        print('----------------------------->', channel.to_dict())
+        if channel.name == 'General':
+           return channel.id
 
 
 class Server(db.Model):
@@ -36,7 +42,7 @@ class Server(db.Model):
             'description': self.description,
             'channels':{channel.id: channel.to_resource_dict() for channel in self.channels},
             'members': {member.id: member.to_dict() for member in self.members},
-            'firstChannelId': self.channels[0].id,
+            'generalChannelId': find_general_channel_id(self.channels),
             'membersLength': len(self.members),
             'privateServer': self.private_server
         }
@@ -48,7 +54,7 @@ class Server(db.Model):
             'name': self.name,
             'topic': self.topic,
             'description': self.description,
-            'firstChannelId': self.channels[0].id,
+            'generalChannelId': self.channels[0].id,
             'membersLength': len(self.members),
             'privateServer': self.private_server
         }

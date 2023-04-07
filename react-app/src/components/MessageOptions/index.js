@@ -31,11 +31,7 @@ const MessageOptions = ({
                 <img src="/svgs/pencil.svg" alt="edit" className="edit" />
               </button>
             )}
-            <button
-              onClick={() =>
-                handleDeleteMessage(message?.channelId, message?.id)
-              }
-            >
+            <button onClick={() => handleDeleteMessage(message?.id)}>
               <img src="/svgs/trash.svg" alt="delete" />
             </button>
           </>

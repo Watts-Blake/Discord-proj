@@ -12,6 +12,8 @@ import {
   updateMessage,
   deleteMessage,
 } from "../../store/messages";
+
+import { checkChannel, checkDmRoom, checkServer } from "../../utils";
 let socket;
 
 const OneChannel = () => {
@@ -30,30 +32,20 @@ const OneChannel = () => {
 
   useEffect(() => {
     let isActive = true;
-
     if (isActive) {
       setLoaded(false);
-      if (dmRoomId) {
+      if (checkDmRoom(dmRoomId)) {
         dispatch(getOneChannel(dmRoomId));
-        setSocketRoom(`channel${dmRoomId}`);
-      } else if (
-        channelId &&
-        channelId !== "null" &&
-        channelId !== "undefined" &&
-        parseInt(channelId) !== parseInt(currentChannel?.id)
-      ) {
+        setSocketRoom(`channel : ${dmRoomId}`);
+      } else if (checkChannel(channelId, currentChannel)) {
         dispatch(getOneChannel(channelId));
-        setSocketRoom(`channel${channelId}`);
+        setSocketRoom(`channel : ${channelId}`);
       } else if (
-        serverId !== "null" &&
-        serverChannels &&
-        serverId !== currentServer.id
+        checkServer(serverId, serverChannels, currentServer) &&
+        channelId !== "undefined"
       ) {
-        const generalChannel = Object.values(serverChannels).find(
-          (channel) => channel.name === "General"
-        );
-        setSocketRoom(`channel${channelId}`);
-        history.push(`/channels/${serverId}/${generalChannel?.id}`);
+        setSocketRoom(`channel : ${channelId}`);
+        history.push(`/channels/${serverId}/${currentServer.generalChannelId}`);
       }
     }
 
@@ -123,7 +115,7 @@ const OneChannel = () => {
     });
   };
 
-  const handleDeleteMessage = async (channelId, messageId) => {
+  const handleDeleteMessage = async (messageId) => {
     socket.emit("delete_message", { message_id: messageId, room: socketRoom });
   };
 

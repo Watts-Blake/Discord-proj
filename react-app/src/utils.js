@@ -48,3 +48,29 @@ export const checkMember = async (serverId, channelId, userId) => {
 //     };
 
 export const fileTypes = ["pdf", "png", "jpg", "jpeg", "gif"];
+
+export const checkDmRoom = (dmRoomId) => {
+  if (dmRoomId && dmRoomId !== "null" && dmRoomId !== "undefined") return true;
+  return false;
+};
+
+export const checkChannel = (channelId, currChannel) => {
+  if (
+    channelId &&
+    channelId !== "null" &&
+    channelId !== "undefined" &&
+    parseInt(channelId) !== parseInt(currChannel.id)
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const checkServer = (serverId, serverChannels, currentServer) => {
+  if (serverId !== "null" && serverChannels && serverId !== currentServer.id) {
+    return true;
+  } else {
+    return false;
+  }
+};

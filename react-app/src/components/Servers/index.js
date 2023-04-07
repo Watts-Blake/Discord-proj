@@ -22,7 +22,7 @@ const Servers = ({ userServers }) => {
       <div className="server_container">
         {userServers?.map((server) => (
           <NavLink
-            to={`/channels/${server.id}/null`}
+            to={`/channels/${server.id}/${server.generalChannelId}`}
             key={server.id}
             className={
               hover === server.id
