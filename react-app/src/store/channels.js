@@ -1,5 +1,7 @@
 import { csrfFetch } from "./csrf";
 
+import { setMessages } from "./messages";
+
 //---------------------------------------------------------------------channels
 
 const CLEAR_CHANNELS_STORE = "logout/CLEAR CHANNELS";
@@ -75,7 +77,7 @@ export const deleteChannel = (serverId, channelId) => async (dispatch) => {
 };
 
 //----------------------------------------------------------------------current channel
-// remember to dispatch setMessages, setPins
+
 const SET_CURRENT_CHANNEL = "currentChannel/SetCurrentChannel";
 export const setCurrentChannel = (channel) => {
   return { type: SET_CURRENT_CHANNEL, channel };
@@ -86,6 +88,7 @@ export const getOneChannel = (channelId) => async (dispatch) => {
 
   const channel = await res.json();
   dispatch(setCurrentChannel(channel));
+  dispatch(setMessages(channel.messages));
   return channel;
 };
 
@@ -95,6 +98,7 @@ export const clearCurrentChannel = () => {
 };
 
 //--------------------------------------reducer
+
 const channelsReducer = (
   state = {
     channels: [],

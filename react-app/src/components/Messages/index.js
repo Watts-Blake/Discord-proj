@@ -1,9 +1,13 @@
 import "./Messages.css";
 import Message from "../Message";
 import { useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 
-const Messages = ({ messages, handleDeleteMessage, handleUpdateMessage }) => {
+const Messages = ({ handleDeleteMessage, handleUpdateMessage }) => {
   let messagesEnd = useRef(null);
+
+  const messages = useSelector((state) => Object.values(state.messages));
+
   useEffect(() => {
     let isActive = true;
     isActive && messagesEnd.current?.scrollIntoView();
@@ -14,7 +18,7 @@ const Messages = ({ messages, handleDeleteMessage, handleUpdateMessage }) => {
 
   return (
     <div className="messages">
-      {Object.values(messages).map((message) => (
+      {messages.map((message) => (
         <Message
           message={message}
           handleDeleteMessage={handleDeleteMessage}

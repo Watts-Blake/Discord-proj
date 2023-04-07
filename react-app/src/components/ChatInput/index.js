@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import "draft-js/dist/Draft.css";
 
 const ChatInput = ({
-  sendMessage,
+  handleSendMessage,
   handleUpdateMessage,
   messageToEdit,
   setShowEditMessage,
@@ -39,7 +39,7 @@ const ChatInput = ({
       setShowEditMessage(false);
     } else {
       // sendMessage(formData);
-      sendMessage(messageToSend);
+      handleSendMessage(messageToSend);
     }
 
     setChatContent("");
