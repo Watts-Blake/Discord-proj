@@ -1,4 +1,10 @@
 from flask_socketio import SocketIO, emit, join_room, leave_room, send
+from crypt import methods
+from tkinter.messagebox import NO
+
+from app.models import User, Server, ServerMember, Channel, ChannelMessage, db, ChannelMember
+from flask_login import current_user, login_user, logout_user, login_required
+from app.aws import upload_file_to_s3, allowed_file, get_unique_filename
 import os
 
 # configure cors_allowed_origins
@@ -46,9 +52,42 @@ def leave(data):
     print('leaving hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', data)
     leave_room(data['room'])
 
-@socketio.on('message')
+
+@socketio.on('send_message')
 def on_chat_sent(data):
-    # data = req['message']
-    print('data issssss hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', data)
-    send({'message': data['message']}, room=data['room'],)
-    # send({'id':data['id'],'channelId': data['channelId'] ,'content': data['content'], 'createdAt': data['createdAt'], 'updatedAt': data['updatedAt'], 'pinned': data['pinned'], 'senderUsername': data['senderUsername'], 'senderProfilePicture': data['senderProfilePicture']}, room=data['room'],)
+
+    new_message = ChannelMessage(
+        channel_id= data['message']['channel_id'],
+        sender_id = current_user.id,
+        content = data['message']['content'],
+
+    )
+    db.session.add(new_message)
+    db.session.commit()
+    sent_message = new_message.to_socket_dict()
+    sent_message['createdAt'] = f"{new_message.to_dict()['createdAt']}"
+    sent_message['updatedAt'] = f"{new_message.to_dict()['updatedAt']}"
+    emit('send_message',{'message': sent_message}, room=data['room'])
+
+@socketio.on('update_message')
+def on_chat_sent(data):
+    updated_message = ChannelMessage.query.get(data['message']['message_id'])
+    updated_message.content = data['message']['content']
+
+    db.session.add(updated_message)
+    db.session.commit()
+    sent_updated_message = updated_message.to_socket_dict()
+    sent_updated_message['createdAt'] = f"{updated_message.to_dict()['createdAt']}"
+    sent_updated_message['updatedAt'] = f"{updated_message.to_dict()['updatedAt']}"
+
+    emit('update_message',{'message': sent_updated_message}, room=data['room'])
+
+@socketio.on('delete_message')
+def on_chat_sent(data):
+
+    message_to_delete = ChannelMessage.query.get(data['message_id'])
+
+    db.session.delete(message_to_delete)
+    db.session.commit()
+
+    emit('delete_message',{'messageId': message_to_delete.id}, room=data['room'])

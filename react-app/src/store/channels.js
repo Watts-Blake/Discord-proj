@@ -94,62 +94,6 @@ export const clearCurrentChannel = () => {
   return { type: CLEAR_CURRENT_CHANNEL };
 };
 
-//----------------------------------------------------------------add message
-const ADD_CHANNEL_MESSAGE = "currentChannel/AddMessage";
-export const addChannelMessage = (message) => {
-  return { type: ADD_CHANNEL_MESSAGE, message };
-};
-
-export const postMessage = (channelId, formData) => async (dispatch) => {
-  const res = await fetch(`/api/channels/${channelId}/messages`, {
-    method: "POST",
-    body: formData,
-  });
-
-  const newMessage = await res.json();
-
-  dispatch(addChannelMessage(newMessage));
-  return newMessage;
-};
-//----------------------------------------------------------------update message
-const UPDATE_CHANNEL_MESSAGE = "currentChannel/UpdateMessage";
-export const updateChannelMessage = (message) => {
-  return { type: UPDATE_CHANNEL_MESSAGE, message };
-};
-
-export const putChannelMessage =
-  (channelId, messageId, formData) => async (dispatch) => {
-    const res = await fetch(
-      `/api/channels/${channelId}/messages/${messageId}`,
-      {
-        method: "PUT",
-        body: formData,
-      }
-    );
-
-    const updatedMessage = await res.json();
-
-    dispatch(updateChannelMessage(updatedMessage));
-    return updatedMessage;
-  };
-//----------------------------------------------------------------delete message
-const REMOVE_CHANNEL_MESSAGE = "currentChannel/RemoveMessage";
-
-export const removeChannelMessage = (messageId) => {
-  return { type: REMOVE_CHANNEL_MESSAGE, messageId };
-};
-
-export const deleteChannelMessage =
-  (channelId, messageId) => async (dispatch) => {
-    const res = await csrfFetch(
-      `/api/channels/${channelId}/messages/${messageId}`,
-      {
-        method: "DELETE",
-      }
-    );
-    const deletedMessage = await res.json();
-    dispatch(removeChannelMessage(deletedMessage.messageId));
-  };
 //--------------------------------------reducer
 const channelsReducer = (
   state = {
@@ -208,20 +152,6 @@ const channelsReducer = (
       return newState;
     }
 
-    case ADD_CHANNEL_MESSAGE: {
-      newState.currentChannel.messages[action.message.id] = action.message;
-      return newState;
-    }
-
-    case UPDATE_CHANNEL_MESSAGE: {
-      newState.currentChannel.messages[action.message.id] = action.message;
-      return newState;
-    }
-
-    case REMOVE_CHANNEL_MESSAGE: {
-      delete newState.currentChannel.messages[action.messageId];
-      return newState;
-    }
     default:
       return state;
   }
