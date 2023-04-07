@@ -43,13 +43,11 @@ def on_inactive_user(data):
 @socketio.on('join_room')
 def on_join(data):
     room = data['room']
-    print('joinnning hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', data)
     join_room(room)
     emit('open_room', {'room': room}, broadcast=True)
 
 @socketio.on("leave_room")
 def leave(data):
-    print('leaving hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', data)
     leave_room(data['room'])
 
 
