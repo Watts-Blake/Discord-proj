@@ -60,7 +60,6 @@ def on_chat_sent(data):
         channel_id= data['message']['channel_id'],
         sender_id = current_user.id,
         content = data['message']['content'],
-        # picture = url
 
     )
     db.session.add(new_message)
@@ -72,7 +71,6 @@ def on_chat_sent(data):
 
 @socketio.on('update_message')
 def on_chat_sent(data):
-    print('------------------------------->', data)
     updated_message = ChannelMessage.query.get(data['message']['message_id'])
     updated_message.content = data['message']['content']
 
@@ -81,7 +79,7 @@ def on_chat_sent(data):
     sent_updated_message = updated_message.to_socket_dict()
     sent_updated_message['createdAt'] = f"{updated_message.to_dict()['createdAt']}"
     sent_updated_message['updatedAt'] = f"{updated_message.to_dict()['updatedAt']}"
-    # print('data issssss hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', sent_message['createdAt'])
+
     emit('update_message',{'message': sent_updated_message}, room=data['room'])
 
 @socketio.on('delete_message')

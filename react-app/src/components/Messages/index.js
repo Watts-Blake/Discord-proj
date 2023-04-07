@@ -1,6 +1,6 @@
 import "./Messages.css";
 import Message from "../Message";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 
 const Messages = ({ messages, handleDeleteMessage, handleUpdateMessage }) => {
   let messagesEnd = useRef(null);

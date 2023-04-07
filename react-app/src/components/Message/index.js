@@ -90,7 +90,7 @@ const Message = ({ message, handleDeleteMessage, handleUpdateMessage }) => {
         {showEditMessage !== message.id && (
           <div className="message_content_message_container">
             <span className="message_content_message">{message.content}</span>
-            {message.updatedAt && (
+            {message.updatedAt && message.updatedAt !== "None" && (
               <p className="message_content_edited_message">(edited)</p>
             )}
           </div>
