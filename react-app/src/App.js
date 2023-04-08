@@ -6,6 +6,7 @@ import SignUpForm from "./components/auth/SignUpForm";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import UsersList from "./components/UsersList";
 import User from "./components/User";
+import { logout } from "./store/session";
 import {
   setActiveUsers,
   activateUser,
@@ -58,36 +59,30 @@ function App() {
     clearTimeout(idleTimeOutId);
     clearTimeout(deactiveTimeOutId);
 
-    if (user && onlineUsers[user.id]) {
+    if (
+      user &&
+      onlineUsers[user.id] &&
+      onlineUsers[user.id].activity !== "idle"
+    ) {
       const idleId = setTimeout(() => {
         // console.log("i want to idle");
         socket.emit("set_idle_user");
-      }, 900000);
+      }, 300000);
       const deactiveId = setTimeout(() => {
         // console.log("i want to idle");
         socket.emit("deactivate_user");
+        clearTimeout(idleTimeOutId);
+        dispatch(logout());
       }, 1800000);
       setIdleTimeOutId(idleId);
       setDeactiveTimeOutId(deactiveId);
     } else {
-      socket.emit("activate_user");
+      if (user) {
+        socket.emit("activate_user");
+      }
     }
   };
 
-  // useEffect(() => {
-  //   window.addEventListener("mousemove", handleUserActivity);
-
-  //   return () => {
-  //     window.removeEventListener("mousemove", handleUserActivity);
-  //   };
-  //   //eslint-disable-next-line
-  // }, []);
-
-  // const [mousePosition, setMousePosition] = useState({ x: null, y: null });
-
-  // const handleMouseMove = (e) => {
-  //   setMousePosition({ x: e.clientX, y: e.clientY });
-  // };
   useEffect(() => {
     (async () => {
       socket.emit("activate_user");

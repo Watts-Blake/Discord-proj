@@ -1,6 +1,7 @@
 import "./Members.css";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import UserActivity from "../UserActivity";
 const Members = () => {
   const currentChannel = useSelector((state) => state.channels.currentChannel);
   const currentServerMembers = useSelector(
@@ -26,6 +27,7 @@ const Members = () => {
               src={`${member.profilePicture}`}
               alt="profile pic"
             ></img>
+            <UserActivity userId={member.userId} />
             <h4>{member.username}</h4>
           </div>
         ))}
