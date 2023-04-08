@@ -45,14 +45,14 @@ def on_inactive_user():
     print('after_set_idle edit assignment')
     db.session.commit()
     print('after_set_idle edit')
-    emit('set_idle_user', {user.to_resource_dict()}, broadcast=True)
+    emit('set_idle_user', user.to_resource_dict(), broadcast=True)
 
 @socketio.on('deactivate_user')
 def on_inactive_user():
     user = User.query.get(current_user.id)
     user.activity = 'offline'
     db.session.commit()
-    emit('deactivate_user', {user.to_resource_dict()}, broadcast=True)
+    emit('deactivate_user', user.to_resource_dict(), broadcast=True)
 
 @socketio.on('join_room')
 def on_join(data):

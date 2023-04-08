@@ -7,25 +7,25 @@ export const setActiveUsers = (users) => {
   };
 };
 
-export const ACTIVATE_USER = "/users/activateUser";
+export const ACTIVATE_USER = "users/activateUser";
 
 export const activateUser = (user) => {
   return { type: ACTIVATE_USER, user };
 };
 
-export const SET_USER_IDLE = "/users/setUserIdle";
+export const SET_USER_IDLE = "users/setUserIdle";
 
-export const setUserIdle = (userId) => {
+export const setUserIdle = (user) => {
   return {
     type: SET_USER_IDLE,
-    userId,
+    user,
   };
 };
 
-export const DEACTIVATE_USER = "/users/deactivate";
+export const DEACTIVATE_USER = "users/deactivate";
 
-export const deactivateUser = (userId) => {
-  return { type: DEACTIVATE_USER, userId };
+export const deactivateUser = (user) => {
+  return { type: DEACTIVATE_USER, user };
 };
 
 const initialState = {};
@@ -42,11 +42,11 @@ const usersReducer = (state = initialState, action) => {
       return newState;
     }
     case SET_USER_IDLE: {
-      newState[action.user] = action.user;
+      newState[action.user.id] = action.user;
       return newState;
     }
     case DEACTIVATE_USER: {
-      delete newState[action.userId];
+      delete newState[action.user.id];
       return newState;
     }
 

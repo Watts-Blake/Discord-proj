@@ -26,6 +26,7 @@ function App() {
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
+  const onlineUsers = useSelector((state) => state.users);
   const [deactiveTimeOutId, setDeactiveTimeOutId] = useState();
   const [idleTimeOutId, setIdleTimeOutId] = useState();
 
@@ -39,11 +40,9 @@ function App() {
       dispatch(activateUser(user));
     });
     socket.on("set_idle_user", (data) => {
-      dispatch(setUserIdle(data.userId));
+      dispatch(setUserIdle(data));
     });
-    socket.on("deactivate_user", (data) =>
-      dispatch(deactivateUser(data.userId))
-    );
+    socket.on("deactivate_user", (data) => dispatch(deactivateUser(data)));
 
     return () => {
       socket.off("retrieve_active_users");
@@ -59,28 +58,36 @@ function App() {
     clearTimeout(idleTimeOutId);
     clearTimeout(deactiveTimeOutId);
 
-    if (user) {
+    if (user && onlineUsers[user.id]) {
       const idleId = setTimeout(() => {
-        console.log("i want to idle");
+        // console.log("i want to idle");
         socket.emit("set_idle_user");
-      }, 5000);
+      }, 900000);
       const deactiveId = setTimeout(() => {
+        // console.log("i want to idle");
         socket.emit("deactivate_user");
       }, 1800000);
       setIdleTimeOutId(idleId);
       setDeactiveTimeOutId(deactiveId);
+    } else {
+      socket.emit("activate_user");
     }
   };
 
-  useEffect(() => {
-    window.addEventListener("mousemove", handleUserActivity);
+  // useEffect(() => {
+  //   window.addEventListener("mousemove", handleUserActivity);
 
-    return () => {
-      window.removeEventListener("mousemove", handleUserActivity);
-    };
-    //eslint-disable-next-line
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("mousemove", handleUserActivity);
+  //   };
+  //   //eslint-disable-next-line
+  // }, []);
 
+  // const [mousePosition, setMousePosition] = useState({ x: null, y: null });
+
+  // const handleMouseMove = (e) => {
+  //   setMousePosition({ x: e.clientX, y: e.clientY });
+  // };
   useEffect(() => {
     (async () => {
       socket.emit("activate_user");
@@ -89,49 +96,46 @@ function App() {
     })();
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   // socket.emit("retrieve_active_users");
-  //   socket.emit("activate_user");
-  //   //eslint-disable-next-line
-  // }, []);
   if (!loaded) {
     return <h1>Loading...</h1>;
   }
 
   return (
     loaded && (
-      <BrowserRouter>
-        <Switch>
-          <Route path="/login" exact={true}>
-            <LoginForm />
-          </Route>
-          <Route path="/signup" exact={true}>
-            <SignUpForm />
-          </Route>
-          <ProtectedRoute path="/users" exact={true}>
-            <UsersList />
-          </ProtectedRoute>
-          <ProtectedRoute path="/users/:userId" exact={true}>
-            <User />
-          </ProtectedRoute>
-          <Route path="/" exact={true}>
-            <Home />
-          </Route>
-          <ProtectedRoute
-            path={[
-              "/channels",
-              "/channels/@me/:dmRoomId",
-              "/channels/:serverId/:channelId",
-              "/guild-discovery",
-            ]}
-          >
-            <LoggedApp />
-          </ProtectedRoute>
-          <Route path="/*" exact={true}>
-            <Wampus />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <div onMouseMove={handleUserActivity}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/login" exact={true}>
+              <LoginForm />
+            </Route>
+            <Route path="/signup" exact={true}>
+              <SignUpForm />
+            </Route>
+            <ProtectedRoute path="/users" exact={true}>
+              <UsersList />
+            </ProtectedRoute>
+            <ProtectedRoute path="/users/:userId" exact={true}>
+              <User />
+            </ProtectedRoute>
+            <Route path="/" exact={true}>
+              <Home />
+            </Route>
+            <ProtectedRoute
+              path={[
+                "/channels",
+                "/channels/@me/:dmRoomId",
+                "/channels/:serverId/:channelId",
+                "/guild-discovery",
+              ]}
+            >
+              <LoggedApp />
+            </ProtectedRoute>
+            <Route path="/*" exact={true}>
+              <Wampus />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </div>
     )
   );
 }
