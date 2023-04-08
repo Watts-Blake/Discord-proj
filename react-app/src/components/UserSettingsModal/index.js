@@ -4,10 +4,14 @@ import React from "react";
 
 import { logout } from "../../store/session";
 import { useDispatch } from "react-redux";
+import { io } from "socket.io-client";
+let socket;
 
 const UserSettings = ({ setShowModal }) => {
   const dispatch = useDispatch();
   const handleLogout = async (e) => {
+    socket = io();
+    socket.emit("deactivate_user");
     setShowModal(false);
     await dispatch(logout());
   };

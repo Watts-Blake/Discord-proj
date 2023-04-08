@@ -5,6 +5,8 @@ import { login } from "../../store/session";
 import AboutLinks from "../AboutLinks";
 import "./Login.css";
 import { Link } from "react-router-dom";
+import { io } from "socket.io-client";
+let socket;
 
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);

@@ -10,13 +10,13 @@ export const sendMessage = (message) => {
   return { type: SEND_MESSAGE, message };
 };
 
-export const UPDATE_MESSAGE = "currentChannel/messages/update";
+export const UPDATE_MESSAGE = "messages/update";
 
 export const updateMessage = (message) => {
   return { type: UPDATE_MESSAGE, message };
 };
 
-export const DELETE_MESSAGE = "currentChannel/messages/delete";
+export const DELETE_MESSAGE = "messages/delete";
 
 export const deleteMessage = (messageId) => {
   return { type: DELETE_MESSAGE, messageId };

@@ -2,7 +2,9 @@ import "./LoggedHome.css";
 import LoggedUserTab from "../LoggedInUserTab";
 import OneChannel from "../OneChannel";
 import ProtectedRoute from "../auth/ProtectedRoute";
-import { useParams, useHistory, NavLink } from "react-router-dom";
+import DmRooms from "../DmRooms";
+
+import { useParams, useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -11,9 +13,6 @@ const LoggedHome = () => {
   const { dmRoomId } = useParams();
   const history = useHistory();
   const user = useSelector((state) => state.session.user);
-  const dmRooms = useSelector((state) =>
-    Object.values(state.channels.userDmChannels)
-  );
 
   useEffect(() => {
     setLoaded(false);
@@ -24,30 +23,6 @@ const LoggedHome = () => {
     setLoaded(true);
     //eslint-disable-next-line
   }, [dmRoomId]);
-
-  const roomeMemberTitle = (obj) => {
-    const userNameArr = [];
-    for (let key in obj) {
-      if (obj[key].username !== user.username) {
-        userNameArr.push(obj[key].username);
-      }
-    }
-    return userNameArr.join(", ");
-  };
-
-  const getMessageRoomImg = (membersObj) => {
-    const imgSrcArr = [];
-    for (let key in membersObj) {
-      if (membersObj[key].username !== user.username) {
-        imgSrcArr.push(membersObj[key].profilePicture);
-      }
-    }
-    if (imgSrcArr.length > 1) {
-      return "/svgs/group-message-ico.svg";
-    } else {
-      return imgSrcArr[0];
-    }
-  };
 
   if (!loaded) return <h1>Loading...</h1>;
 
@@ -77,25 +52,7 @@ const LoggedHome = () => {
               />
             </button>
           </div>
-          <nav className="direct_message_rooms">
-            {dmRooms.map((room) => (
-              <NavLink
-                key={room.id}
-                to={`/channels/@me/${room.id}`}
-                className="direct_message_room"
-                activeClassName="active_direct_message_room"
-              >
-                <img
-                  src={getMessageRoomImg(room.members)}
-                  alt="icon "
-                  className="dm_room_icon"
-                />
-                <span className="dm_room_members">
-                  {roomeMemberTitle(room.members)}
-                </span>
-              </NavLink>
-            ))}
-          </nav>
+          <DmRooms />
           <LoggedUserTab />
         </div>
 
