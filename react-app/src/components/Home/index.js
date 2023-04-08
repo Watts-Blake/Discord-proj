@@ -61,12 +61,7 @@ const Home = () => {
           <img className="tech socket" src="/svgs/socket.svg" alt="react" />
         </div>
         <div className="actual_footer">
-          <Link
-            to="/"
-            exact={true}
-            activeClassName="active"
-            className="home_link"
-          >
+          <Link to="/" className="home_link">
             <img src="/svgs/gray-disc-home.svg" alt="home" />
             <h3>Diss-cord</h3>
           </Link>

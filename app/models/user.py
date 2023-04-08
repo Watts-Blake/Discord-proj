@@ -17,8 +17,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
     profile_picture = db.Column(String(2000))
-    created_at = db.Column(DateTime(), server_default=func.utcnow())
-    updated_at = db.Column(DateTime(), onupdate=func.utcnow())
+    activity = db.Column(String(10), server_default='offline')
+    created_at = db.Column(DateTime(), server_default=func.now())
+    updated_at = db.Column(DateTime(), onupdate=func.now())
 
 
     servers_owned = relationship('Server', backref='owner',cascade="all, delete")
@@ -62,6 +63,7 @@ class User(db.Model, UserMixin):
         'username': self.username,
         'email':self.email,
         'profilePicture': self.profile_picture,
+        'activity': self.activity
     }
 
     def in_server(self, server_id):

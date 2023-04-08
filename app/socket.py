@@ -20,31 +20,45 @@ else:
 socketio = SocketIO(cors_allowed_origins=origins, logger=True, engineio_logger=True)
 
 # handle chat messages
-@socketio.on('connect')
-def on_connect():
-    print('user connected')
-    retrieve_active_users()
-
+# @socketio.on('connect')
+# def on_connect():
+#     print('user connected')
+#     retrieve_active_users()
+@socketio.on('retrieve_active_users')
 def retrieve_active_users():
-    emit('retrieve_active_users', broadcast=True)
+    users = User.query.filter(User.activity != 'offline').all()
+    emit('retrieve_active_users', {user.id: user.to_resource_dict() for user in users}, broadcast=True)
 
 
 @socketio.on('activate_user')
-def on_active_user(data):
-    user = data.get('username')
-    emit('user_activated', {'user': user}, broadcast=True)
+def on_active_user():
+    user = User.query.get(current_user.id)
+    user.activity = 'online'
+    db.session.commit()
+    return emit('activate_user', user.to_resource_dict(), broadcast=True)
 
+@socketio.on('set_idle_user')
+def on_inactive_user():
+    user = User.query.get(current_user.id)
+    print('before_set_idle edit assignment')
+    user.activity = 'idle'
+    print('after_set_idle edit assignment')
+    db.session.commit()
+    print('after_set_idle edit')
+    emit('set_idle_user', {user.to_resource_dict()}, broadcast=True)
 
 @socketio.on('deactivate_user')
-def on_inactive_user(data):
-    user = data.get('username')
-    emit('user_deactivated', {'user': user}, broadcast=True)
+def on_inactive_user():
+    user = User.query.get(current_user.id)
+    user.activity = 'offline'
+    db.session.commit()
+    emit('deactivate_user', {user.to_resource_dict()}, broadcast=True)
 
 @socketio.on('join_room')
 def on_join(data):
     room = data['room']
     join_room(room)
-    emit('open_room', {'room': room}, broadcast=True)
+    emit('open_room', {'room': room})
 
 @socketio.on("leave_room")
 def leave(data):
@@ -72,7 +86,6 @@ def on_chat_sent(data):
     updated_message = ChannelMessage.query.get(data['message']['message_id'])
     updated_message.content = data['message']['content']
 
-    db.session.add(updated_message)
     db.session.commit()
     sent_updated_message = updated_message.to_socket_dict()
     sent_updated_message['createdAt'] = f"{updated_message.to_dict()['createdAt']}"

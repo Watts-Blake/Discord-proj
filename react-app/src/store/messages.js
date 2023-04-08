@@ -1,4 +1,4 @@
-export const SET_MESSAGES = "messages/set";
+export const SET_MESSAGES = "messages/setMessages";
 
 export const setMessages = (messages) => {
   return { type: SET_MESSAGES, messages };

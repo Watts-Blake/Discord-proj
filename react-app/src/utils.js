@@ -59,7 +59,7 @@ export const checkChannel = (channelId, currChannel) => {
     channelId &&
     channelId !== "null" &&
     channelId !== "undefined" &&
-    parseInt(channelId) !== parseInt(currChannel.id)
+    parseInt(channelId) !== parseInt(currChannel?.id)
   ) {
     return true;
   } else {

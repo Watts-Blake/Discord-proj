@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getOneChannel } from "../../store/channels";
-import { io } from "socket.io-client";
 
 import {
   sendMessage,
@@ -14,6 +13,7 @@ import {
 } from "../../store/messages";
 
 import { checkChannel, checkDmRoom, checkServer } from "../../utils";
+import { io } from "socket.io-client";
 let socket;
 
 const OneChannel = () => {
