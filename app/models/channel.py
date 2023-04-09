@@ -29,7 +29,7 @@ class Channel(db.Model):
             'name': self.name,
             'serverId': self.server_id,
             'messages': {message.id:message.to_dict() for message in self.messages},
-            'members': {member.id: member.member.to_resource_dict() for member in self.members},
+            'members': {member.user_id: member.to_dict() for member in self.members},
             'privateChannel': self.private_channel,
             'dmChannel': self.dm_channel,
             'textChannel': self.type_text,
@@ -60,10 +60,10 @@ class ChannelMember(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'channel_id': self.channel_id,
-            'user_id': self.user_id,
+            'channelId': self.channel_id,
+            'userId': self.user_id,
             'username':self.member.username,
-            'profile_picture': self.member.profile_picture,
+            'profilePicture': self.member.profile_picture,
         }
 
 

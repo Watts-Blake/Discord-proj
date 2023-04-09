@@ -28,6 +28,12 @@
   align-items: center;
 }
 
+.message_header_right {
+  display: flex;
+  flex-direction: row;
+  /* gap: ; */
+}
+
 .username {
   color: #7e63e0;
 }

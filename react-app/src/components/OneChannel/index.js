@@ -5,6 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getOneChannel } from "../../store/channels";
+
+import {
+  sendMessage,
+  updateMessage,
+  deleteMessage,
+} from "../../store/messages";
+
+import { checkChannel, checkDmRoom, checkServer } from "../../utils";
 import { io } from "socket.io-client";
 let socket;
 
@@ -13,40 +21,31 @@ const OneChannel = () => {
   const [loaded, setLoaded] = useState(false);
   const [prevRoom, setPrevRoom] = useState(`channel${channelId || dmRoomId}`);
   const [socketRoom, setSocketRoom] = useState();
-  const [messages, setMessages] = useState([]);
+  // const [messages, setMessages] = useState([]);
 
   const currentServer = useSelector((state) => state.servers.currentServer);
   const currentChannel = useSelector((state) => state.channels.currentChannel);
+  // const messages = useSelector((state) => state.messages);
   const serverChannels = useSelector((state) => state.channels.channels);
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
     let isActive = true;
-
     if (isActive) {
       setLoaded(false);
-      if (dmRoomId) {
+      if (checkDmRoom(dmRoomId)) {
         dispatch(getOneChannel(dmRoomId));
-        setSocketRoom(`channel${dmRoomId}`);
-      } else if (
-        channelId &&
-        channelId !== "null" &&
-        channelId !== "undefined" &&
-        parseInt(channelId) !== parseInt(currentChannel?.id)
-      ) {
+        setSocketRoom(`channel : ${dmRoomId}`);
+      } else if (checkChannel(channelId, currentChannel)) {
         dispatch(getOneChannel(channelId));
-        setSocketRoom(`channel${channelId}`);
+        setSocketRoom(`channel : ${channelId}`);
       } else if (
-        serverId !== "null" &&
-        serverChannels &&
-        serverId !== currentServer.id
+        checkServer(serverId, serverChannels, currentServer) &&
+        channelId !== "undefined"
       ) {
-        const generalChannel = Object.values(serverChannels).find(
-          (channel) => channel.name === "General"
-        );
-        setSocketRoom(`channel${channelId}`);
-        history.push(`/channels/${serverId}/${generalChannel?.id}`);
+        setSocketRoom(`channel : ${channelId}`);
+        history.push(`/channels/${serverId}/${currentServer.generalChannelId}`);
       }
     }
 
@@ -58,55 +57,33 @@ const OneChannel = () => {
   }, [dmRoomId, channelId, dispatch]);
 
   useEffect(() => {
-    let isActive = true;
-    const channelMessagesObj = currentChannel?.messages;
-
-    if (channelMessagesObj && isActive) setMessages(channelMessagesObj);
-
-    return () => (isActive = false);
-  }, [currentChannel]);
-
-  useEffect(() => {
     socket = io();
-    const sendMessage = (data) => {
-      setMessages((prevMessages) => {
-        const newMessages = { ...prevMessages };
-        newMessages[data.message.id] = data.message;
-        return newMessages;
-      });
+
+    const sendSockMessage = (data) => {
+      dispatch(sendMessage(data.message));
     };
 
-    const updateMessage = (data) => {
-      setMessages((prevMessages) => {
-        const newMessages = { ...prevMessages };
-
-        prevMessages[data.message.id].content = data.message.content;
-        prevMessages[data.message.id].updatedAt = data.message.updatedAt;
-
-        return newMessages;
-      });
+    const updateSockMessage = (data) => {
+      dispatch(updateMessage(data.message));
     };
 
-    const deleteMessage = (data) => {
-      setMessages((prevMessages) => {
-        const newMessages = { ...prevMessages };
-        delete newMessages[data.messageId];
-        return newMessages;
-      });
+    const deleteSockMessage = (data) => {
+      dispatch(deleteMessage(data.messageId));
     };
 
-    socket.on("send_message", sendMessage);
+    socket.on("send_message", sendSockMessage);
 
-    socket.on("update_message", updateMessage);
+    socket.on("update_message", updateSockMessage);
 
-    socket.on("delete_message", deleteMessage);
+    socket.on("delete_message", deleteSockMessage);
 
     return () => {
       socket.off("send_message");
       socket.off("update_message");
       socket.off("delete_message");
+      socket.disconnect();
     };
-  }, []);
+  }, [dispatch]);
 
   const leaveRoom = (oldRoom) => {
     socket.emit("leave_room", { room: oldRoom });
@@ -124,9 +101,9 @@ const OneChannel = () => {
     return () => (isActive = false);
   }, [prevRoom, socketRoom]);
 
-  const sendMessage = (formData) => {
+  const handleSendMessage = (message) => {
     socket.timeout(5000).emit("send_message", {
-      message: { ...formData, channel_id: channelId || dmRoomId },
+      message: { ...message, channel_id: channelId || dmRoomId },
       room: socketRoom,
     });
   };
@@ -138,7 +115,7 @@ const OneChannel = () => {
     });
   };
 
-  const handleDeleteMessage = async (channelId, messageId) => {
+  const handleDeleteMessage = async (messageId) => {
     socket.emit("delete_message", { message_id: messageId, room: socketRoom });
   };
 
@@ -147,13 +124,15 @@ const OneChannel = () => {
       <>
         {currentChannel?.messages && (
           <Messages
-            messages={messages}
             handleDeleteMessage={handleDeleteMessage}
             handleUpdateMessage={handleUpdateMessage}
           />
         )}
 
-        <ChatInput sendMessage={sendMessage} className="chat_input" />
+        <ChatInput
+          handleSendMessage={handleSendMessage}
+          className="chat_input"
+        />
       </>
     );
   }

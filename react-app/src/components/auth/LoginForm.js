@@ -5,6 +5,8 @@ import { login } from "../../store/session";
 import AboutLinks from "../AboutLinks";
 import "./Login.css";
 import { Link } from "react-router-dom";
+import { io } from "socket.io-client";
+let socket;
 
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);
@@ -52,12 +54,7 @@ const LoginForm = () => {
           src="/svgs/logg-page.svg"
           alt="logpage"
         />
-        <Link
-          to="/"
-          exact={true}
-          activeClassName="active"
-          className="home_link"
-        >
+        <Link to="/" className="home_link">
           <img src="/svgs/gray-disc-home.svg" alt="home" />
           <h3>Diss-cord</h3>
         </Link>

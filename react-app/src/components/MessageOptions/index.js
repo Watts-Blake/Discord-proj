@@ -17,7 +17,7 @@ const MessageOptions = ({
 
   return (
     loaded && (
-      <div>
+      <div className="message_options">
         {/* add when pinning implementation complete */}
         {/* <button>
           <img src="/svgs/pinned.svg" alt="pin" className="edit" />
@@ -31,11 +31,7 @@ const MessageOptions = ({
                 <img src="/svgs/pencil.svg" alt="edit" className="edit" />
               </button>
             )}
-            <button
-              onClick={() =>
-                handleDeleteMessage(message?.channelId, message?.id)
-              }
-            >
+            <button onClick={() => handleDeleteMessage(message?.id)}>
               <img src="/svgs/trash.svg" alt="delete" />
             </button>
           </>

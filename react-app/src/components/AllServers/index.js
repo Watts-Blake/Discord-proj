@@ -81,9 +81,9 @@ const AllServers = () => {
                       </h6>
                     </div>
                     <NavLink
-                      to={`/channels/${server.id}/${server.firstChannelId}`}
+                      to={`/channels/${server.id}/${server.generalChannelId}`}
                       onClick={(e) =>
-                        handleJoin(e, server.id, server.firstChannelId)
+                        handleJoin(e, server.id, server.generalChannelId)
                       }
                       onMouseEnter={() => setHover(server.id)}
                       onMouseLeave={() => setHover(null)}

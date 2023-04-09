@@ -78,44 +78,6 @@
   font-size: 16px;
 }
 
-.direct_message_rooms {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  /* width: 240px; */
-  /* border: 2px solid red; */
-}
-.direct_message_room {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  /* justify-content: space-between; */
-  width: 90%;
-  /* margin: 0 0px 10px 10px; */
-  /* border: 2px solid red; */
-}
-.direct_message_room:hover {
-  background-color: #36393f;
-  color: white;
-  border-radius: 4px;
-}
-
-.active_direct_message_room {
-  background-color: #535558;
-  border-radius: 4px;
-}
-
-.dm_room_icon {
-  height: 30px;
-  width: 30px;
-  border-radius: 100%;
-  object-fit: cover;
-  margin-left: 10px;
-}
-.dm_room_members {
-  margin-left: 10px;
-}
-
 .logged_home_messages {
   display: flex;
   flex-direction: column;
