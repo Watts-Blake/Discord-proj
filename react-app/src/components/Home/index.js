@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div className="home">
-      <NavBar className="nav" />
       <div className="home_container">
+        <NavBar className="nav" />
         <img
           className="home_main"
           src="/svgs/home-main.svg"
@@ -19,7 +19,7 @@ const Home = () => {
           src="/svgs/home-right.svg"
           alt="home-right"
         />
-        <div className="main_content">
+        <div className="main_home_content">
           <h1 className="title">IMAGINE A PLACE...</h1>
           <p className="description">
             ...where you can belong to a school club, a gaming group, or a

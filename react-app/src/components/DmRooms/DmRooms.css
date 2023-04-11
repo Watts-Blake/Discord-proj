@@ -10,7 +10,10 @@
   flex-direction: row;
   align-items: center;
   /* justify-content: space-between; */
-  width: 90%;
+  width: 94%;
+  margin-left: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   /* margin: 0 0px 10px 10px; */
   /* border: 2px solid red; */
 }
@@ -34,4 +37,5 @@
 }
 .dm_room_members {
   margin-left: 10px;
+  width: 90%;
 }

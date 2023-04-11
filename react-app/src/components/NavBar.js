@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 const NavBar = () => {
   const user = useSelector((state) => state.session.user);
   return (
-    <nav>
+    <nav className="home_nav">
       <NavLink
         to="/"
         exact={true}
@@ -26,7 +26,7 @@ const NavBar = () => {
             >
               Login
             </NavLink>
-            <NavLink to="/signup" exact={true} activeClassName="active">
+            <NavLink to="/signup" exact={true} className="signup_btn">
               Sign Up
             </NavLink>
           </div>

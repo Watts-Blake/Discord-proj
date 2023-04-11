@@ -68,3 +68,7 @@
   background-color: #5865f2;
   cursor: pointer;
 }
+
+.active.submit_sign_btn:hover {
+  background-color: #6974f0;
+}

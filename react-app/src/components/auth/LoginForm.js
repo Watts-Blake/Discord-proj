@@ -6,7 +6,7 @@ import AboutLinks from "../AboutLinks";
 import "./Login.css";
 import { Link } from "react-router-dom";
 
-const LoginForm = () => {
+const LoginForm = ({ activateCurrUser, retrieveActiveUsers }) => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +17,10 @@ const LoginForm = () => {
 
   const onLogin = async (e) => {
     e.preventDefault();
-    const data = await dispatch(login(email, password));
+    const data = await dispatch(login(email, password)).then(() => {
+      activateCurrUser();
+      retrieveActiveUsers();
+    });
     if (data) {
       setErrors(data);
     }
@@ -25,7 +28,10 @@ const LoginForm = () => {
 
   const handleDemo = async (e) => {
     e.preventDefault();
-    await dispatch(login("demo@demo.com", "password"));
+    await dispatch(login("demo@demo.com", "password")).then(() => {
+      activateCurrUser();
+      retrieveActiveUsers();
+    });
   };
 
   const updateEmail = (e) => {

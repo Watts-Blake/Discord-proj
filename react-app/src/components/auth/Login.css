@@ -66,6 +66,9 @@
 .register {
   color: #00a9ec;
 }
+.register:hover {
+  color: #0fb7fa;
+}
 
 .buttons_container {
   display: flex;
@@ -82,4 +85,8 @@
   box-shadow: none;
   color: #ffff;
   border-radius: 5px;
+}
+
+.submit_btn:hover {
+  background-color: #6974f0;
 }
