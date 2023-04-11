@@ -6,13 +6,6 @@ import SignUpForm from "./components/auth/SignUpForm";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import UsersList from "./components/UsersList";
 import User from "./components/User";
-import { logout } from "./store/session";
-import {
-  setActiveUsers,
-  activateUser,
-  deactivateUser,
-  setUserIdle,
-} from "./store/users";
 import { authenticate } from "./store/session";
 
 import Home from "./components/Home";
@@ -20,75 +13,57 @@ import Home from "./components/Home";
 import LoggedApp from "./components/LoggedApp";
 import Wampus from "./components/Wampus";
 
-import { io } from "socket.io-client";
-let socket;
+// import { io } from "socket.io-client";
+// let socket;
 
 function App() {
   const [loaded, setLoaded] = useState(false);
+  const [loggedAppLoaded, setLoggedAppLoaded] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
-  const onlineUsers = useSelector((state) => state.users);
-  const [deactiveTimeOutId, setDeactiveTimeOutId] = useState();
-  const [idleTimeOutId, setIdleTimeOutId] = useState();
+  // const onlineUsers = useSelector((state) => state.users);
+  // const [deactiveTimeOutId, setDeactiveTimeOutId] = useState();
+  // const [idleTimeOutId, setIdleTimeOutId] = useState();
+  // const [runSocket, setRunSocket] = useState(false);
+  // const [userId, setUserId] = useState();
+  // const history = useHistory();
+
+  // useEffect(() => {
+  //   socket = io();
+  // }, []);
+  // const handleUserActivity = () => {
+  //   clearTimeout(idleTimeOutId);
+  //   clearTimeout(deactiveTimeOutId);
+
+  //   if (user && onlineUsers[user.id] === "idle") {
+  //     const idleId = setTimeout(() => {
+  //       socket.emit("set_idle_user");
+  //     }, 300000);
+  //     setIdleTimeOutId(idleId);
+  //   } else if (
+  //     user &&
+  //     onlineUsers[user.id] &&
+  //     onlineUsers[user.id].activity !== "idle"
+  //   ) {
+  //     const deactiveId = setTimeout(() => {
+  //       socket.emit("deactivate_user");
+  //       clearTimeout(idleTimeOutId);
+  //     }, 1800000);
+  //     setDeactiveTimeOutId(deactiveId);
+  //   } else {
+  //     if (user) {
+  //       socket.emit("activate_user");
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
-    socket = io();
+    (async () =>
+      await dispatch(authenticate()).then(() => {
+        setLoaded(true);
+      }))();
 
-    socket.on("retrieve_active_users", (data) =>
-      dispatch(setActiveUsers(data))
-    );
-    socket.on("activate_user", (user) => {
-      dispatch(activateUser(user));
-    });
-    socket.on("set_idle_user", (data) => {
-      dispatch(setUserIdle(data));
-    });
-    socket.on("deactivate_user", (data) => dispatch(deactivateUser(data)));
-
-    return () => {
-      socket.off("retrieve_active_users");
-      socket.off("activate_user");
-      socket.off("set_idle_user");
-      socket.off("deactive_user");
-      // socket.disconnect();
-    };
-    //eslint-disable-next-line
-  }, []);
-
-  const handleUserActivity = () => {
-    clearTimeout(idleTimeOutId);
-    clearTimeout(deactiveTimeOutId);
-
-    if (
-      user &&
-      onlineUsers[user.id] &&
-      onlineUsers[user.id].activity !== "idle"
-    ) {
-      const idleId = setTimeout(() => {
-        // console.log("i want to idle");
-        socket.emit("set_idle_user");
-      }, 300000);
-      const deactiveId = setTimeout(() => {
-        // console.log("i want to idle");
-        socket.emit("deactivate_user");
-        clearTimeout(idleTimeOutId);
-        dispatch(logout());
-      }, 1800000);
-      setIdleTimeOutId(idleId);
-      setDeactiveTimeOutId(deactiveId);
-    } else {
-      if (user) {
-        socket.emit("activate_user");
-      }
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      socket.emit("activate_user");
-      socket.emit("retrieve_active_users");
-      await dispatch(authenticate()).then(() => setLoaded(true));
-    })();
+    // dispatch(authenticate());
   }, [dispatch]);
 
   if (!loaded) {
@@ -97,7 +72,7 @@ function App() {
 
   return (
     loaded && (
-      <div onMouseMove={handleUserActivity}>
+      <div>
         <BrowserRouter>
           <Switch>
             <Route path="/login" exact={true}>
@@ -123,7 +98,13 @@ function App() {
                 "/guild-discovery",
               ]}
             >
-              <LoggedApp />
+              {user && (
+                <LoggedApp
+                  setLoggedAppLoaded={setLoggedAppLoaded}
+                  loggedAppLoaded={loggedAppLoaded}
+                  user={user}
+                />
+              )}
             </ProtectedRoute>
             <Route path="/*" exact={true}>
               <Wampus />

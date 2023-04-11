@@ -81,6 +81,8 @@ const OneChannel = () => {
       socket.off("send_message");
       socket.off("update_message");
       socket.off("delete_message");
+      socket.off("join_room");
+      socket.off("leave_room");
       socket.disconnect();
     };
   }, [dispatch]);

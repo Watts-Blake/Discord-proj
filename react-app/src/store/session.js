@@ -7,7 +7,7 @@ import { logoutServers } from "./servers";
 const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
 
-const setUser = (user) => ({
+export const setUser = (user) => ({
   type: SET_USER,
   payload: user,
 });
@@ -33,6 +33,7 @@ export const authenticate = () => async (dispatch) => {
     dispatch(setUser(data));
     dispatch(setUserServers(data.serverMember));
     dispatch(setUserDms(data.dmChannelMember));
+    return data;
   }
 };
 
@@ -53,7 +54,7 @@ export const login = (email, password) => async (dispatch) => {
     dispatch(setUserServers(data.serverMember));
     dispatch(setUserDms(data.dmChannelMember));
     dispatch(setUser(data));
-    return null;
+    return data;
   } else if (response.status < 500) {
     const data = await response.json();
     if (data.errors) {

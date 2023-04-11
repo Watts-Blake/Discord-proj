@@ -19,17 +19,34 @@ else:
 # initialize your socket instance
 socketio = SocketIO(cors_allowed_origins=origins, logger=True, engineio_logger=True)
 
+users={}
 # handle chat messages
-# @socketio.on('connect')
-# def on_connect():
-#     print('user connected')
-#     retrieve_active_users()
+@socketio.on('connect')
+@login_required
+def on_connect():
+    if current_user.is_authenticated:
+
+        user = User.query.get(current_user.id)
+        user.activity = 'online'
+        db.session.commit()
+        emit('connect', user.to_resource_dict(), broadcast=True)
+
+    # retrieve_active_users()
+@socketio.on('disconnect')
+def on_disconnect():
+    user = User.query.get(current_user.id)
+    user.activity = 'offline'
+    db.session.commit()
+    emit('deactivate_user', user.to_resource_dict())
+
+
 @socketio.on('retrieve_active_users')
 @login_required
-def retrieve_active_users():
+def retrieve_active_users(data):
     if current_user.is_authenticated:
         users = User.query.filter(User.activity != 'offline').all()
-        emit('retrieve_active_users', {user.id: user.to_resource_dict() for user in users}, broadcast=True)
+        print('i am running in the back', data)
+        emit('retrieve_active_users', {user.id: user.to_resource_dict() for user in users}, room=data['room'])
 
 
 @socketio.on('activate_user')
@@ -37,11 +54,12 @@ def retrieve_active_users():
 def on_active_user():
     if current_user.is_authenticated:
         user = User.query.get(current_user.id)
-        if user.activity == 'online':
-            return emit('activate_user', {'message': 'user already active'})
         user.activity = 'online'
         db.session.commit()
-        return emit('activate_user', user.to_resource_dict(), broadcast=True)
+        users[user.id] = user.to_resource_dict()
+        print('userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
+        return emit('activate_user', {'user': user.to_resource_dict(), 'currUserId': current_user.id}, broadcast=True)
+
 
 @socketio.on('set_idle_user')
 @login_required
@@ -52,6 +70,7 @@ def on_set_idle_user():
         user.activity = 'idle'
 
         db.session.commit()
+        users[user.id] = user.to_resource_dict()
 
         emit('set_idle_user', user.to_resource_dict(), broadcast=True)
 
