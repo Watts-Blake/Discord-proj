@@ -2,6 +2,11 @@ import LeftNavBar from "../LeftNavBar";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import MainContent from "../MainContent";
 import AllServers from "../AllServers";
+import {
+  receiveMessage,
+  updateMessage,
+  deleteMessage,
+} from "../../store/messages";
 
 import {
   setActiveUsers,
@@ -35,11 +40,21 @@ const LoggedApp = ({ user, loggedAppLoaded, setLoggedAppLoaded }) => {
     socket.on("retrieve_active_users", (data) => {
       dispatch(setActiveUsers(data));
     });
+    socket.on("set_rooms", (data) => {});
+    socket.on("join_room", (data) => {});
+    socket.on("leave_room", (data) => {});
+    socket.on("room_notification", (data) => {});
+    socket.on("clear_room_notifications", (data) => {});
     socket.on("set_idle_user", (data) => {
       dispatch(setUserIdle(data));
     });
     socket.on("deactivate_user", async (data) => {
       dispatch(deactivateUser(data));
+    });
+
+    socket.on("receive_message", (data) => {
+      const { message, channelId, serverId } = data;
+      dispatch(receiveMessage(message, channelId, serverId));
     });
 
     return () => {
@@ -48,15 +63,20 @@ const LoggedApp = ({ user, loggedAppLoaded, setLoggedAppLoaded }) => {
       socket.off("set_idle_user");
       socket.off("deactive_user");
       socket.off("connect");
+      socket.off("set_rooms");
       socket.off("join_room");
+      socket.off("leave_room");
+      socket.off("room_notification");
+      socket.off("clear_room_notifications");
       socket.disconnect();
     };
     //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    socket.emit("join_room", { room: `user: ${user.id}` });
+    socket.emit("join_room", { room: `user room: ${user.id}` });
     socket.emit("retrieve_active_users", { room: `user: ${user.id}` });
+    socket.emit("join_rooms");
     //eslint-disable-next-line
   }, []);
 

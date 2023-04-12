@@ -114,7 +114,7 @@ def on_send_message(data):
         sent_message = new_message.to_socket_dict()
         sent_message['createdAt'] = f"{new_message.to_dict()['createdAt']}"
         sent_message['updatedAt'] = f"{new_message.to_dict()['updatedAt']}"
-        emit('send_message',{'message': sent_message}, room=data['room'])
+        emit('receive_message',{'message': sent_message, 'channelId': new_message.channel_id, 'serverId': new_message.server_id}, room=data['room'])
 
 @socketio.on('update_message')
 @login_required

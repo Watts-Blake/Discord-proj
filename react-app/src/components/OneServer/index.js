@@ -37,10 +37,7 @@ const OneServer = () => {
         dispatch(getOneServer(serverId))
           .then((server) => {
             if (channelId && channelId === "null") {
-              const serverGeneralChan = Object.values(server.channels).find(
-                (channel) => channel.name === "General"
-              );
-              history.push(`/channels/${server.id}/${serverGeneralChan?.id}`);
+              history.push(`/channels/${server.id}/${server.generalChannelId}`);
               return () => (isActive = false);
             } else {
               history.push(`/channels/${server.id}/${channelId}`);

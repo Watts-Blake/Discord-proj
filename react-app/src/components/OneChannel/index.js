@@ -5,12 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getOneChannel } from "../../store/channels";
-
-import {
-  sendMessage,
-  updateMessage,
-  deleteMessage,
-} from "../../store/messages";
+import { setMessages } from "../../store/messages";
 
 import { checkChannel, checkDmRoom, checkServer } from "../../utils";
 import { io } from "socket.io-client";
@@ -19,13 +14,13 @@ let socket;
 const OneChannel = () => {
   const { serverId, channelId, dmRoomId } = useParams();
   const [loaded, setLoaded] = useState(false);
-  const [prevRoom, setPrevRoom] = useState(`channel${channelId || dmRoomId}`);
-  const [socketRoom, setSocketRoom] = useState();
+  // const [prevRoom, setPrevRoom] = useState(`channel${channelId || dmRoomId}`);
+  // const [socketRoom, setSocketRoom] = useState();
   // const [messages, setMessages] = useState([]);
 
   const currentServer = useSelector((state) => state.servers.currentServer);
   const currentChannel = useSelector((state) => state.channels.currentChannel);
-  // const messages = useSelector((state) => state.messages);
+  const messages = useSelector((state) => state.messages);
   const serverChannels = useSelector((state) => state.channels.channels);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -35,21 +30,35 @@ const OneChannel = () => {
     if (isActive) {
       setLoaded(false);
       if (checkDmRoom(dmRoomId)) {
-        dispatch(getOneChannel(dmRoomId));
-        setSocketRoom(`channel : ${dmRoomId}`);
+        (async () =>
+          await dispatch(getOneChannel(dmRoomId))
+            .then((channel) =>
+              dispatch(
+                setMessages(channel.messages, channel.id, channel.serverId)
+              )
+            )
+            .then(() => setLoaded(true)))();
+        // setSocketRoom(`channel : ${dmRoomId}`);
       } else if (checkChannel(channelId, currentChannel)) {
-        dispatch(getOneChannel(channelId));
-        setSocketRoom(`channel : ${channelId}`);
+        (async () =>
+          await dispatch(getOneChannel(channelId))
+            .then((channel) =>
+              dispatch(
+                setMessages(channel.messages, channel.id, channel.serverId)
+              )
+            )
+            .then(() => setLoaded(true)))();
+
+        // setSocketRoom(`channel : ${channelId}`);
       } else if (
         checkServer(serverId, serverChannels, currentServer) &&
         channelId !== "undefined"
       ) {
-        setSocketRoom(`channel : ${channelId}`);
+        // setSocketRoom(`channel : ${channelId}`);
         history.push(`/channels/${serverId}/${currentServer.generalChannelId}`);
       }
     }
 
-    setLoaded(true);
     return () => {
       isActive = false;
     };
@@ -59,72 +68,63 @@ const OneChannel = () => {
   useEffect(() => {
     socket = io();
 
-    const sendSockMessage = (data) => {
-      dispatch(sendMessage(data.message));
-    };
+    // const sendSockMessage = (data) => {
+    //   dispatch(sendMessage(data.message));
+    // };
 
-    const updateSockMessage = (data) => {
-      dispatch(updateMessage(data.message));
-    };
+    // const updateSockMessage = (data) => {
+    //   dispatch(updateMessage(data.message));
+    // };
 
-    const deleteSockMessage = (data) => {
-      dispatch(deleteMessage(data.messageId));
-    };
+    // const deleteSockMessage = (data) => {
+    //   dispatch(deleteMessage(data.messageId));
+    // };
 
-    socket.on("send_message", sendSockMessage);
+    // socket.on("send_message", sendSockMessage);
 
-    socket.on("update_message", updateSockMessage);
+    // socket.on("update_message", updateSockMessage);
 
-    socket.on("delete_message", deleteSockMessage);
+    // socket.on("delete_message", deleteSockMessage);
 
-    return () => {
-      socket.off("send_message");
-      socket.off("update_message");
-      socket.off("delete_message");
-      socket.off("join_room");
-      socket.off("leave_room");
-      socket.disconnect();
-    };
+    // return () => {
+    //   socket.off("send_message");
+    //   socket.off("update_message");
+    //   socket.off("delete_message");
+    //   socket.disconnect();
+    // };
   }, [dispatch]);
 
-  const leaveRoom = (oldRoom) => {
-    socket.emit("leave_room", { room: oldRoom });
-  };
-
-  const joinRoom = (newRoom) => {
-    socket.emit("join_room", { room: newRoom });
-  };
-
-  useEffect(() => {
-    let isActive = true;
-    isActive && leaveRoom(prevRoom);
-    isActive && joinRoom(socketRoom);
-    isActive && setPrevRoom(socketRoom);
-    return () => (isActive = false);
-  }, [prevRoom, socketRoom]);
-
   const handleSendMessage = (message) => {
-    socket.timeout(5000).emit("send_message", {
+    socket.emit("send_message", {
       message: { ...message, channel_id: channelId || dmRoomId },
-      room: socketRoom,
+      room: `channel room : ${channelId}`,
+      channel_id: channelId,
+      server_id: serverId,
     });
   };
 
   const handleUpdateMessage = (message) => {
     socket.emit("update_message", {
       message: { ...message, channel_id: channelId || dmRoomId },
-      room: socketRoom,
+      room: `channel room : ${channelId}`,
+      channel_id: channelId,
+      server_id: serverId,
     });
   };
 
   const handleDeleteMessage = async (messageId) => {
-    socket.emit("delete_message", { message_id: messageId, room: socketRoom });
+    socket.emit("delete_message", {
+      message_id: messageId,
+      room: `channel room : ${channelId}`,
+      channel_id: channelId,
+      server_id: serverId,
+    });
   };
 
   if (loaded) {
     return (
       <>
-        {currentChannel?.messages && (
+        {messages && (
           <Messages
             handleDeleteMessage={handleDeleteMessage}
             handleUpdateMessage={handleUpdateMessage}

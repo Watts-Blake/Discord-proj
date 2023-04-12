@@ -7,9 +7,7 @@ from sqlalchemy.orm import Session
 from .db import db
 
 def find_general_channel_id (channels):
-    print('----------------------------->', channels)
     for channel in channels:
-        print('----------------------------->', channel.to_dict())
         if channel.name == 'General':
            return channel.id
 
